@@ -10,12 +10,7 @@
 
 system用于调用shell, 执行一个指定命令
 fork用于创建一个新的进程,该进程几乎是当前进程的一个完全拷贝
-exec可以在进程中用另外的程序来替换当前运行的进程
-
-什么是进程
-
-进程是一个正在执行的程序实例,他也是Linux基本的调度单位,一个进程由如下元素组成
-进程当前上下文(context),它是进程当前执行状">
+exec可以在进程中用另外的程序来替换当前运行的进程">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Linux进程控制">
 <meta property="og:url" content="http://www.bigtiger079.com/2015/10/07/Linux进程控制/index.html">
@@ -24,25 +19,15 @@ exec可以在进程中用另外的程序来替换当前运行的进程
 
 system用于调用shell, 执行一个指定命令
 fork用于创建一个新的进程,该进程几乎是当前进程的一个完全拷贝
-exec可以在进程中用另外的程序来替换当前运行的进程
-
-什么是进程
-
-进程是一个正在执行的程序实例,他也是Linux基本的调度单位,一个进程由如下元素组成
-进程当前上下文(context),它是进程当前执行状">
-<meta property="og:updated_time" content="2016-01-28T12:49:21.000Z">
+exec可以在进程中用另外的程序来替换当前运行的进程">
+<meta property="og:updated_time" content="2016-01-29T02:44:23.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Linux进程控制">
 <meta name="twitter:description" content="Linux进程模型传统的Linux模型里有三种创建或者修改进程的操作:
 
 system用于调用shell, 执行一个指定命令
 fork用于创建一个新的进程,该进程几乎是当前进程的一个完全拷贝
-exec可以在进程中用另外的程序来替换当前运行的进程
-
-什么是进程
-
-进程是一个正在执行的程序实例,他也是Linux基本的调度单位,一个进程由如下元素组成
-进程当前上下文(context),它是进程当前执行状">
+exec可以在进程中用另外的程序来替换当前运行的进程">
   
   
     <link rel="icon" href="/favicon.png">
@@ -238,8 +223,7 @@ exec可以在进程中用另外的程序来替换当前运行的进程
 <ul>
 <li>system用于调用shell, 执行一个指定命令</li>
 <li>fork用于创建一个新的进程,该进程几乎是当前进程的一个完全拷贝</li>
-<li>exec可以在进程中用另外的程序来替换当前运行的进程</li>
-</ul>
+<li>exec可以在进程中用另外的程序来替换当前运行的进程<a id="more"></a>
 <h3 id="u4EC0_u4E48_u662F_u8FDB_u7A0B"><a href="#u4EC0_u4E48_u662F_u8FDB_u7A0B" class="headerlink" title="什么是进程"></a>什么是进程</h3><blockquote>
 <ul>
 <li>进程是一个正在执行的程序实例,他也是Linux基本的调度单位,一个进程由如下元素组成</li>
@@ -250,6 +234,8 @@ exec可以在进程中用另外的程序来替换当前运行的进程
 <li>内存和其他分配给进程的系统资源</li>
 </ul>
 </blockquote>
+</li>
+</ul>
 <ul>
 <li>内核使用进程来控制对CPU和其他系统资源的访问,并且使用进程来决定在CPU上运行那个程序, 运行多久以及采用什么特性运行它</li>
 <li>内核的调度器负责所有的进程间分配CPU时间,称为时间片, 它轮流在每个进程分的时间片用完后从进程那里抢回控制权</li>

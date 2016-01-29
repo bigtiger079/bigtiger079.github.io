@@ -25,7 +25,7 @@
 
 当我在写这个系列的最后一篇文章，也就是关于predictIve animation的讨论时，我突然想到几个很有意思的点，并且很有讨论价值。这个系列文章以调查RecyclerView是否能够以简单的方式满足竖向、横向滚动的布局需求以及开发者要定制一个LayoutManager的难度有多大">
 <meta property="og:image" content="http://7xlrpi.com1.z0.glb.clouddn.com/recycler_layoutmanager_redux_1.gif">
-<meta property="og:updated_time" content="2016-01-28T12:49:21.000Z">
+<meta property="og:updated_time" content="2016-01-29T02:46:49.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="RecyclerView 创建LayoutManager-Redux">
 <meta name="twitter:description" content="这篇文章是RecyclerView系列文章的结尾篇。前三部分的链接在这里 :
@@ -232,8 +232,7 @@
 <li><a href="http://www.bigtiger079.com/2015/09/14/RecyclerView-%E5%88%9B%E5%BB%BALayoutManager-2">第二部分</a> </li>
 <li><a href="http://www.bigtiger079.com/2015/09/14/RecyclerView-%E5%88%9B%E5%BB%BALayoutManager-3">第三部分</a></li>
 </ul>
-<p>当我在写这个系列的最后一篇文章，也就是关于predictIve animation的讨论时，我突然想到几个很有意思的点，并且很有讨论价值。这个系列文章以调查RecyclerView是否能够以简单的方式满足竖向、横向滚动的布局需求以及开发者要定制一个LayoutManager的难度有多大开始。这篇文章中我选择了一个基本的网格布局作为自定义layoutManager的示例。</p>
-<p>下面这幅图展示了运用这个自定义LayoutManager到RecyclerView的滚动效果。</p>
+<p>当我在写这个系列的最后一篇文章，也就是关于predictIve animation的讨论时，我突然想到几个很有意思的点，并且很有讨论价值。这个系列文章以调查RecyclerView是否能够以简单的方式满足竖向、横向滚动的布局需求以及开发者要定制一个LayoutManager的难度有多大开始。这篇文章中我选择了一个基本的网格布局作为自定义layoutManager的示例。<br><a id="more"></a><br>下面这幅图展示了运用这个自定义LayoutManager到RecyclerView的滚动效果。</p>
 <p><img src="http://7xlrpi.com1.z0.glb.clouddn.com/recycler_layoutmanager_redux_1.gif" alt=""></p>
 <h2 id="u6253_u7834_u5E38_u89C4_u8BBE_u8BA1"><a href="#u6253_u7834_u5E38_u89C4_u8BBE_u8BA1" class="headerlink" title="打破常规设计"></a>打破常规设计</h2><p>无论你打算如何组织Adapter的位置（从左到右，上到下等等）,内容视图的视角都是显示部分不连贯数据集的区域。更确切地说，在第一个和最后一个可视位置之间的Adapter区域的数据项也会在可视区域view的外面。</p>
 <p>这是一个很重要的点，因为它与在单轴上滚动的布局大相径庭（从而导致与当前框架下提供的默认布局背道而驰）。这些标准小工具显示，数据集是在一个连接块范围内–从第一个到最后一个可视位置之间不间断。</p>

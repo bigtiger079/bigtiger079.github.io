@@ -7,24 +7,18 @@
   <title>Linux文件输入输出和目录操作 | Bigtiger&#39;s blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="文件系统文件系统是一种存储和组织计算机文件和资料的方法
-它的主要内容是:(1)定义磁盘文件结构(2)定义文件操作(3)冗错(4)对上接口
-文件结构:(1)引导区(2)超级块Master(3)存放数据区data(4)索引区 INode
-文件系统分类:磁盘文件系统 :NTFS,EXT3闪存文件系统 :JFFS2,YAFFS数据库文件系统 :BFS,WINFS网络文件系统 :NFS虚拟文件系统 :VFS">
+它的主要内容是:(1)定义磁盘文件结构(2)定义文件操作(3)冗错(4)对上接口">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Linux文件输入输出和目录操作">
 <meta property="og:url" content="http://www.bigtiger079.com/2015/10/07/Linux文件输入输出和目录操作/index.html">
 <meta property="og:site_name" content="Bigtiger's blog">
 <meta property="og:description" content="文件系统文件系统是一种存储和组织计算机文件和资料的方法
-它的主要内容是:(1)定义磁盘文件结构(2)定义文件操作(3)冗错(4)对上接口
-文件结构:(1)引导区(2)超级块Master(3)存放数据区data(4)索引区 INode
-文件系统分类:磁盘文件系统 :NTFS,EXT3闪存文件系统 :JFFS2,YAFFS数据库文件系统 :BFS,WINFS网络文件系统 :NFS虚拟文件系统 :VFS">
-<meta property="og:updated_time" content="2016-01-28T12:49:21.000Z">
+它的主要内容是:(1)定义磁盘文件结构(2)定义文件操作(3)冗错(4)对上接口">
+<meta property="og:updated_time" content="2016-01-29T02:44:51.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Linux文件输入输出和目录操作">
 <meta name="twitter:description" content="文件系统文件系统是一种存储和组织计算机文件和资料的方法
-它的主要内容是:(1)定义磁盘文件结构(2)定义文件操作(3)冗错(4)对上接口
-文件结构:(1)引导区(2)超级块Master(3)存放数据区data(4)索引区 INode
-文件系统分类:磁盘文件系统 :NTFS,EXT3闪存文件系统 :JFFS2,YAFFS数据库文件系统 :BFS,WINFS网络文件系统 :NFS虚拟文件系统 :VFS">
+它的主要内容是:(1)定义磁盘文件结构(2)定义文件操作(3)冗错(4)对上接口">
   
   
     <link rel="icon" href="/favicon.png">
@@ -218,6 +212,7 @@
       
         <h2 id="u6587_u4EF6_u7CFB_u7EDF"><a href="#u6587_u4EF6_u7CFB_u7EDF" class="headerlink" title="文件系统"></a>文件系统</h2><p>文件系统是一种存储和组织计算机文件和资料的方法</p>
 <p><strong>它的主要内容是:</strong><br>(1)定义磁盘文件结构<br>(2)定义文件操作<br>(3)冗错<br>(4)对上接口</p>
+ <a id="more"></a>                      
 <h4 id="u6587_u4EF6_u7ED3_u6784_3A"><a href="#u6587_u4EF6_u7ED3_u6784_3A" class="headerlink" title="文件结构:"></a>文件结构:</h4><p>(1)引导区<br>(2)超级块Master<br>(3)存放数据区data<br>(4)索引区 INode</p>
 <h4 id="u6587_u4EF6_u7CFB_u7EDF_u5206_u7C7B_3A"><a href="#u6587_u4EF6_u7CFB_u7EDF_u5206_u7C7B_3A" class="headerlink" title="文件系统分类:"></a>文件系统分类:</h4><p>磁盘文件系统 :NTFS,EXT3<br>闪存文件系统 :JFFS2,YAFFS<br>数据库文件系统 :BFS,WINFS<br>网络文件系统 :NFS<br>虚拟文件系统 :VFS(Proc)</p>
 <h3 id="u4E00_u5207_u7686_u6587_u4EF6"><a href="#u4E00_u5207_u7686_u6587_u4EF6" class="headerlink" title="一切皆文件"></a>一切皆文件</h3><blockquote>

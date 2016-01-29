@@ -6,41 +6,17 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <title>Liux 内存管理 | Bigtiger&#39;s blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="Linx的内存管理内存段: 一个进程被操作系统加载到内存后并不是加载到一段连续的内存空间, 而是至少分为三段或多段内存空间.
-栈
-是一种先进后出的结构
-就像往一个管子里放东西, 最后进去的先拿出来, 最先放进去的最后拿出来
-栈空间有系统自动维护, 不需要通过代码申请或者释放
-
-int abc()
-{
-    int a;    //在stack中放入一个int型变量a,abc函数退出的时候系统自动">
+  <meta name="description" content="Linx的内存管理内存段: 一个进程被操作系统加载到内存后并不是加载到一段连续的内存空间, 而是至少分为三段或多段内存空间.">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Liux 内存管理">
 <meta property="og:url" content="http://www.bigtiger079.com/2015/10/04/Liux-内存管理/index.html">
 <meta property="og:site_name" content="Bigtiger's blog">
-<meta property="og:description" content="Linx的内存管理内存段: 一个进程被操作系统加载到内存后并不是加载到一段连续的内存空间, 而是至少分为三段或多段内存空间.
-栈
-是一种先进后出的结构
-就像往一个管子里放东西, 最后进去的先拿出来, 最先放进去的最后拿出来
-栈空间有系统自动维护, 不需要通过代码申请或者释放
-
-int abc()
-{
-    int a;    //在stack中放入一个int型变量a,abc函数退出的时候系统自动">
+<meta property="og:description" content="Linx的内存管理内存段: 一个进程被操作系统加载到内存后并不是加载到一段连续的内存空间, 而是至少分为三段或多段内存空间.">
 <meta property="og:image" content="http://7xlrdt.com1.z0.glb.clouddn.com/linux内存管理_1.jpg">
-<meta property="og:updated_time" content="2016-01-28T12:49:21.000Z">
+<meta property="og:updated_time" content="2016-01-29T02:45:25.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Liux 内存管理">
-<meta name="twitter:description" content="Linx的内存管理内存段: 一个进程被操作系统加载到内存后并不是加载到一段连续的内存空间, 而是至少分为三段或多段内存空间.
-栈
-是一种先进后出的结构
-就像往一个管子里放东西, 最后进去的先拿出来, 最先放进去的最后拿出来
-栈空间有系统自动维护, 不需要通过代码申请或者释放
-
-int abc()
-{
-    int a;    //在stack中放入一个int型变量a,abc函数退出的时候系统自动">
+<meta name="twitter:description" content="Linx的内存管理内存段: 一个进程被操作系统加载到内存后并不是加载到一段连续的内存空间, 而是至少分为三段或多段内存空间.">
   
   
     <link rel="icon" href="/favicon.png">
@@ -232,7 +208,7 @@ int abc()
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h2 id="Linx_u7684_u5185_u5B58_u7BA1_u7406"><a href="#Linx_u7684_u5185_u5B58_u7BA1_u7406" class="headerlink" title="Linx的内存管理"></a>Linx的内存管理</h2><p>内存段: 一个进程被操作系统加载到内存后并不是加载到一段连续的内存空间, 而是至少分为三段或多段内存空间.<br><img src="http://7xlrdt.com1.z0.glb.clouddn.com/linux内存管理_1.jpg" alt=""></p>
+        <h2 id="Linx_u7684_u5185_u5B58_u7BA1_u7406"><a href="#Linx_u7684_u5185_u5B58_u7BA1_u7406" class="headerlink" title="Linx的内存管理"></a>Linx的内存管理</h2><p>内存段: 一个进程被操作系统加载到内存后并不是加载到一段连续的内存空间, 而是至少分为三段或多段内存空间.<br><img src="http://7xlrdt.com1.z0.glb.clouddn.com/linux内存管理_1.jpg" alt=""><br><a id="more"></a></p>
 <h3 id="u6808"><a href="#u6808" class="headerlink" title="栈"></a>栈</h3><ul>
 <li>是一种先进后出的结构</li>
 <li>就像往一个管子里放东西, 最后进去的先拿出来, 最先放进去的最后拿出来</li>

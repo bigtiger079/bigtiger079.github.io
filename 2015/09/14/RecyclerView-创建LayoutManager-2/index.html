@@ -6,19 +6,16 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <title>RecyclerView 创建LayoutManager-2 | Bigtiger&#39;s blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="上次我们讲了创建一个 RecyclerView LayoutManager 的核心步骤。接下来， 我们会介绍如何给普通基于适配器的 View 加入一些附加特性。
-Item Decorations 支持RecyclerView 有一个很好的特性 RecyclerView.ItemDecoration，它可以给 子视图添加自定义样式，还可以在不修改子视图布局参数的情况下插入 布局属性(margins)">
+  <meta name="description" content="上次我们讲了创建一个 RecyclerView LayoutManager 的核心步骤。接下来， 我们会介绍如何给普通基于适配器的 View 加入一些附加特性。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="RecyclerView 创建LayoutManager-2">
 <meta property="og:url" content="http://www.bigtiger079.com/2015/09/14/RecyclerView-创建LayoutManager-2/index.html">
 <meta property="og:site_name" content="Bigtiger's blog">
-<meta property="og:description" content="上次我们讲了创建一个 RecyclerView LayoutManager 的核心步骤。接下来， 我们会介绍如何给普通基于适配器的 View 加入一些附加特性。
-Item Decorations 支持RecyclerView 有一个很好的特性 RecyclerView.ItemDecoration，它可以给 子视图添加自定义样式，还可以在不修改子视图布局参数的情况下插入 布局属性(margins)">
-<meta property="og:updated_time" content="2016-01-28T12:49:21.000Z">
+<meta property="og:description" content="上次我们讲了创建一个 RecyclerView LayoutManager 的核心步骤。接下来， 我们会介绍如何给普通基于适配器的 View 加入一些附加特性。">
+<meta property="og:updated_time" content="2016-01-29T02:46:27.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="RecyclerView 创建LayoutManager-2">
-<meta name="twitter:description" content="上次我们讲了创建一个 RecyclerView LayoutManager 的核心步骤。接下来， 我们会介绍如何给普通基于适配器的 View 加入一些附加特性。
-Item Decorations 支持RecyclerView 有一个很好的特性 RecyclerView.ItemDecoration，它可以给 子视图添加自定义样式，还可以在不修改子视图布局参数的情况下插入 布局属性(margins)">
+<meta name="twitter:description" content="上次我们讲了创建一个 RecyclerView LayoutManager 的核心步骤。接下来， 我们会介绍如何给普通基于适配器的 View 加入一些附加特性。">
   
   
     <link rel="icon" href="/favicon.png">
@@ -210,7 +207,7 @@ Item Decorations 支持RecyclerView 有一个很好的特性 RecyclerView.ItemDe
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>上次我们讲了创建一个 RecyclerView LayoutManager 的核心步骤。接下来， 我们会介绍如何给普通基于适配器的 View 加入一些附加特性。</p>
+        <p>上次我们讲了创建一个 RecyclerView LayoutManager 的核心步骤。接下来， 我们会介绍如何给普通基于适配器的 View 加入一些附加特性。<br><a id="more"></a></p>
 <h2 id="Item_Decorations__u652F_u6301"><a href="#Item_Decorations__u652F_u6301" class="headerlink" title="Item Decorations 支持"></a>Item Decorations 支持</h2><p>RecyclerView 有一个很好的特性 RecyclerView.ItemDecoration，它可以给 子视图添加自定义样式，还可以在不修改子视图布局参数的情况下插入 布局属性(margins)。后者就是 LayoutManager 必须提供的约束子视图布局方式。</p>
 <p><a href="https://github.com/devunwired/recyclerview-playground" target="_blank" rel="external">RecyclerPlayground</a> 里有几个 decorator 用来介绍它们的实现方式。<br>LayoutManager 中提供了一些辅助方法操作 decorations ，不需要我们自己实现：</p>
 <ul>

@@ -22,7 +22,7 @@
 线程，又是被称为轻量级进程（Lightweight Process, LWP）,是程序执行的最小单元
 每个程序至少有一个线程,若程序只有一个线程,那就是程序本身
 单线程的进程">
-<meta property="og:updated_time" content="2016-01-28T12:49:21.000Z">
+<meta property="og:updated_time" content="2016-01-29T02:45:40.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Liux多线程">
 <meta name="twitter:description" content="进程与线程进程是一个实体, 每个进程都有它自己的内存地址段(heap、stack等等)
@@ -234,8 +234,7 @@
 <p>一个线程阻塞并不会影响到另外一个线程</p>
 <p>多线程的进程可以尽可能的利用系统CPU资源</p>
 <p>线程包含了表示进程内执行环境必须的信息,包括标识线程的线程ID, 一组寄存器值,栈,调度优先级和策略,信号屏蔽字,errno变量以及线程私有数据</p>
-<p>进程内所有的信息对于线程都是共享的, 包括执行代码,全局变量,堆内存,栈以及文件描述符</p>
-<p>线程标识:</p>
+<p>进程内所有的信息对于线程都是共享的, 包括执行代码,全局变量,堆内存,栈以及文件描述符<br><a id="more"></a><br>线程标识:</p>
 <ul>
 <li>就像每个进程有个进程ID一样,线程也有自己的ID</li>
 <li>进程ID用pid_t来表示, 他是一个unsigned int</li>

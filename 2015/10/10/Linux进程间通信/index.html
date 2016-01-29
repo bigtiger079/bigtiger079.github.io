@@ -20,7 +20,7 @@ so文件在linux中为共享库,与windows下的dll类似
 so文件中的函数可以供多个进程调用, 最大可能的提供二进制代码的复用
 共享库可以使代码的维护工作大大简化,当修正了一些错误或者添加了新特性的时候,用户只需要获得升级后的so并安装它就可以
 注意:即使不同的进程调用同一个so文件,通过共享库不能实现不同进程间的通讯, 因为同一个so文件被不同进程加载到不同的内存">
-<meta property="og:updated_time" content="2016-01-28T12:49:21.000Z">
+<meta property="og:updated_time" content="2016-01-29T02:44:13.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Linux进程间通信">
 <meta name="twitter:description" content="linux中的共享库so
@@ -225,6 +225,7 @@ so文件中的函数可以供多个进程调用, 最大可能的提供二进制�
 <li>共享库可以使代码的维护工作大大简化,当修正了一些错误或者添加了新特性的时候,用户只需要获得升级后的so并安装它就可以</li>
 <li>注意:即使不同的进程调用同一个so文件,通过共享库不能实现不同进程间的通讯, 因为同一个so文件被不同进程加载到不同的内存空间</li>
 </ul>
+<a id="more"></a>
 <h3 id="so_u6587_u4EF6_u7F16_u8BD1_u65B9_u6CD5"><a href="#so_u6587_u4EF6_u7F16_u8BD1_u65B9_u6CD5" class="headerlink" title="so文件编译方法"></a>so文件编译方法</h3><ul>
 <li>so文件的源文件中不需要有main函数,即使有也不会被执行</li>
 <li>编译的时候gcc需要加<code>-fPIC</code>选项,这样可以使gcc产生与位置无关的代码</li>

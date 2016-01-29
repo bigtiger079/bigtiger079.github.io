@@ -26,7 +26,7 @@
 每个信号名都以SIG开头,信号名的定义在中
 
 许多情况下都会出现信号,如硬件异常,非法内存引用,软件异常等前面讲过的kill函数就是向目标进程发一个SIGKILL信号,就和kill命令一样当进程收到一个信号,它可以对信号采取">
-<meta property="og:updated_time" content="2016-01-28T12:49:21.000Z">
+<meta property="og:updated_time" content="2016-01-29T02:45:09.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Linux信号处理">
 <meta name="twitter:description" content="信号概念
@@ -239,7 +239,8 @@
 <ul>
 <li>忽略这个信号</li>
 <li>捕获这个信号,这需要执行一段称为信号处理去的特殊代码</li>
-<li>允许执行信号的默认操作 </li>
+<li>允许执行信号的默认操作 <a id="more"></a>
+</li>
 </ul>
 <p>当信号发生的事件出现时,比如硬件异常,就会产生一个针对具体进程的信号<br>当进程对发送给它的信号采取措施的时候,就叫该信号被传送<br>产生信号和递送信号之间的时间间隔称为信号未决</p>
 <p>信号的部署是指进程如何响应信号<br>进程可以忽略信号、用默认操作处理信号、响应这个信号<br>进程不能简单的通过判断一个变量，例如errno来判断是否出现了一个信号</p>
