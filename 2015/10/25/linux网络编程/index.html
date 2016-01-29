@@ -1,0 +1,1087 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" >
+  <title>linux网络编程 | Bigtiger&#39;s blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="TCP/IP与套接字套接字是通信端点的抽象
+与文件描述符一样,套接字需要用套接字描述符
+套接字在Linux上也是通过文件实现的,所以传统的write和read同样适用于套接字
+当服务器和应用程序需要和其他进程通信的时候就会使用套接字
+一对对接的套接字接口构成了进程间交流数据的一个通道
+这些进程可能是windows或者linux以及IOS,android都可以互相通信
+通信域用来说明套接字接口通信协">
+<meta property="og:type" content="article">
+<meta property="og:title" content="linux网络编程">
+<meta property="og:url" content="http://www.bigtiger079.com/2015/10/25/linux网络编程/index.html">
+<meta property="og:site_name" content="Bigtiger's blog">
+<meta property="og:description" content="TCP/IP与套接字套接字是通信端点的抽象
+与文件描述符一样,套接字需要用套接字描述符
+套接字在Linux上也是通过文件实现的,所以传统的write和read同样适用于套接字
+当服务器和应用程序需要和其他进程通信的时候就会使用套接字
+一对对接的套接字接口构成了进程间交流数据的一个通道
+这些进程可能是windows或者linux以及IOS,android都可以互相通信
+通信域用来说明套接字接口通信协">
+<meta property="og:updated_time" content="2016-01-28T12:49:21.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="linux网络编程">
+<meta name="twitter:description" content="TCP/IP与套接字套接字是通信端点的抽象
+与文件描述符一样,套接字需要用套接字描述符
+套接字在Linux上也是通过文件实现的,所以传统的write和read同样适用于套接字
+当服务器和应用程序需要和其他进程通信的时候就会使用套接字
+一对对接的套接字接口构成了进程间交流数据的一个通道
+这些进程可能是windows或者linux以及IOS,android都可以互相通信
+通信域用来说明套接字接口通信协">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  <link rel="stylesheet" href="/css/style.css" type="text/css">
+</head>
+
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+	<header id="header" class="inner">
+		<a href="/" class="profilepic">
+			
+			<img lazy-src="http://7xlrpi.com1.z0.glb.clouddn.com/avatar.png" class="js-avatar">
+			
+		</a>
+
+		<hgroup>
+		  <h1 class="header-author"><a href="/">Bigtiger</a></h1>
+		</hgroup>
+
+		
+
+		
+			<div class="switch-btn">
+				<div class="icon">
+					<div class="icon-ctn">
+						<div class="icon-wrap icon-house" data-idx="0">
+							<div class="birdhouse"></div>
+							<div class="birdhouse_holes"></div>
+						</div>
+						<div class="icon-wrap icon-ribbon hide" data-idx="1">
+							<div class="ribbon"></div>
+						</div>
+						
+						
+						<div class="icon-wrap icon-me hide" data-idx="3">
+							<div class="user"></div>
+							<div class="shoulder"></div>
+						</div>
+						
+					</div>
+					
+				</div>
+				<div class="tips-box hide">
+					<div class="tips-arrow"></div>
+					<ul class="tips-inner">
+						<li>菜单</li>
+						<li>标签</li>
+						
+						
+						<li>关于我</li>
+						
+					</ul>
+				</div>
+			</div>
+		
+
+		<div class="switch-area">
+			<div class="switch-wrap">
+				<section class="switch-part switch-part1">
+					<nav class="header-menu">
+						<ul>
+						
+							<li><a href="/">主页</a></li>
+				        
+							<li><a href="/archives">所有文章</a></li>
+				        
+							<li><a href="/categories">分类</a></li>
+				        
+							<li><a href="/tags">标签</a></li>
+				        
+						</ul>
+					</nav>
+					<nav class="header-nav">
+						<div class="social">
+							
+								<a class="mail" target="_blank" href="/bigtiger079@gmail.com" title="mail">mail</a>
+					        
+						</div>
+					</nav>
+				</section>
+				
+				
+				<section class="switch-part switch-part2">
+					<div class="widget tagcloud" id="js-tagcloud">
+						<a href="/tags/Android/" style="font-size: 10px;">Android</a> <a href="/tags/C/" style="font-size: 10px;">C++</a> <a href="/tags/Cpp基础/" style="font-size: 10px;">Cpp基础</a> <a href="/tags/Hexo/" style="font-size: 10px;">Hexo</a> <a href="/tags/JNI/" style="font-size: 10px;">JNI</a> <a href="/tags/RecyclerView/" style="font-size: 16.67px;">RecyclerView</a> <a href="/tags/android/" style="font-size: 10px;">android</a> <a href="/tags/linux/" style="font-size: 20px;">linux</a> <a href="/tags/线性表/" style="font-size: 13.33px;">线性表</a>
+					</div>
+				</section>
+				
+				
+				
+
+				
+				
+				<section class="switch-part switch-part3">
+				
+					<div id="js-aboutme">我是谁，我从哪里来，我到哪里去？我就是我，是颜色不一样的吃货…</div>
+				</section>
+				
+			</div>
+		</div>
+	</header>				
+</div>
+
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+  	<div class="overlay">
+  		<div class="slider-trigger"></div>
+  		<h1 class="header-author js-mobile-header hide">Bigtiger</h1>
+  	</div>
+	<div class="intrude-less">
+		<header id="header" class="inner">
+			<div class="profilepic">
+			
+				<img lazy-src="http://7xlrpi.com1.z0.glb.clouddn.com/avatar.png" class="js-avatar">
+			
+			</div>
+			<hgroup>
+			  <h1 class="header-author">Bigtiger</h1>
+			</hgroup>
+			
+			<nav class="header-menu">
+				<ul>
+				
+					<li><a href="/">主页</a></li>
+		        
+					<li><a href="/archives">所有文章</a></li>
+		        
+					<li><a href="/categories">分类</a></li>
+		        
+					<li><a href="/tags">标签</a></li>
+		        
+		        <div class="clearfix"></div>
+				</ul>
+			</nav>
+			<nav class="header-nav">
+				<div class="social">
+					
+						<a class="mail" target="_blank" href="/bigtiger079@gmail.com" title="mail">mail</a>
+			        
+				</div>
+			</nav>
+		</header>				
+	</div>
+</nav>
+
+      <div class="body-wrap"><article id="post-linux网络编程" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2015/10/25/linux网络编程/" class="article-date">
+  	<time datetime="2015-10-25T08:56:04.000Z" itemprop="datePublished">2015-10-25</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      linux网络编程
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/">linux</a></li></ul>
+	</div>
+
+        
+	<div class="article-category tagcloud">
+	<a class="article-category-link" href="/categories/C/">C++</a>
+	</div>
+
+
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="TCP/IP_u4E0E_u5957_u63A5_u5B57"><a href="#TCP/IP_u4E0E_u5957_u63A5_u5B57" class="headerlink" title="TCP/IP与套接字"></a>TCP/IP与套接字</h2><p>套接字是通信端点的抽象</p>
+<p>与文件描述符一样,套接字需要用套接字描述符</p>
+<p>套接字在Linux上也是通过文件实现的,所以传统的write和read同样适用于套接字</p>
+<p>当服务器和应用程序需要和其他进程通信的时候就会使用套接字</p>
+<p>一对对接的套接字接口构成了进程间交流数据的一个通道</p>
+<p>这些进程可能是windows或者linux以及IOS,android都可以互相通信</p>
+<p>通信域用来说明套接字接口通信协议的语义</p>
+<p>每个域都定义了一套协议、控制和解释名字规则，以及套接口的地址格式</p>
+<p>对于internet域来说,套接字地址格式是一个IP地址和端口号</p>
+<p>internet域套接字用于联网通信,他们可以用在几乎任何支持TCP/IP的网络通信程序上</p>
+<h2 id="TCP_u901A_u4FE1"><a href="#TCP_u901A_u4FE1" class="headerlink" title="TCP通信"></a>TCP通信</h2><p>一个程序使用套接字需要执行4个步骤</p>
+<ul>
+<li>分配套接口和初始化</li>
+<li>连接</li>
+<li>发送或接收数据</li>
+<li>关闭套接字</li>
+</ul>
+<p>涉及到的调用包括socket、bind、listen、connect、accept、recv、send</p>
+<h3 id="u5206_u914D_u5957_u63A5_u53E3_u548C_u521D_u59CB_u5316"><a href="#u5206_u914D_u5957_u63A5_u53E3_u548C_u521D_u59CB_u5316" class="headerlink" title="分配套接口和初始化"></a>分配套接口和初始化</h3><blockquote>
+<p>我们需要第一件工作就是分配套接口<br>套接口可以看做是文件描述符<br>不论是server端还是client端,第一步都是一样的</p>
+</blockquote>
+<p>每个套接口都是一个通信的通道<br>两个进程通过套接口建立连接后就可以发送和接收数据了</p>
+<pre><code># include &lt;sys/types.h&gt;
+#include &lt;sys/socket.h&gt;
+int socket(int domain, int type, int protocol);
+</code></pre><p>系统调用socket带有一下参数</p>
+<ul>
+<li>int domain</li>
+<li>int type</li>
+<li>int protocol (这个值一般取0)</li>
+<li>成功返回套接字描述符, 失败返回-1, 并设置errno</li>
+</ul>
+<h4 id="domian_u8BF4_u660E"><a href="#domian_u8BF4_u660E" class="headerlink" title="domian说明"></a>domian说明</h4><table>
+<thead>
+<tr>
+<th>值</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>AF_UNIX</td>
+<td>UNIX内部使用</td>
+</tr>
+<tr>
+<td>AF_INET</td>
+<td>TCP/IP协议</td>
+</tr>
+<tr>
+<td>AF_ISO</td>
+<td>国际标准组织协议</td>
+</tr>
+<tr>
+<td>AF_NS</td>
+<td>Xerox网络协议</td>
+</tr>
+</tbody>
+</table>
+<h4 id="type_u8BF4_u660E"><a href="#type_u8BF4_u660E" class="headerlink" title="type说明"></a>type说明</h4><table>
+<thead>
+<tr>
+<th>值</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>SOCK_STREAM</td>
+<td>使用TCP可靠连接</td>
+</tr>
+<tr>
+<td>SOCK_DGRAM</td>
+<td>使用UDP不可靠连接</td>
+</tr>
+</tbody>
+</table>
+<h3 id="bind"><a href="#bind" class="headerlink" title="bind"></a>bind</h3><pre><code>int bind(int sockfd, const struct sockaddr *my_addr, socklen_t addrlen);
+</code></pre><blockquote>
+<p>bind将进程和一个套接口联系起来,bind通常用于服务器进程为接入客户连接建立一个套接口<br>参数sockfd是函数socket调用返回的套接口值<br>参数my_addr是函数结构sockaddr的地址<br>参数addrlen设置my_addr能容纳的最大字节数<br>成功返回0,失败返回-1, 并设置errno</p>
+</blockquote>
+<h3 id="listen"><a href="#listen" class="headerlink" title="listen"></a>listen</h3><pre><code>int listen(int sockfd, int backlog);
+</code></pre><blockquote>
+<p>创建了套接口并且使用bind将它和一个进程关联起来以后,服务端就需要调用listen来监听指定端口的客户端连接<br>参数sockfd是调用socket返回的套接口描述符<br>参数backlog设置接入队列的大小, 通常把这个值设置的足够大就可以了<br>成功返回0,失败返回-1,并设置errno</p>
+</blockquote>
+<h3 id="accept"><a href="#accept" class="headerlink" title="accept"></a>accept</h3><pre><code>int accept(int sockfd, struct sockaddr, *addr, socklen_t *addrlen);
+</code></pre><blockquote>
+<p>当有客户端连接到服务器,它们就会排入队列,直到服务端准备好处理它们为止,accept会返回一个新的套接口,同时原来的套接口继续listen指定端口号<br>参数sockfd是调用socket返回的套接口描述符<br>参数addr指向结构sockaddr地址<br>参数addrlen设置了addr能容纳的最大字节数<br>成功返回新的套接字,失败返回-1,并设置errno</p>
+</blockquote>
+<h3 id="connect"><a href="#connect" class="headerlink" title="connect"></a>connect</h3><pre><code>int connect(int sockfd, const struct sockaddr *serv_addr, socklen_t addrlen);
+</code></pre><blockquote>
+<p>客户端调用connect与服务端进行连接<br>参数sockfd是调用socket返回的套接口描述符<br>参数addr指向结构sockaddr地址<br>参数addrlen设置了addr能容纳的最大字节数<br>成功返回0,失败返回-1, 并设置errno</p>
+</blockquote>
+<p>客户端和服务端建立了连接就可以在客户端和服务端之间传输数据了, 需要两个系统调用</p>
+<ul>
+<li>send—发送数据</li>
+<li>recv—接收数据</li>
+</ul>
+<p>一个套接口既可以发送数据,也可以接受数据</p>
+<h3 id="send"><a href="#send" class="headerlink" title="send"></a>send</h3><pre><code>ssize_t send(int s, const void *buf, size_t len, int flags);
+</code></pre><blockquote>
+<p>send函数用来发送数据<br>参数s是已经建立连接的套接口<br>参数buf是发送数据内存buffer地址指针<br>参数len指明buffer的大小,单位字节<br>参数flags一般为0<br>成功返回发送的字节数,失败返回-1,并设置errno</p>
+</blockquote>
+<h3 id="recv"><a href="#recv" class="headerlink" title="recv"></a>recv</h3><pre><code>ssize_t recv(int s, const void *buf, size_t len, int flags);
+</code></pre><blockquote>
+<p>recv函数用来接收数据<br>参数s是已经建立连接的套接口<br>参数buf是接收数据内存buffer地址指针<br>参数len指明buffer的大小,单位字节<br>参数flags一般为0<br>成功返回发送的字节数,失败返回-1,并设置errno</p>
+</blockquote>
+<p>当用完套接口以后,就该释放套接口所占用的资源了,可通过close来关闭</p>
+<blockquote>
+<p>当试图向一个已经关闭的套接口写或者读数据就会出错</p>
+</blockquote>
+<h3 id="u8BBE_u7F6E_u5957_u63A5_u53E3"><a href="#u8BBE_u7F6E_u5957_u63A5_u53E3" class="headerlink" title="设置套接口"></a>设置套接口</h3><pre><code>int setsockopt(int s, int level, int optname, const void *optval, socklen_t optlen);
+</code></pre><blockquote>
+<p>setsockopt函数设置套接口<br>常见的用法为:</p>
+</blockquote>
+<pre><code>int on = 1;
+setsockopt(st, SOL_SOCKET, SO_REUSEADDR, &amp;on, sizeof(on));
+</code></pre><blockquote>
+<p>由于TCP套接字状态TIME_WAIT引起该套接字关闭后约保留2到4分钟,在此期间bind绑定该端口会失败<br>SO_REUSEADDR指示系统地址可重用 </p>
+</blockquote>
+<h3 id="u793A_u4F8B_u4EE3_u7801"><a href="#u793A_u4F8B_u4EE3_u7801" class="headerlink" title="示例代码"></a>示例代码</h3><h4 id="u5BA2_u6237_u7AEF"><a href="#u5BA2_u6237_u7AEF" class="headerlink" title="客户端"></a>客户端</h4><pre><code>#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;string.h&gt;
+#include &lt;unistd.h&gt;
+#include &lt;errno.h&gt;
+#include &lt;sys/types.h&gt;
+#include &lt;sys/socket.h&gt;
+#include &lt;netinet/in.h&gt;
+#include &lt;arpa/inet.h&gt;
+#include &lt;pthread.h&gt;
+
+void *recvsocket(void *arg)//接收client端socket数据的线程
+{
+    int st = *(int *)arg;
+    char s[1024];
+
+    while(1)
+    {
+        memset(s, 0, sizeof(s));
+        int rc = recv(st, s, sizeof(s), 0);
+        if (rc &lt;= 0)//如果recv返回小于等于0，代表socket已经关闭或者出错了
+            break;
+        printf(&quot;%s\n&quot;, s);
+
+    }
+    return NULL;
+}
+
+void *sendsocket(void *arg)//向client端socket发送数据的线程
+{
+    int st = *(int *)arg;
+    char s[1024];
+
+    while(1)
+    {
+        memset(s, 0, sizeof(s));
+        read(STDIN_FILENO, s, sizeof(s));//从键盘读取用户输入信息
+        send(st, s, strlen(s), 0);
+    }
+    return NULL;
+}
+
+int main(int arg, char *args[])
+{
+    if (arg &lt; 3)
+        return -1;
+
+    int port = atoi(args[2]);
+    int st = socket(AF_INET, SOCK_STREAM, 0); //初始化socket，
+
+    struct sockaddr_in addr; //定义一个IP地址的结构
+    memset(&amp;addr, 0, sizeof(addr));
+    addr.sin_family = AF_INET; //设置结构地址类型为TCP/IP地址
+    addr.sin_port = htons(port); //指定一个端口号：8080，htons:将short类型从host字节类型到net字节类型转化
+    addr.sin_addr.s_addr = inet_addr(args[1]); //将字符串类型的IP地址转化为int，赋给addr结构成员.
+
+    //调用connect连接到结构addr指定的IP地址和端口号
+    if (connect(st, (struct sockaddr *) &amp;addr, sizeof(addr)) == -1)
+    {
+        printf(&quot;connect failed %s\n&quot;, strerror(errno));
+        return EXIT_FAILURE;
+    }
+
+    pthread_t thrd1, thrd2;
+    pthread_create(&amp;thrd1, NULL, recvsocket, &amp;st);
+    pthread_create(&amp;thrd2, NULL, sendsocket, &amp;st);
+    pthread_join(thrd1, NULL);
+    //pthread_join(thrd2, NULL);
+    close(st); //关闭socket
+    return EXIT_SUCCESS;
+
+}
+</code></pre><h4 id="u670D_u52A1_u7AEF"><a href="#u670D_u52A1_u7AEF" class="headerlink" title="服务端"></a>服务端</h4><pre><code>#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;string.h&gt;
+#include &lt;unistd.h&gt;
+#include &lt;errno.h&gt;
+#include &lt;sys/types.h&gt;
+#include &lt;sys/socket.h&gt;
+#include &lt;netinet/in.h&gt;
+#include &lt;arpa/inet.h&gt;
+#include &lt;pthread.h&gt;
+
+
+struct ps{
+    int st;
+    pthread_t *thr;
+};
+
+pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
+
+int status = 0;
+
+void *recvsocket(void *arg)//接收client端socket数据的线程
+{
+    struct ps *p = (struct ps *)arg;
+    int st = p-&gt;st;
+    char s[1024];
+
+    while(1)
+    {
+        memset(s, 0, sizeof(s));
+        int rc = recv(st, s, sizeof(s), 0);
+        if (rc &lt;= 0)//如果recv返回小于等于0，代表socket已经关闭或者出错了
+            break;
+        printf(&quot;%s\n&quot;, s);
+
+    }
+    pthread_mutex_lock(&amp;mutex);
+    status = 0;
+    pthread_mutex_unlock(&amp;mutex);
+    pthread_cancel(*(p-&gt;thr));//被cancel掉的线程内部没有使用锁。
+    return NULL;
+}
+
+void *sendsocket(void *arg)//向client端socket发送数据的线程
+{
+    int st = *(int *)arg;
+    char s[1024];
+
+    while(1)
+    {
+        memset(s, 0, sizeof(s));
+        read(STDIN_FILENO, s, sizeof(s));//从键盘读取用户输入信息
+        send(st, s, strlen(s), 0);
+    }
+    return NULL;
+}
+
+
+
+
+int main(int arg, char *args[])
+{
+    if (arg &lt; 2)
+    {
+        return -1;
+    }
+
+    int port = atoi(args[1]);
+    int st = socket(AF_INET, SOCK_STREAM, 0);//初始化socket
+
+
+    int on = 1;
+    if (setsockopt(st, SOL_SOCKET, SO_REUSEADDR, &amp;on, sizeof(on)) == -1)
+    {
+        printf(&quot;setsockopt failed %s\n&quot;, strerror(errno));
+        return EXIT_FAILURE;
+    }
+
+
+    struct sockaddr_in addr;//定义一个IP地址结构
+    memset(&amp;addr, 0, sizeof(addr));
+    addr.sin_family = AF_INET;//将addr结构的属性定位为TCP/IP地址
+    addr.sin_port = htons(port);//将本地字节顺序转化为网络字节顺序。
+    addr.sin_addr.s_addr = htonl(INADDR_ANY);//INADDR_ANY代表这个server上所有的地址
+
+    //将IP与server程序绑定
+    if (bind(st, (struct sockaddr *) &amp;addr, sizeof(addr)) == -1)
+    {
+        printf(&quot;bind failed %s\n&quot;, strerror(errno));
+        return EXIT_FAILURE;
+    }
+
+    //server端开始listen，
+    if (listen(st, 20) == -1)
+    {
+        printf(&quot;listen failed %s\n&quot;, strerror(errno));
+        return EXIT_FAILURE;
+    }
+    int client_st = 0;//client端socket
+    //socklen_t len = 0;
+    struct sockaddr_in client_addr;//表示client端的IP地址
+    //void *p = &amp;client_addr;
+
+    pthread_t thrd1, thrd2;
+
+
+    while (1)
+    {
+        memset(&amp;client_addr, 0, sizeof(client_addr));
+        socklen_t len = sizeof(client_addr);
+        //accept会阻塞，直到有客户端连接过来，accept返回client的socket描述符
+        client_st = accept(st, (struct sockaddr *)&amp;client_addr , &amp;len);
+        pthread_mutex_lock(&amp;mutex);//为全局变量加一个互斥锁，防止与线程函数同时读写变量的冲突
+        status++;
+        pthread_mutex_unlock(&amp;mutex);//解锁
+        if (status &gt; 1)//代表这是第二个socket连接
+        {
+            close(client_st);
+            continue;
+        }
+
+        if (client_st == -1)
+        {
+            printf(&quot;accept failed %s\n&quot;, strerror(errno));
+            return EXIT_FAILURE;
+        }
+
+        printf(&quot;accept by %s\n&quot;, inet_ntoa(client_addr.sin_addr));
+        struct ps ps1;
+        ps1.st = client_st;
+        ps1.thr = &amp;thrd2;
+        pthread_create(&amp;thrd1, NULL, recvsocket, &amp;ps1);
+        pthread_detach(thrd1);//设置线程为可分离
+        pthread_create(&amp;thrd2, NULL, sendsocket, &amp;client_st);
+        pthread_detach(thrd2);//设置线程为可分离
+    }
+    close(st);//关闭server端listen的socket
+    return EXIT_SUCCESS;
+}
+</code></pre><h2 id="UDP_u901A_u4FE1"><a href="#UDP_u901A_u4FE1" class="headerlink" title="UDP通信"></a>UDP通信</h2><p><strong>UDP和TC的对比:</strong></p>
+<ul>
+<li>UDP处理的细节比TCP少</li>
+<li>UDP不能保证消息被传送到目的地</li>
+<li>UDP不能保证数据包的传递顺序</li>
+<li>TCP处理UDP不处理的细节</li>
+<li>TCP是面向连接的协议</li>
+<li>UDP无连接协议</li>
+<li>TCP保持一个连接</li>
+<li>UDP只是把数据包发送出去而已</li>
+</ul>
+<p><strong>TCP的优点:</strong></p>
+<ul>
+<li>TCP提供以认可的方式显示的创建连接和终止连接</li>
+<li>TCP保证可靠的,顺序的以及不会重复的数据传输</li>
+<li>TCP处理流控制</li>
+<li>TCP允许数据优先</li>
+<li>如果数据没有传送到,TCP套接字会返回出错提示</li>
+<li>TCP通过保持连接并将数据块分成更小的分片来处理大数据,而无需程序员编码处理</li>
+</ul>
+<p><strong>TCP的缺点:</strong></p>
+<ul>
+<li>TCP需要创建并保持一个连接, 给系统带来很大开销</li>
+<li>TCP数据传输效率低</li>
+</ul>
+<p><strong>UDP的优点:</strong></p>
+<ul>
+<li>UDP不要求保持一个连接</li>
+<li>UDP没有因接收方没有收到数据包重传而带来开销</li>
+<li>设计UDP的目的是用于短应用和控制消息</li>
+<li>在一个数据包接一个数据包基础上,UDP要求的网络带宽比TCP小</li>
+</ul>
+<p><strong>UDP的缺点:</strong></p>
+<ul>
+<li>程序员必须创建代码监测数据包的正确性,必要时重传</li>
+<li>程序员必须把大数据包分片</li>
+</ul>
+<p>使用UDP与TCP所用的代码基本类似, 唯一的区别在于socket函数调用的时候的一个参数的不同</p>
+<pre><code># include &lt;sys/types.h&gt;
+#include &lt;sys/socket.h&gt;
+int socket(int domain, int type, int protocol);
+</code></pre><blockquote>
+<p>参数type为SOCK_STREAM代表TCP, SOCK_DGRAM代表UDP<br>对于TCP和UDP都可以使用recvfrom函数,但recv只能TCP使用</p>
+</blockquote>
+<h3 id="u4F7F_u7528UDP_u53D1_u9001_u6570_u636E"><a href="#u4F7F_u7528UDP_u53D1_u9001_u6570_u636E" class="headerlink" title="使用UDP发送数据"></a>使用UDP发送数据</h3><pre><code>ssize_他sendto(int s, const void *buf, size_t len, int flags, const struct sockaddr *to, socklen_t tolen);
+</code></pre><blockquote>
+<p>UDP不需要握手机制,也不需要确认另一个系统是否有服务端在listen</p>
+</blockquote>
+<h3 id="UDP_u793A_u4F8B_u4EE3_u7801"><a href="#UDP_u793A_u4F8B_u4EE3_u7801" class="headerlink" title="UDP示例代码"></a>UDP示例代码</h3><h4 id="u53D1_u9001_u7AEF"><a href="#u53D1_u9001_u7AEF" class="headerlink" title="发送端"></a>发送端</h4><pre><code>#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;string.h&gt;
+#include &lt;unistd.h&gt;
+#include &lt;errno.h&gt;
+#include &lt;sys/types.h&gt;
+#include &lt;sys/socket.h&gt;
+#include &lt;netinet/in.h&gt;
+#include &lt;arpa/inet.h&gt;
+#include &lt;pthread.h&gt;
+
+int main(int arg, char *args[])
+{
+    if (arg &lt; 3)
+        return -1;
+
+    int st = socket(AF_INET, SOCK_DGRAM, 0);//建立socket的时候第二个参数值为SOCK_DGRAM
+    if (st == -1)
+    {
+        printf(&quot;socket failed %s\n&quot;, strerror(errno));
+        return 0;
+    }
+
+    int port = atoi(args[2]);
+
+
+    int on = 1;
+    if (setsockopt(st, SOL_SOCKET, SO_BROADCAST, &amp;on, sizeof(on)) == -1)//设置UDP socket可以发送广播消息
+    {
+        printf(&quot;setsockopt failed %s\n&quot;, strerror(errno));
+        return EXIT_FAILURE;
+    }
+
+
+
+    struct sockaddr_in addr;
+    memset(&amp;addr, 0, sizeof(addr));
+    addr.sin_family = AF_INET;
+    addr.sin_port = htons(port);
+    addr.sin_addr.s_addr = inet_addr(args[1]);
+    char buf[1024];
+    while (1)
+    {
+        memset(buf, 0, sizeof(buf));
+        read(STDIN_FILENO, buf, sizeof(buf));//读取用户键盘输入
+        if (sendto(st, buf, strlen(buf), 0, (struct sockaddr *) &amp;addr,sizeof(addr)) == -1)//udp使用sendto发送消息
+        {
+            printf(&quot;sendto failed %s\n&quot;, strerror(errno));
+            break;
+        }
+    }
+    close(st);
+    return EXIT_SUCCESS;
+}
+</code></pre><h4 id="u63A5_u6536_u7AEF"><a href="#u63A5_u6536_u7AEF" class="headerlink" title="接收端"></a>接收端</h4><pre><code>#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;string.h&gt;
+#include &lt;unistd.h&gt;
+#include &lt;errno.h&gt;
+#include &lt;sys/types.h&gt;
+#include &lt;sys/socket.h&gt;
+#include &lt;netinet/in.h&gt;
+#include &lt;arpa/inet.h&gt;
+#include &lt;pthread.h&gt;
+
+int main(int arg, char *args[])
+{
+    if (arg &lt; 2)
+        return -1;
+
+    int st = socket(AF_INET, SOCK_DGRAM, 0);
+    if (st == -1)
+    {
+        printf(&quot;socket failed %s\n&quot;, strerror(errno));
+        return 0;
+    }
+
+    int port = atoi(args[1]);
+    struct sockaddr_in addr;
+    memset(&amp;addr, 0, sizeof(addr));
+    addr.sin_family = AF_INET;
+    addr.sin_port = htons(port);
+    addr.sin_addr.s_addr = htonl(INADDR_ANY);
+    if (bind(st, (struct sockaddr *)&amp;addr, sizeof(addr)) == -1)//UDP接收数据，也需要绑定IP
+    {
+        printf(&quot;bind failed %s\n&quot;, strerror(errno));
+        return -1;
+    }
+    char buf[1024];
+    struct sockaddr_in client_addr;
+    socklen_t len = sizeof(client_addr);
+    while(1)
+    {
+        memset(&amp;client_addr, 0, sizeof(client_addr));
+        memset(buf, 0, sizeof(buf));
+        if(recvfrom(st, buf, sizeof(buf), 0,(struct sockaddr *)&amp;client_addr, &amp;len) == -1)
+        {
+            printf(&quot;recvfrom failed %s\n&quot;, strerror(errno));
+            break;
+        }
+        else
+        {
+
+            printf(&quot;%s recv is %s\n&quot;, inet_ntoa(client_addr.sin_addr), buf);
+        }
+    }
+    close(st);
+    return 0;
+}
+</code></pre><h2 id="u975E_u963B_u585Esocket_u4E0Eepoll"><a href="#u975E_u963B_u585Esocket_u4E0Eepoll" class="headerlink" title="非阻塞socket与epoll"></a>非阻塞socket与epoll</h2><h3 id="u963B_u585Esocket"><a href="#u963B_u585Esocket" class="headerlink" title="阻塞socket"></a>阻塞socket</h3><ul>
+<li>阻塞调用是指调用结果返回之前,当前线程会被挂起,函数只有在得到结果之后才会返回</li>
+<li>对于文件操作read,fread函数调用会将线程阻塞</li>
+<li>对于socket,accept与recv、recvfrom函数调用会将线程阻塞</li>
+<li>为了避免整个线程被阻塞后挂起,所以在阻塞模式下,往往需要采用多线程技术</li>
+<li>一个进程中可并发的线程总数是有限的,在处理大量客户端socket连接(比如上万个client socket),通过线程并发处理socket并不方便,效率也不高</li>
+</ul>
+<h3 id="u975E_u963B_u585Esocket"><a href="#u975E_u963B_u585Esocket" class="headerlink" title="非阻塞socket"></a>非阻塞socket</h3><ul>
+<li>非阻塞调用是指调用立刻返回</li>
+<li>在非阻塞模式下,accept与recv、recvfrom函数调用会立刻返回</li>
+<li>在nonblocking状态下调用accept函数,如果没有客户端socket连接请求,那么accept函数返回-1,同时errno值为EAGAIN或者EWOULDBLOCK,这两个宏定义都为整数11</li>
+<li>在nonblocking状态下调用recv、recvfrom函数，如果没有数据，函数返回-1，同时errno值为11；如果socket已经关闭，函数返回0</li>
+<li>在nonblocking状态下对一个已经关闭的socket调用send函数，将引发SIGPIPE信号，进程必须捕捉这个信号，因为SIGPIPE系统默认的处理方式是关闭进程</li>
+</ul>
+<h3 id="fcntl_u51FD_u6570_u8C03_u7528"><a href="#fcntl_u51FD_u6570_u8C03_u7528" class="headerlink" title="fcntl函数调用"></a>fcntl函数调用</h3><p>fcntl函数可以将文件或者socket描述符设置为阻塞或者非阻塞状态</p>
+<pre><code>int fcntl(int fd, int cmd, .../*arg*/);
+</code></pre><blockquote>
+<p>参数fd为要设置的文件描述符或者socket<br>参数cmd,F_GETFL为得到目前状态,F_SETFL为设置状态<br>宏定义O_NOBLOCK代表非阻塞,0代表阻塞<br>返回值为描述符当前状态    </p>
+</blockquote>
+<h4 id="fcntl_u51FD_u6570_u8C03_u7528_u8BBE_u7F6E_u975E_u963B_u585E_u793A_u4F8B"><a href="#fcntl_u51FD_u6570_u8C03_u7528_u8BBE_u7F6E_u975E_u963B_u585E_u793A_u4F8B" class="headerlink" title="fcntl函数调用设置非阻塞示例"></a>fcntl函数调用设置非阻塞示例</h4><pre><code>int opts = fcntl(st, F_GETFL);
+if(opts &lt; 0)
+{
+    printf(&quot;fcntl failed s%\n&quot;, strerror(errno));
+}
+opts = opts | O_NONBLOCK;
+if(fcntl(st, F_SETEL, opts) &lt;0)
+{
+    printf(&quot;fcntl failed %s\n&quot;, strerror(errno));
+}
+</code></pre><h3 id="epoll_u7684_u7CFB_u7EDF_u8C03_u7528_u51FD_u6570"><a href="#epoll_u7684_u7CFB_u7EDF_u8C03_u7528_u51FD_u6570" class="headerlink" title="epoll的系统调用函数"></a>epoll的系统调用函数</h3><ul>
+<li><p>epoll_create<br>epoll_create用来创建一个epoll文件描述符</p>
+</li>
+<li><p>epoll_ctl<br>epoll_ctl用来添加/修改/删除需要侦听的文件描述符及其事件</p>
+</li>
+<li><p>epoll_wait<br>epoll_wait接收发生在被侦听的描述符上的,用户感兴趣的IO事件</p>
+</li>
+<li><p>epoll文件描述符用完后,需要colse关闭</p>
+</li>
+<li>每次添加/修改/删除文件描述符都需要调用epoll_ctl,所以要尽量少调用epoll_ctl</li>
+</ul>
+<h4 id="epoll_create"><a href="#epoll_create" class="headerlink" title="epoll_create"></a>epoll_create</h4><pre><code>int epoll_create(int size);
+</code></pre><blockquote>
+<p>epoll_create创建一个epoll的句柄<br>参数size指定epoll所支持的最大句柄数<br>函数会返回一个新的epoll句柄,之后的所有操作将通过这个句柄来进行操作<br>在用完句柄之后,需要用<code>close()</code>来关闭这个创建出来的epoll句柄</p>
+</blockquote>
+<h4 id="epoll_ctl"><a href="#epoll_ctl" class="headerlink" title="epoll_ctl"></a>epoll_ctl</h4><pre><code>int epoll_ctl(int epfd, int op, int fd, struct epoll_event *event);
+</code></pre><blockquote>
+<p>参数epfd是epoll_create()返回值<br>op表示动作,用三个宏来表示:</p>
+<ul>
+<li>EPOLL_CTL_ADD:注册新的fd到epfd中;</li>
+<li>EPOLL_CTL_MOD:修改已经注册的fd的监听事件</li>
+<li>EPOLL_CTL_DEL:从epfd中删除一个fd<br>参数fd是需要监听的socket描述符<br>参数event通知内核需要监听什么事件</li>
+</ul>
+</blockquote>
+<h4 id="struct_epoll_event_u7ED3_u6784_u5982_u4E0B_3A"><a href="#struct_epoll_event_u7ED3_u6784_u5982_u4E0B_3A" class="headerlink" title="struct epoll_event结构如下:"></a>struct epoll_event结构如下:</h4><pre><code>typedef union epoll_data{
+    void *ptr;
+    int fd;
+    __uint32_t u32;
+    __unit64_t u64;
+}epoll_data_t;
+
+struct epoll_event{
+    __unit32_t events;/*Epoll events*/
+    epoll_data_t data; /*User data variable*/
+};
+</code></pre><h4 id="events_u5B9A_u4E49_3A"><a href="#events_u5B9A_u4E49_3A" class="headerlink" title="events定义:"></a>events定义:</h4><ul>
+<li>EPOLLIN:表示对应的文件描述符可以读(包括对端SOCKET正常关闭)</li>
+<li>EPOLLOUT:表示对应的文件描述符可以写</li>
+<li>EPOLLPRI:表示对应的文件描述符有紧急的数据可读(这里应该表示有带外数据到来)</li>
+<li>EPOLLERR:表示对应的文件描述符发生错误</li>
+<li>EPOLLHUP:表示对应的文件描述符被挂断</li>
+<li>EPOLLET:将EPOLL设为边缘触发(Edge Triggered)模式,这是相对于水平触发(Level Triggered)来说的</li>
+<li>EPOLLONESHOT:只监听一次事件,当监听完这次事件后,如果还需要继续监听这个socket的话,需要再次把这个socket加入到EPOLL队列里</li>
+</ul>
+<h4 id="epoll_wait"><a href="#epoll_wait" class="headerlink" title="epoll_wait"></a>epoll_wait</h4><pre><code>int epoll_wait(int epfd, struct epoll_event *events, int maxevents, int timeout);
+</code></pre><blockquote>
+<p>参数epfd是<code>epoll_create()</code>的返回值<br>参数events是一个epoll_events*的指针,当epoll_wait这个函数操作成功后,eploo_events里面讲储存所有的读写事件<br>参数maxevents是当前需要监听的所有socket句柄数<br>参数timeout是epoll_wait的超时,为0的时候,表示马上返回,为-1的时候表示一直等下去,知道有事件范围,正整数表示等这么长时间<br>一般如果网络主循环是单独的线程的话,可以用-1来等,这样可以保证一些效率,如果是和主逻辑在同一个线程的话,则可以用0来保证主循环的效率</p>
+</blockquote>
+<p>epoll_wait范围之后应该是一个循环,遍历所有的事件</p>
+<h4 id="epoll_u793A_u4F8B"><a href="#epoll_u793A_u4F8B" class="headerlink" title="epoll示例"></a>epoll示例</h4><pre><code>ssize_t socket_recv(int st)
+{
+    char buf[1024];
+    memset(buf, 0, sizeof(buf));
+    ssize_t rc = recv(st, buf, sizeof(buf), 0);
+    if( rc &lt;= 0)
+    {
+        printf(&quot;recv %s\n&quot;, buf);
+        send(st, buf,rc,0);
+    }
+    return rc;
+}
+
+int socket_accept(int listen_st)
+{
+    struct sockaddr_in client_addr;
+    socklen_t len = sizeof(client_addr);
+    memset(&amp;client_addr, 0, sizeof(client_addr));
+    int client_st = accept(listen_st, (struct sockaddr *)&amp;client_addr, &amp;len);
+    if(client_st &lt; 0)
+    {
+        printf(&quot;accept failed %s\n&quot;, strerror(errno));
+    }
+    else
+    {
+        printf(&quot;accept by %s\n&quot;, inet_ntoa(client_addr.sin_addr));
+    }
+    return client_st;
+}
+
+int socket_create(int port)
+{
+    int st = socket(AF_INET, SOCKET_STREAM, 0);
+    int on = 1;
+    if(setsocketopt(st, SOL_SOCKET, SO_REUSEADDR, &amp;on, sizeof(on)) == -1)
+    {
+        printf(&quot;setsocketopt failed %s&quot;, strerror(errno));
+        return 0;
+    }
+    struct sockaddr_in addr;
+    memset(&amp;addr, 0, sizeof(addr));
+    addr.sin_family = AF_INET;
+    addr.sin_port = htons(port);
+    addr.sin_addr.addr = htonl(INADDR_ANY);
+    if(bind(st, (struct sockaddr *)&amp;addr, sizeof(addr)) == -1)
+    {
+        printf(&quot;bind port %d failed %s&quot;,port, strerror(errno));
+        return 0;
+    }
+    if(listen(st, 300) == -1)
+    {
+        printf(&quot;listen failed %s&quot;, strerror(errno));
+        return0;
+    }
+    return st;
+}
+
+int main(int args, char *agrs[])
+{
+    if(args&lt;2)
+        return -1;
+    int iport = atoi(arg[1]);
+    int listen_st = socket_create(iport);
+    if(listen_st ==0)
+        return -1;
+
+    struct epoll_event ev, events[100]; //声明epoll_event结构体的变量,ev用于注册事件,数组用户回传要处理的事件
+    int epfd = epoll_create(100);    //生成用于处理accept的epoll专用的文件描述符
+    setnonblocking(listen_st);//把socket设置为非阻塞方式
+    ev.data.fdd = listen_st; //设置要处理的事件相关的文件描述符
+    ev.events = EPOLLIN | EPOLLERR | EPOLLHUP; //设置要处理的事件类型
+    epoll_ctl(epfd, EPOLL_CTL_ADD, listen_st, &amp;ev);
+
+    int st = 0;
+    while(0)
+    {
+        int ndfs = epoll_wait(epfd, events, 100, -1);//等待epoll事件发生
+        if(ndfs == -1)
+        {
+            printf(&quot;epoll_wait failed %s&quot;, strerror(errno));
+            break;
+        }
+        int i;
+        for(i = 0; i &lt;nfds ;i++)
+        {
+            if(events[i].data.fd &lt;0)
+                continue;
+            if(events[i].data.fd == litsten_st)//监听到一个socket用户连接到了绑定的SOCKET端口,建立新的连接
+            {
+                st = socket_accept(listen_st);
+                if(st &gt;=0)
+                {
+                    setnonblocking(st);
+                    ev.data.fd = st;
+                    ev.events = EPOLLIN|EPOLLERR|EPOLLHUP;//设置要处理的事件类型
+                    epoll_ctl(epfd, EPOLL_CTL_ADD, st, &amp;ev);
+                    continue;
+                }
+            }
+
+            //client端的socket有事件到达 
+            if(events[i].events &amp; EPOLLIN)//socket收到数据
+            {
+                st = events[i].data.fd;
+                if(socket_recv(st) &lt;= 0)
+                {
+                    close(st);
+                    events[i].data.fd = -1;
+                }
+            }
+            if(events[i].events &amp; EPOLLERR ||events[i].events &amp; EPOLLHUP )//socket错误
+            {
+                st = events[i].data.fd;
+                close(st);
+                events[i].data.fd = -1;
+            }
+        }
+    }
+    close(epfd);
+    return 0;
+}
+</code></pre><h2 id="u5C0F_u7A8D_u95E8"><a href="#u5C0F_u7A8D_u95E8" class="headerlink" title="小窍门"></a>小窍门</h2><h3 id="u5C06_u57DF_u540D_u8F6C_u5316_u4E3AIP_u5730_u5740"><a href="#u5C06_u57DF_u540D_u8F6C_u5316_u4E3AIP_u5730_u5740" class="headerlink" title="将域名转化为IP地址"></a>将域名转化为IP地址</h3><pre><code>#include &lt;stdio.h&gt;
+#include &lt;sys/socket.h&gt;
+#include &lt;sys/types.h&gt;
+#include &lt;netdb.h&gt;
+#include &lt;netinet.h&gt;
+#include &lt;string.h&gt;
+#include &lt;stdlib.h&gt;
+
+const char *getIPAddrbyHostname(const char *hostname)
+{
+    static char s[128];
+    memset(s,0,sizeof(s));
+    struct hostnet *h;
+    h = gethostbyname(hostname);
+    strcpy(s, inet_ntoa(*((struct in_addr *)h-&gt;h_addr)));
+    return s;
+}
+</code></pre><h3 id="u5C06struct_sockaddr_in_u8F6C_u5316_u4E3AIP_u5730_u5740"><a href="#u5C06struct_sockaddr_in_u8F6C_u5316_u4E3AIP_u5730_u5740" class="headerlink" title="将struct sockaddr_in转化为IP地址"></a>将struct sockaddr_in转化为IP地址</h3><pre><code>const char *getIPAddrbyaddr_in(struct sockaddr_in *client_addr)
+{
+    return inet_ntoa(client_addr-&gt;sin_addr);
+}
+
+void sockaddr_toa(sonst struct sockaddr_in *addr, char *IPAddr)
+{
+    unsigned char *p = (unsigned char *)&amp;(addr-&gt;sin_addr.s_addr);
+    sprintf(IPAddr, &quot;%u.%u.%u.%u&quot;,p[0],p[1],p[2],p[3]);
+}
+</code></pre><h3 id="u5F97_u5230socket_u81EA_u8EAB_u7684sockaddr_u548Csocket_u8FDE_u63A5_u7684_u8FDC_u7AEFsockaddr"><a href="#u5F97_u5230socket_u81EA_u8EAB_u7684sockaddr_u548Csocket_u8FDE_u63A5_u7684_u8FDC_u7AEFsockaddr" class="headerlink" title="得到socket自身的sockaddr和socket连接的远端sockaddr"></a>得到socket自身的sockaddr和socket连接的远端sockaddr</h3><pre><code>//得到远端sockaddr
+int getpeername(int sockfd, struct sockaddr *addr, socklen_t *addrlen);
+
+//得到自身sockaddr
+int getsockname(int sockfd, struct sockaddr *addr, socklen *addrlen);
+</code></pre><h2 id="Linux_u4E2D_u5B57_u7B26_u96C6_u8F6C_u5316"><a href="#Linux_u4E2D_u5B57_u7B26_u96C6_u8F6C_u5316" class="headerlink" title="Linux中字符集转化"></a>Linux中字符集转化</h2><pre><code>#include &lt;iconv.h&gt;
+iconv_t iconv_open(const char *tocode, const char *fromcode);
+size_t iconv(iconv_t cd, char **inbuf, size_t *inbytesleft, char **outbuf, size_t *outbytesleft);
+int iconv_close(iconv_t cd);
+</code></pre>
+      
+    </div>
+    
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2015/10/26/认识-JNI开发/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption"><</strong>
+      <div class="article-nav-title">
+        
+          认识 JNI开发
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2015/10/25/Linux信号处理/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">Linux信号处理</div>
+      <strong class="article-nav-caption">></strong>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+<div class="share_jia">
+	<!-- JiaThis Button BEGIN -->
+	<div class="jiathis_style">
+		<span class="jiathis_txt">分享到: &nbsp; </span>
+		<a class="jiathis_button_facebook"></a> 
+    <a class="jiathis_button_twitter"></a>
+    <a class="jiathis_button_plus"></a> 
+    <a class="jiathis_button_tsina"></a>
+		<a class="jiathis_button_cqq"></a>
+		<a class="jiathis_button_douban"></a>
+		<a class="jiathis_button_weixin"></a>
+		<a class="jiathis_button_tumblr"></a>
+    <a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jtico jtico_jiathis" target="_blank"></a>
+	</div>
+	<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js?uid=1405949716054953" charset="utf-8"></script>
+	<!-- JiaThis Button END -->
+</div>
+
+
+
+
+
+
+<div class="duoshuo">
+	<!-- 多说评论框 start -->
+	<div class="ds-thread" data-thread-key="linux网络编程" data-title="linux网络编程" data-url="http://www.bigtiger079.com/2015/10/25/linux网络编程/"></div>
+	<!-- 多说评论框 end -->
+	<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+	<script type="text/javascript">
+	var duoshuoQuery = {short_name:"true"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0] 
+		 || document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+	</script>
+	<!-- 多说公共JS代码 end -->
+</div>
+
+
+
+
+</div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info">
+    	<div class="footer-left">
+    		&copy; 2016 Bigtiger
+    	</div>
+      	<div class="footer-right">
+      		<a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/litten/hexo-theme-yilia" target="_blank">Yilia</a> by Litten
+      	</div>
+    </div>
+  </div>
+</footer>
+    </div>
+    
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css" type="text/css">
+
+
+<script>
+	var yiliaConfig = {
+		fancybox: true,
+		mathjax: true,
+		animate: true,
+		isHome: false,
+		isPost: true,
+		isArchive: false,
+		isTag: false,
+		isCategory: false,
+		open_in_new: false
+	}
+</script>
+<script src="http://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js" type="text/javascript"></script>
+<script src="/js/main.js" type="text/javascript"></script>
+
+
+
+
+
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';                 
+    }       
+});
+</script>
+
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  </div>
+</body>
+</html>

@@ -1,0 +1,953 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" >
+  <title>Linux信号处理 | Bigtiger&#39;s blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="信号概念
+程序执行的时候,几乎任何时刻都会发生事件
+信号通常用来向一个进程通知事件
+信号是不可提前预知的,所以信号是异步的
+信号随时都可能发生,接收信号的进程也可以没有控制权
+每个信号名都以SIG开头,信号名的定义在中
+
+许多情况下都会出现信号,如硬件异常,非法内存引用,软件异常等前面讲过的kill函数就是向目标进程发一个SIGKILL信号,就和kill命令一样当进程收到一个信号,它可以对信号采取">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Linux信号处理">
+<meta property="og:url" content="http://www.bigtiger079.com/2015/10/25/Linux信号处理/index.html">
+<meta property="og:site_name" content="Bigtiger's blog">
+<meta property="og:description" content="信号概念
+程序执行的时候,几乎任何时刻都会发生事件
+信号通常用来向一个进程通知事件
+信号是不可提前预知的,所以信号是异步的
+信号随时都可能发生,接收信号的进程也可以没有控制权
+每个信号名都以SIG开头,信号名的定义在中
+
+许多情况下都会出现信号,如硬件异常,非法内存引用,软件异常等前面讲过的kill函数就是向目标进程发一个SIGKILL信号,就和kill命令一样当进程收到一个信号,它可以对信号采取">
+<meta property="og:updated_time" content="2016-01-28T12:49:21.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Linux信号处理">
+<meta name="twitter:description" content="信号概念
+程序执行的时候,几乎任何时刻都会发生事件
+信号通常用来向一个进程通知事件
+信号是不可提前预知的,所以信号是异步的
+信号随时都可能发生,接收信号的进程也可以没有控制权
+每个信号名都以SIG开头,信号名的定义在中
+
+许多情况下都会出现信号,如硬件异常,非法内存引用,软件异常等前面讲过的kill函数就是向目标进程发一个SIGKILL信号,就和kill命令一样当进程收到一个信号,它可以对信号采取">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  <link rel="stylesheet" href="/css/style.css" type="text/css">
+</head>
+
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+	<header id="header" class="inner">
+		<a href="/" class="profilepic">
+			
+			<img lazy-src="http://7xlrpi.com1.z0.glb.clouddn.com/avatar.png" class="js-avatar">
+			
+		</a>
+
+		<hgroup>
+		  <h1 class="header-author"><a href="/">Bigtiger</a></h1>
+		</hgroup>
+
+		
+
+		
+			<div class="switch-btn">
+				<div class="icon">
+					<div class="icon-ctn">
+						<div class="icon-wrap icon-house" data-idx="0">
+							<div class="birdhouse"></div>
+							<div class="birdhouse_holes"></div>
+						</div>
+						<div class="icon-wrap icon-ribbon hide" data-idx="1">
+							<div class="ribbon"></div>
+						</div>
+						
+						
+						<div class="icon-wrap icon-me hide" data-idx="3">
+							<div class="user"></div>
+							<div class="shoulder"></div>
+						</div>
+						
+					</div>
+					
+				</div>
+				<div class="tips-box hide">
+					<div class="tips-arrow"></div>
+					<ul class="tips-inner">
+						<li>菜单</li>
+						<li>标签</li>
+						
+						
+						<li>关于我</li>
+						
+					</ul>
+				</div>
+			</div>
+		
+
+		<div class="switch-area">
+			<div class="switch-wrap">
+				<section class="switch-part switch-part1">
+					<nav class="header-menu">
+						<ul>
+						
+							<li><a href="/">主页</a></li>
+				        
+							<li><a href="/archives">所有文章</a></li>
+				        
+							<li><a href="/categories">分类</a></li>
+				        
+							<li><a href="/tags">标签</a></li>
+				        
+						</ul>
+					</nav>
+					<nav class="header-nav">
+						<div class="social">
+							
+								<a class="mail" target="_blank" href="/bigtiger079@gmail.com" title="mail">mail</a>
+					        
+						</div>
+					</nav>
+				</section>
+				
+				
+				<section class="switch-part switch-part2">
+					<div class="widget tagcloud" id="js-tagcloud">
+						<a href="/tags/Android/" style="font-size: 10px;">Android</a> <a href="/tags/C/" style="font-size: 10px;">C++</a> <a href="/tags/Cpp基础/" style="font-size: 10px;">Cpp基础</a> <a href="/tags/Hexo/" style="font-size: 10px;">Hexo</a> <a href="/tags/JNI/" style="font-size: 10px;">JNI</a> <a href="/tags/RecyclerView/" style="font-size: 16.67px;">RecyclerView</a> <a href="/tags/android/" style="font-size: 10px;">android</a> <a href="/tags/linux/" style="font-size: 20px;">linux</a> <a href="/tags/线性表/" style="font-size: 13.33px;">线性表</a>
+					</div>
+				</section>
+				
+				
+				
+
+				
+				
+				<section class="switch-part switch-part3">
+				
+					<div id="js-aboutme">我是谁，我从哪里来，我到哪里去？我就是我，是颜色不一样的吃货…</div>
+				</section>
+				
+			</div>
+		</div>
+	</header>				
+</div>
+
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+  	<div class="overlay">
+  		<div class="slider-trigger"></div>
+  		<h1 class="header-author js-mobile-header hide">Bigtiger</h1>
+  	</div>
+	<div class="intrude-less">
+		<header id="header" class="inner">
+			<div class="profilepic">
+			
+				<img lazy-src="http://7xlrpi.com1.z0.glb.clouddn.com/avatar.png" class="js-avatar">
+			
+			</div>
+			<hgroup>
+			  <h1 class="header-author">Bigtiger</h1>
+			</hgroup>
+			
+			<nav class="header-menu">
+				<ul>
+				
+					<li><a href="/">主页</a></li>
+		        
+					<li><a href="/archives">所有文章</a></li>
+		        
+					<li><a href="/categories">分类</a></li>
+		        
+					<li><a href="/tags">标签</a></li>
+		        
+		        <div class="clearfix"></div>
+				</ul>
+			</nav>
+			<nav class="header-nav">
+				<div class="social">
+					
+						<a class="mail" target="_blank" href="/bigtiger079@gmail.com" title="mail">mail</a>
+			        
+				</div>
+			</nav>
+		</header>				
+	</div>
+</nav>
+
+      <div class="body-wrap"><article id="post-Linux信号处理" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2015/10/25/Linux信号处理/" class="article-date">
+  	<time datetime="2015-10-25T08:49:31.000Z" itemprop="datePublished">2015-10-25</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Linux信号处理
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/">linux</a></li></ul>
+	</div>
+
+        
+	<div class="article-category tagcloud">
+	<a class="article-category-link" href="/categories/C/">C++</a>
+	</div>
+
+
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="u4FE1_u53F7_u6982_u5FF5"><a href="#u4FE1_u53F7_u6982_u5FF5" class="headerlink" title="信号概念"></a>信号概念</h2><ul>
+<li>程序执行的时候,几乎任何时刻都会发生事件</li>
+<li>信号通常用来向一个进程通知事件</li>
+<li>信号是不可提前预知的,所以信号是异步的</li>
+<li>信号随时都可能发生,接收信号的进程也可以没有控制权</li>
+<li>每个信号名都以SIG开头,信号名的定义在<signal.h>中</signal.h></li>
+</ul>
+<p>许多情况下都会出现信号,如硬件异常,非法内存引用,软件异常等<br>前面讲过的kill函数就是向目标进程发一个SIGKILL信号,就和kill命令一样<br>当进程收到一个信号,它可以对信号采取如下三种措施之一:</p>
+<ul>
+<li>忽略这个信号</li>
+<li>捕获这个信号,这需要执行一段称为信号处理去的特殊代码</li>
+<li>允许执行信号的默认操作 </li>
+</ul>
+<p>当信号发生的事件出现时,比如硬件异常,就会产生一个针对具体进程的信号<br>当进程对发送给它的信号采取措施的时候,就叫该信号被传送<br>产生信号和递送信号之间的时间间隔称为信号未决</p>
+<p>信号的部署是指进程如何响应信号<br>进程可以忽略信号、用默认操作处理信号、响应这个信号<br>进程不能简单的通过判断一个变量，例如errno来判断是否出现了一个信号</p>
+<h3 id="u5E38_u89C1_u4FE1_u53F7_u8BF4_u660E"><a href="#u5E38_u89C1_u4FE1_u53F7_u8BF4_u660E" class="headerlink" title="常见信号说明"></a>常见信号说明</h3><table>
+<thead>
+<tr>
+<th>信号名称</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>SIGHUP</td>
+<td>终止控制终端或进程</td>
+</tr>
+<tr>
+<td>SIGINT</td>
+<td>键盘产生的中断(Ctrl-C)</td>
+</tr>
+<tr>
+<td>SIGQUIT　</td>
+<td>键盘产生的退出</td>
+</tr>
+<tr>
+<td>SIGILL</td>
+<td>非法指令</td>
+</tr>
+<tr>
+<td>SIGTRAP</td>
+<td>debug中断</td>
+</tr>
+<tr>
+<td>SIGABRT／SIGIOT　</td>
+<td>　异常中止</td>
+</tr>
+<tr>
+<td>SIGBUS／SIGEMT　</td>
+<td>　总线异常/EMT指令</td>
+</tr>
+<tr>
+<td>SIGFPE</td>
+<td>　浮点运算溢出</td>
+</tr>
+<tr>
+<td>SIGKILL</td>
+<td>终强制进程终止,这是个不能被捕捉或忽略的信号,kill9发送该信号</td>
+</tr>
+<tr>
+<td>SIGUSR1</td>
+<td>　用户信号,进程可自定义用途</td>
+</tr>
+<tr>
+<td>SIGSEGV</td>
+<td>　非法内存地址引用,该信号只是进程进行了一次无效的内存引用</td>
+</tr>
+<tr>
+<td>SIGUSR2</td>
+<td>　用户信号，进程可自定义用途</td>
+</tr>
+<tr>
+<td>SIGPIPE</td>
+<td>向某个没有读取的管道中写入数据,如果写到管道时读取进程已终止,就产生该信号</td>
+</tr>
+<tr>
+<td>SIGALRM</td>
+<td>　时钟中断(闹钟),调用alarm设置计时器超时时,产生此信号</td>
+</tr>
+<tr>
+<td>SIGTERM</td>
+<td>　进程终止,由kill命令(1)发送的系统默认终止信号</td>
+</tr>
+<tr>
+<td>SIGSTKFLT</td>
+<td>　协处理器栈错误</td>
+</tr>
+<tr>
+<td>SIGCHLD</td>
+<td>　子进程退出或中断</td>
+</tr>
+<tr>
+<td>SIGCONT</td>
+<td>　如进程停止状态则开始运行</td>
+</tr>
+<tr>
+<td>SIGSTOP</td>
+<td>　停止进程运行</td>
+</tr>
+<tr>
+<td>SIGSTP</td>
+<td>键盘产生的停止 Ctrl+Z</td>
+</tr>
+<tr>
+<td>SIGTTIN</td>
+<td>后台进程请求输入</td>
+</tr>
+<tr>
+<td>SIGTTOU</td>
+<td>后台进程请求输出</td>
+</tr>
+<tr>
+<td>SIGURG</td>
+<td>socket发生紧急情况</td>
+</tr>
+<tr>
+<td>SIGXCPU</td>
+<td>CPU时间限制被打破</td>
+</tr>
+<tr>
+<td>SIGXFSZ</td>
+<td>文件大小限制被打破</td>
+</tr>
+<tr>
+<td>SIGVTALRM</td>
+<td>虚拟定时时钟</td>
+</tr>
+<tr>
+<td>SIGPROF</td>
+<td>profile timer clock</td>
+</tr>
+<tr>
+<td>SIGWINCH忽略</td>
+<td>窗口尺寸调整</td>
+</tr>
+<tr>
+<td>SIGIO/SIGPOLL</td>
+<td>I/O可用</td>
+</tr>
+<tr>
+<td>SIGPWR</td>
+<td>电源异常</td>
+</tr>
+<tr>
+<td>SIGSYS／SYSUNUSED</td>
+<td>系统调用异常</td>
+</tr>
+</tbody>
+</table>
+<h2 id="u6355_u83B7_u4FE1_u53F7"><a href="#u6355_u83B7_u4FE1_u53F7" class="headerlink" title="捕获信号"></a>捕获信号</h2><p>pause函数挂起调用它的进程,直到有任何消息到达<br>调用进程必须由能力处理送达的信号, 否则信号的默认部署就会发生</p>
+<pre><code>#include &lt;unistd.h&gt;
+int pause(void)
+</code></pre><blockquote>
+<p>只有进程捕获到一个信号的时候pause才返回,如果递送到的信号引发了对信号的处理, 那么处理工作将在pause返回前执行<br>pause总是返回-1,并且变量errno设置为EINTR</p>
+</blockquote>
+<p>发送信号和捕获信号是相辅相成的<br>每个进程能够决定响应除了DIGSTOP和SIGKILL之外的其他所有信号<br>SIGSTOP和SIGKILL不能被捕获或者忽略<br>捕获信号并不是真的去捕获它, 而是等待信号被发送过来</p>
+<p>当执行一个程序时,所有信号的状态都是系统默认或者忽略<br>当一个进程调用fork的时候,妻子进城继承父进程的信号处理方式,所以信号捕捉函数的地址在进程中是有意义的</p>
+<h3 id="u5B9A_u4E49_u4FE1_u53F7_u5904_u7406_u5668"><a href="#u5B9A_u4E49_u4FE1_u53F7_u5904_u7406_u5668" class="headerlink" title="定义信号处理器"></a>定义信号处理器</h3><blockquote>
+<p>某些情况下,一个信号的默认动作就是所希望的行为,但更多场合下,你可以改变默认行为或者执行额外的代码<br>如果想改变默认行为就必须定义并安装一个自定义的信号处理器</p>
+</blockquote>
+<h4 id="u6307_u5411_u51FD_u6570_u7684_u6307_u9488"><a href="#u6307_u5411_u51FD_u6570_u7684_u6307_u9488" class="headerlink" title="指向函数的指针"></a>指向函数的指针</h4><ul>
+<li>可以用指针变量指向整型变量、字符串、数组、结构体、也可指向一个函数</li>
+<li>一个函数在编译时被分配一个入口地址，这个入口地址就成为函数指针</li>
+<li>可以用一个指针变量指向一个函数，然后通过该指针变量调用此函数</li>
+</ul>
+<h4 id="u56DE_u8C03_u51FD_u6570"><a href="#u56DE_u8C03_u51FD_u6570" class="headerlink" title="回调函数"></a>回调函数</h4><ul>
+<li>回调函数就是通过函数指针调用的函数</li>
+<li>如果把函数的指针（地址）作为参数传递给另一个函数， 当这个指针被用来调用其所指向的函数时，我们就是说这是回调函数</li>
+<li>回调函数不是由该函数的实现方式直接调用，而是在特定的事件或条件发生时由另外的一方调用，用于对该事件或条件进行响应</li>
+</ul>
+<h4 id="signal_u51FD_u6570"><a href="#signal_u51FD_u6570" class="headerlink" title="signal函数"></a>signal函数</h4><p>UNIX/LINUX处理信号最常用的接口是signal函数</p>
+<blockquote>
+<p>在命令行使用kill命令,向指定进程发送信号</p>
+</blockquote>
+<p>使用kill函数</p>
+<pre><code>#include &lt;signal.h&gt;
+void (*signal(int signo, void (*fun)(int)));
+</code></pre><blockquote>
+<p>参数signo是前面表格的信号名<br>参数func是接受到此信号后要调用的函数,该函数有一个int型参数, int代表捕获到的信号值</p>
+</blockquote>
+<p>进程捕捉到信号并对信号进行处理时,进程正在执行指令序列就被信号处理程序临时中断,它首先执行该信号处理程序中的指令<br>如果信号处理程序返回(没有调用exit(0)或者abort),则继续执行行在捕捉到信号是进程正在执行的正常指令序列<br>在信号处理程序中,不能判断捕捉到信号是进程正在何处执行</p>
+<h2 id="u53D1_u9001_u4FE1_u53F7"><a href="#u53D1_u9001_u4FE1_u53F7" class="headerlink" title="发送信号"></a>发送信号</h2><h3 id="u53D1_u9001_u4FE1_u53F7-1"><a href="#u53D1_u9001_u4FE1_u53F7-1" class="headerlink" title="发送信号"></a>发送信号</h3><p>使用kill命令</p>
+<blockquote>
+<p>在命令行使用kill命令, 向指定进程发送信号</p>
+</blockquote>
+<p>使用kill函数</p>
+<pre><code>#include &lt;signal.h&gt;
+#include &lt;sys/types.h&gt;
+int kill(pid_t pid, int sig);
+</code></pre><blockquote>
+<p>参数pid指定一个要杀死的进程,而sig是要发送的信号</p>
+</blockquote>
+<p>使用raise函数</p>
+<pre><code>#include &lt;signal.h&gt;
+int raise(int signo);
+</code></pre><blockquote>
+<p>kill函数将信号发送给进程,raise函数允许进程向自身发送信号<br>raise(signo)等价于kill(getpid(),signo) </p>
+</blockquote>
+<p>alarm函数设置了一个定时器,当定时器到了就发送SIGALRM信号</p>
+<pre><code>#include &lt;unistd.h&gt;
+unsigned int alarm(unsigned int seconds);
+</code></pre><blockquote>
+<p>seconds是计时器事件到后时钟的秒数<br>如果没有设置其他超时,函数返回0,否则返回值为前面安排超时中保留的秒数<br>一个进程只能设置一次超时<br>把seconds设置为0可以取消前面的超时设置</p>
+</blockquote>
+<p>abort函数</p>
+<pre><code>void abort(void);
+</code></pre><blockquote>
+<p>该函数发送SIGABRT信号给调用进程,进程不应该忽略这个信号<br>即使进程捕捉到SIGABRT这个信号,进程还是会异常退出<br>让进程捕捉SIGABRT的意图是,在进程终止前由其执行所需的清理操作</p>
+</blockquote>
+<p>sleep函数</p>
+<pre><code>unsigned int sleep(unsigned int seconds);
+</code></pre><blockquote>
+<p>参数seconds指定了睡眠时间<br>超过seconds指定时间,函数返回<br>调用进程捕捉到一个信号并从信号处理程序返回</p>
+</blockquote>
+<h2 id="u6539_u8FDB_u7684_u6355_u83B7_u4FE1_u53F7_u673A_u5236"><a href="#u6539_u8FDB_u7684_u6355_u83B7_u4FE1_u53F7_u673A_u5236" class="headerlink" title="改进的捕获信号机制"></a>改进的捕获信号机制</h2><p>sigaction函数的功能是检查或修改与制定信号相关联的处理动作,该函数取代了signal函数</p>
+<pre><code>#include &lt;signal.h&gt;
+int sigaction(int signo, const struct sigaction *act, struct sigaction *oact);
+</code></pre><blockquote>
+<p>成功返回0, 失败返回-1<br>参数signo是要检测或者修改其具体动作的信号编号(或同事执行这两种操作)<br>如果act指针非空, 则要修改其动作<br>如果oact指针非空,则系统由oact指针返回该信号的上一个动作</p>
+</blockquote>
+<pre><code>struct sigaction{
+    void (*sa_handler)(int);
+    void (*sa_sigaction)(int, siginfo_t*, void *);
+    sigset_t sa_mask;
+    int sa_flags;
+    void (*sa_restorer)(void);
+}
+</code></pre><h4 id="sigaction__u4F7F_u7528_u6A21_u677F"><a href="#sigaction__u4F7F_u7528_u6A21_u677F" class="headerlink" title="sigaction 使用模板"></a>sigaction 使用模板</h4><pre><code>int signal1(int signo, void (*fun)(int))
+{
+    struct sigaction act, oact;
+    act.sa_handler = func;
+    sigemptyset(&amp;act.sa_mask);    //初始化&amp;act.sa_mask
+    act.sa_flags = 0;
+    return sigaction(signo, &amp;act, &amp;oact);
+}
+</code></pre><h2 id="u4F7F_u7528_u81EA_u5B9A_u4E49_u4FE1_u53F7"><a href="#u4F7F_u7528_u81EA_u5B9A_u4E49_u4FE1_u53F7" class="headerlink" title="使用自定义信号"></a>使用自定义信号</h2><h3 id="u4FE1_u53F7_u7684_u53D1_u9001_u548C_u6355_u6349_u793A_u4F8B"><a href="#u4FE1_u53F7_u7684_u53D1_u9001_u548C_u6355_u6349_u793A_u4F8B" class="headerlink" title="信号的发送和捕捉示例"></a>信号的发送和捕捉示例</h3><h4 id="u53D1_u9001SIGUSR1_u4FE1_u53F7"><a href="#u53D1_u9001SIGUSR1_u4FE1_u53F7" class="headerlink" title="发送SIGUSR1信号"></a>发送SIGUSR1信号</h4><pre><code>int main(int arg, char *args[])
+{
+    if(arg &gt;1)
+     {
+        kill(atoi(args[1], SIGUSR1));
+        printf(&quot;send to %d\n&quot;, atoi(args[1]));
+    }
+    return 0;
+}
+</code></pre><h4 id="u6355_u83B7SIGUSR1_u4FE1_u53F7"><a href="#u6355_u83B7SIGUSR1_u4FE1_u53F7" class="headerlink" title="捕获SIGUSR1信号"></a>捕获SIGUSR1信号</h4><pre><code>void catch_Signal(int sign)
+{
+    switch(sign)
+    {
+    case SIGINT:
+        printf(&quot;SIGINT Signal\n&quot;);
+        exit(0);
+    case SIGUSR1:
+        printf(&quot;SIGUSR1 Signal\n&quot;);
+    }
+}
+
+int main(int arg, char *args[])
+{
+    signal(SIGINT, catch_Signal);
+    signal(SIGUSR1, catch_Signal);
+    printf(&quot;pid = d%\n&quot;, getpid());
+    while(1)
+    {
+        sleep(1);
+    }        
+    return 0;
+}
+</code></pre><h2 id="u5B88_u62A4_u8FDB_u7A0B"><a href="#u5B88_u62A4_u8FDB_u7A0B" class="headerlink" title="守护进程"></a>守护进程</h2><ul>
+<li>守护进程十一个后台服务, 它无需用户输入就能运行,经常提供某种服务</li>
+<li>Linux作为服务器,主要的进程也都是为系统或者用户提供后台服务功能</li>
+<li>常见的守护进程有web服务器、邮件服务器以及数据库服务器等等</li>
+<li>守护进程不能够控制终端，所以任何输入或者输出都需要做特殊处理</li>
+<li>守护进程看上去似乎很神秘，但如果牢记几条规则而且知道几个关键函数，工作就很简单了</li>
+<li>首先执行fork后让父进程退出</li>
+<li>和多数程序一样,一个守护进程是从shell脚本或者命令行启动的</li>
+<li>但守护进程和应用程序不一样,因为他们不是交互式的–它们在后台因为没有控制终端</li>
+<li>父进程在fork子进程退出后就消除了控制终端</li>
+<li>守护进程既不需要从标准输入设备读信息,也不需要从标准输出设备输出信息</li>
+<li>下一步是在子进程中调用setsid,取消进程和任何控制终端的关联</li>
+<li>下一步是让根目录称为子进程的当前工作目录</li>
+<li>因为任何进程如果他的当前目录是在一个被安装的文件系统上,那么就会妨碍这个文件系统被卸载</li>
+<li>接下来设置进程的umask为0</li>
+<li>为了避免守护进程集成的umask收到创建文件和目录操作的干扰,这一步是必要的</li>
+<li>如果一个进程集成了父进程的umask 055,它屏蔽掉了group和other的读和执行权限,如果守护进程接着创建了一个文件,那么group和other用户操作这个文件会带来麻烦</li>
+<li>守护进程调用umask 0避免了这种情况,当创建文件的时候给予守护进程更大的灵活性</li>
+<li>最后关闭子进程继承的任何不必要的文件描述符</li>
+<li>对于子进程来说,没有理由保持从父进程继承来的打开的文件描述符</li>
+<li>具体关闭哪些取决于具体的守护进程需要和要求,很难精确地说明规则</li>
+</ul>
+<h4 id="u521B_u5EFA_u5B88_u62A4_u8FDB_u7A0B_u6B65_u9AA4_u603B_u7ED3"><a href="#u521B_u5EFA_u5B88_u62A4_u8FDB_u7A0B_u6B65_u9AA4_u603B_u7ED3" class="headerlink" title="创建守护进程步骤总结"></a>创建守护进程步骤总结</h4><ol>
+<li>父进程中执行fork后,执行exit退出</li>
+<li>在子进程中调用setsid</li>
+<li>让根目录”/“成为进程的工作目录</li>
+<li>把子进程的umask变为0</li>
+<li>关闭任何不需要的文件描述符</li>
+</ol>
+<h3 id="setsid_u51FD_u6570"><a href="#setsid_u51FD_u6570" class="headerlink" title="setsid函数"></a>setsid函数</h3><pre><code>pid_t setsid();
+</code></pre><blockquote>
+<p>setsid函数创建一个新会话和一个新进程组,然后守护进程成为新会话的会话领导,以及新进程组的进程组领导<br>setsid调用还保证新会话没有控制终端<br>如果调用进程已经是一个进程组的领导进程,setsid调用失败<br>setsid调用成功返回会话ID,失败返回-1,并且设置errno</p>
+</blockquote>
+<h3 id="chdir_u51FD_u6570"><a href="#chdir_u51FD_u6570" class="headerlink" title="chdir函数"></a>chdir函数</h3><pre><code>int chdir(const char *pathname)
+</code></pre><blockquote>
+<p>chdir 函数根据参数pathname设置当前工作<br>chdir 调用成功返回0, 失败返回-1, 并设置errno </p>
+</blockquote>
+<h3 id="umask_u51FD_u6570"><a href="#umask_u51FD_u6570" class="headerlink" title="umask函数"></a>umask函数</h3><pre><code>mode_t umask(mode_t mask);
+</code></pre><blockquote>
+<p>umask调用把守护进程的umask设置为0,这样取消了来自父进程的umask,它们能够潜在的干扰创建文件和目录</p>
+</blockquote>
+<h4 id="u521B_u5EFA_u5B88_u62A4_u8FDB_u7A0B_u793A_u4F8B"><a href="#u521B_u5EFA_u5B88_u62A4_u8FDB_u7A0B_u793A_u4F8B" class="headerlink" title="创建守护进程示例"></a>创建守护进程示例</h4><pre><code>void setdaemon()
+{
+    pid_t pid,sid;
+    pid = fork();
+    if(pid &lt;0)
+    {
+        printf(&quot;fork failed\n&quot;);
+        exit(EXIT_FAILURE);
+    }
+    if(pid&gt;0)
+    {
+        exit(EXIT_SUCCESS);
+    }
+    if((sid = setsid())&lt;0)
+    {
+        printf(&quot;setsid fialed\n&quot;);
+        exit(EXIT_FIALURE);
+    }
+    if((chdir(&quot;/&quot;))&lt;0)
+    {
+        printf(&quot;chdir failed\n&quot;);
+        exit(EXIT_FAILURE);
+    }
+    umask();
+    close(STDOUT_FILENO);
+    close(STDERR_FILENO);
+    close(STDIN_FILENO);
+}
+</code></pre><h3 id="syslog__u65E5_u5FD7_u670D_u52A1"><a href="#syslog__u65E5_u5FD7_u670D_u52A1" class="headerlink" title="syslog 日志服务"></a>syslog 日志服务</h3><p>一旦系统调用setsid,它就不再有控制终端</p>
+<p>可以通过syslog提供服务,记录守护进程的各种输出信息</p>
+<p>openlog函数打开日志,syslog写入日志, closelog关闭日志</p>
+<pre><code>#include &lt;syslog.h&gt;
+void openlog(const char *ident, int option, int facility);
+void syslog(int priority, const char *format, ...);
+void closelog(void);
+</code></pre><blockquote>
+<p>openlog函数发起到系统日志服务器的连接,参数ident是要向每个消息加入的字符串,典型的情况是要设置成程序的名称</p>
+</blockquote>
+<p>参数option是下面一个或多个值的”或”</p>
+<table>
+<thead>
+<tr>
+<th>名称</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>LOG_CONS</td>
+<td>如果系统日志服务器不能用,写入控制台</td>
+</tr>
+<tr>
+<td>LOG_NDELAY</td>
+<td>立即打开连接,正常情况下,直到发送第一条消息才打开连接</td>
+</tr>
+<tr>
+<td>LOG_PERROR</td>
+<td>打印输出到stderr</td>
+</tr>
+<tr>
+<td>LOG_PID</td>
+<td>每条消息中包含进程PID</td>
+</tr>
+</tbody>
+</table>
+<p>参数facitity指定程序发送消息的类型</p>
+<table>
+<thead>
+<tr>
+<th>名称</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>LOG_AUTHPRIV</td>
+<td>安全授权消息</td>
+</tr>
+<tr>
+<td>LOG_CRON</td>
+<td>时钟守护进程: cron和at</td>
+</tr>
+<tr>
+<td>LOG_DAEMON</td>
+<td>其他系统守护进程</td>
+</tr>
+<tr>
+<td>LOG_KERN</td>
+<td>内核消息</td>
+</tr>
+<tr>
+<td>LOG_LPR</td>
+<td>打印机子系统</td>
+</tr>
+<tr>
+<td>LOG_MAIL</td>
+<td>邮件子系统</td>
+</tr>
+<tr>
+<td>LOG_USER</td>
+<td>默认</td>
+</tr>
+</tbody>
+</table>
+<p>参数priority指定消息的重要性</p>
+<table>
+<thead>
+<tr>
+<th>名称</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>LOG_EMERG</td>
+<td>系统不能使用</td>
+</tr>
+<tr>
+<td>LOG_ALERT</td>
+<td>立即采取措施</td>
+</tr>
+<tr>
+<td>LOG_CRIT</td>
+<td>紧急事件</td>
+</tr>
+<tr>
+<td>LOG_ERR</td>
+<td>出错条件</td>
+</tr>
+<tr>
+<td>LOG_WARNING</td>
+<td>警告条件</td>
+</tr>
+<tr>
+<td>LOG_NOTICE</td>
+<td>正常但重大事件</td>
+</tr>
+<tr>
+<td>LOG_INFO</td>
+<td>信息消息</td>
+</tr>
+<tr>
+<td>LOG_DEBUG</td>
+<td>调试信息</td>
+</tr>
+</tbody>
+</table>
+<h4 id="syslog_u4EE3_u7801_u793A_u4F8B"><a href="#syslog_u4EE3_u7801_u793A_u4F8B" class="headerlink" title="syslog代码示例"></a>syslog代码示例</h4><pre><code>syslog(LOG_INFO, &quot;my daemon is OK&quot;);
+</code></pre><blockquote>
+<p>严格的说, openlog和closelog是可选的,因为函数syslog在首次使用的时候自动打开日志文件<br>linux系统上日志文件通常是<code>/var/log/messages</code></p>
+</blockquote>
+<h3 id="u7ED3_u675F_u5B88_u62A4_u8FDB_u7A0B"><a href="#u7ED3_u675F_u5B88_u62A4_u8FDB_u7A0B" class="headerlink" title="结束守护进程"></a>结束守护进程</h3><p>要和一个守护进程通信,你要向他发送信号,让他以某种方式响应</p>
+<p>例如:强行要求一个守护进程重新读取它的配置文件,或者改变守护进程的行为,或者指示守护进程结束运行</p>
+<h4 id="u901A_u8FC7shell_u811A_u672C_u7ED3_u675F_u5B88_u62A4_u8FDB_u7A0B"><a href="#u901A_u8FC7shell_u811A_u672C_u7ED3_u675F_u5B88_u62A4_u8FDB_u7A0B" class="headerlink" title="通过shell脚本结束守护进程"></a>通过shell脚本结束守护进程</h4><pre><code>#!/bin/sh
+
+WHOAMI=`whoami`
+
+PID=`ps -u $WHOAMI | grep abc | awk &apos;{print $1}&apos;`
+if(test &quot;$PID&quot; != &quot;&quot;)then
+    kill $PID
+fi
+</code></pre><blockquote>
+<p>注意:脚本文件的名称不要有’abc’字样,不然执行ps的时候会吧脚本名称也print出来</p>
+</blockquote>
+<h4 id="u901A_u8FC7shell_u786E_u4FDD_u53EA_u542F_u52A8_u4E00_u4E2A_u5B88_u62A4_u8FDB_u7A0B_u5B9E_u4F8B"><a href="#u901A_u8FC7shell_u786E_u4FDD_u53EA_u542F_u52A8_u4E00_u4E2A_u5B88_u62A4_u8FDB_u7A0B_u5B9E_u4F8B" class="headerlink" title="通过shell确保只启动一个守护进程实例"></a>通过shell确保只启动一个守护进程实例</h4><pre><code>#!/bin/sh
+
+WHOAMI=`whoami`
+
+PID=`ps -u $WHOAMI | grep abc | awk &apos;{print $1}&apos;`
+if(test &quot;$PID&quot; != &quot;&quot;)then
+    ./abc
+fi
+</code></pre><h3 id="u4F7F_u7528FIFO_u4E0E_u5B88_u62A4_u8FDB_u7A0B_u901A_u4FE1"><a href="#u4F7F_u7528FIFO_u4E0E_u5B88_u62A4_u8FDB_u7A0B_u901A_u4FE1" class="headerlink" title="使用FIFO与守护进程通信"></a>使用FIFO与守护进程通信</h3><h4 id="u8BFBFIFO"><a href="#u8BFBFIFO" class="headerlink" title="读FIFO"></a>读FIFO</h4><pre><code>void readfifo()
+{
+    int len = 0;
+    char buf[1024];
+    memset(buf, 0, sizeof(buf));
+    int fd = open(&quot;/home/username/1/fifo1&quot;, O_RDONLY);
+    while((len = read(fd, buf, sizeof(buf)))&gt;0)
+    {
+        printf(&quot;%s\n&quot;, buf);
+    }
+    close(fd);
+    return;
+}
+</code></pre><h4 id="u5199fifo"><a href="#u5199fifo" class="headerlink" title="写fifo"></a>写fifo</h4><pre><code>void writefifo()
+{
+    int len = 0;
+    char buf[1204];
+    memset(buf, 0, sizeof(buf));
+    int fd = open(&quot;/home/username/1/fifo1&quot;, O_WRONLY);
+    scanf(&quot;%s&quot;, buf);
+    write(fd, buf, sizeof(buf));
+    close(fd);
+    return;
+}
+</code></pre><h4 id="u8BA9_u540E_u53F0_u8FD0_u884C_u7684daemon_u7A0B_u5E8F_u5411_u5C4F_u5E55_u6253_u5370_u4FE1_u606F_u2013_u5B8C_u6574_u7684daemon_u793A_u4F8B_u4EE3_u7801"><a href="#u8BA9_u540E_u53F0_u8FD0_u884C_u7684daemon_u7A0B_u5E8F_u5411_u5C4F_u5E55_u6253_u5370_u4FE1_u606F_u2013_u5B8C_u6574_u7684daemon_u793A_u4F8B_u4EE3_u7801" class="headerlink" title="让后台运行的daemon程序向屏幕打印信息–完整的daemon示例代码"></a>让后台运行的daemon程序向屏幕打印信息–完整的daemon示例代码</h4><pre><code>int signal1(int signo, void (*func)(int))
+{
+    struct sigaction act, oact;
+    act.sa_handler = func;
+    sigemptyset(&amp;act.sa_mask);
+    act.sa_flags = 0;
+    return sigaction(signo, &amp;act, &amp;oact);
+}
+void setdaemon()
+{
+    pid_t pid,sid;
+    pid = fork();
+    if(pid &lt;0)
+    {
+        printf(&quot;fork failed\n&quot;);
+        exit(EXIT_FAILURE);
+    }
+    if(pid&gt;0)
+    {
+        exit(EXIT_SUCCESS);
+    }
+    if((sid = setsid())&lt;0)
+    {
+        printf(&quot;setsid fialed %s\n&quot;, strerror(errno));
+        exit(EXIT_FIALURE);
+    }
+}
+
+void listenfifo()
+{
+    const char *sfifoname = &quot;fifo1&quot;; 
+    int len = 0;
+    char buf[128];
+    memset(buf, 0, sizeof(buf));
+    int fd = open(sfifoname, O_RDONLY); //打开fifo1管道文件
+    if(fd == -1)
+    {
+        printf(&quot;open %s failed %s\n&quot;, sfifoname, strerror(errno));
+    }
+    len = read(fd, buf, sizeof(buf)); //进程阻塞,知道有数据才返回来
+    if(len &gt;0)
+     {
+        if(buf[strlen(buf) -1] == &apos;\n&apos;)//如果读到的字符串最后是&apos;\n&apos;, 将&apos;\n&apos;变为0
+        {
+            buf[strlen(buf) -1] = 0;
+        }
+        close(STDOUT_FILENO);    //关闭标准输出
+        open(buf, O_WRONLY);
+    }
+    close(fd);
+}
+
+void catch_Signal(int sign)
+{
+    switch(sign)
+    {
+    case SIGINT:
+        listenfifo();
+        break;
+    }
+}
+int main(void)
+{
+    setdaemon();//把进程设为daemon状态
+    signal1(SIGINT,catch_Signal);    //捕捉SIINT信号
+    while(1)
+    {
+        ptus(&quot;!! hello world&quot;);
+        sleep(1);
+    }
+    return EXIT_SUCCESS;
+
+}
+</code></pre><ol>
+<li>执行<code>mkfifo fifo1</code>命令, 创建一个名为fifo1的管道文件</li>
+<li>编译上面的代码, 执行程序, 关闭当期控制台终端窗口, 让程序在后台运行</li>
+<li>打开一个新的终端窗口, 通过<code>ps aux</code>找到进程PID</li>
+<li>执行</li>
+</ol>
+<pre><code>kill -s 2 PID
+tty &gt; fifo
+</code></pre>
+      
+    </div>
+    
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2015/10/25/linux网络编程/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption"><</strong>
+      <div class="article-nav-title">
+        
+          linux网络编程
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2015/10/25/Liux多线程/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">Liux多线程</div>
+      <strong class="article-nav-caption">></strong>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+<div class="share_jia">
+	<!-- JiaThis Button BEGIN -->
+	<div class="jiathis_style">
+		<span class="jiathis_txt">分享到: &nbsp; </span>
+		<a class="jiathis_button_facebook"></a> 
+    <a class="jiathis_button_twitter"></a>
+    <a class="jiathis_button_plus"></a> 
+    <a class="jiathis_button_tsina"></a>
+		<a class="jiathis_button_cqq"></a>
+		<a class="jiathis_button_douban"></a>
+		<a class="jiathis_button_weixin"></a>
+		<a class="jiathis_button_tumblr"></a>
+    <a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jtico jtico_jiathis" target="_blank"></a>
+	</div>
+	<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js?uid=1405949716054953" charset="utf-8"></script>
+	<!-- JiaThis Button END -->
+</div>
+
+
+
+
+
+
+<div class="duoshuo">
+	<!-- 多说评论框 start -->
+	<div class="ds-thread" data-thread-key="Linux信号处理" data-title="Linux信号处理" data-url="http://www.bigtiger079.com/2015/10/25/Linux信号处理/"></div>
+	<!-- 多说评论框 end -->
+	<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+	<script type="text/javascript">
+	var duoshuoQuery = {short_name:"true"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0] 
+		 || document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+	</script>
+	<!-- 多说公共JS代码 end -->
+</div>
+
+
+
+
+</div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info">
+    	<div class="footer-left">
+    		&copy; 2016 Bigtiger
+    	</div>
+      	<div class="footer-right">
+      		<a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/litten/hexo-theme-yilia" target="_blank">Yilia</a> by Litten
+      	</div>
+    </div>
+  </div>
+</footer>
+    </div>
+    
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css" type="text/css">
+
+
+<script>
+	var yiliaConfig = {
+		fancybox: true,
+		mathjax: true,
+		animate: true,
+		isHome: false,
+		isPost: true,
+		isArchive: false,
+		isTag: false,
+		isCategory: false,
+		open_in_new: false
+	}
+</script>
+<script src="http://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js" type="text/javascript"></script>
+<script src="/js/main.js" type="text/javascript"></script>
+
+
+
+
+
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';                 
+    }       
+});
+</script>
+
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  </div>
+</body>
+</html>

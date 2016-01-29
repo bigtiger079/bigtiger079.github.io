@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" >
+  <title>Manifest文件属性 | Bigtiger&#39;s blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="一、关于AndroidManifest.xmlAndroidManifest.xml 是每个android程序中必须的文件。它位于整个项目的根目录，描述了package中暴露的组件（activities, services, 等等），他们各自的实现类，各种能被处理的数据和启动位置。 除了能声明程序中的Activities, ContentProviders, Services, 和Intent R">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Manifest文件属性">
+<meta property="og:url" content="http://www.bigtiger079.com/2015/09/13/Manifest文件属性/index.html">
+<meta property="og:site_name" content="Bigtiger's blog">
+<meta property="og:description" content="一、关于AndroidManifest.xmlAndroidManifest.xml 是每个android程序中必须的文件。它位于整个项目的根目录，描述了package中暴露的组件（activities, services, 等等），他们各自的实现类，各种能被处理的数据和启动位置。 除了能声明程序中的Activities, ContentProviders, Services, 和Intent R">
+<meta property="og:updated_time" content="2016-01-28T12:49:21.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Manifest文件属性">
+<meta name="twitter:description" content="一、关于AndroidManifest.xmlAndroidManifest.xml 是每个android程序中必须的文件。它位于整个项目的根目录，描述了package中暴露的组件（activities, services, 等等），他们各自的实现类，各种能被处理的数据和启动位置。 除了能声明程序中的Activities, ContentProviders, Services, 和Intent R">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  <link rel="stylesheet" href="/css/style.css" type="text/css">
+</head>
+
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+	<header id="header" class="inner">
+		<a href="/" class="profilepic">
+			
+			<img lazy-src="http://7xlrpi.com1.z0.glb.clouddn.com/avatar.png" class="js-avatar">
+			
+		</a>
+
+		<hgroup>
+		  <h1 class="header-author"><a href="/">Bigtiger</a></h1>
+		</hgroup>
+
+		
+
+		
+			<div class="switch-btn">
+				<div class="icon">
+					<div class="icon-ctn">
+						<div class="icon-wrap icon-house" data-idx="0">
+							<div class="birdhouse"></div>
+							<div class="birdhouse_holes"></div>
+						</div>
+						<div class="icon-wrap icon-ribbon hide" data-idx="1">
+							<div class="ribbon"></div>
+						</div>
+						
+						
+						<div class="icon-wrap icon-me hide" data-idx="3">
+							<div class="user"></div>
+							<div class="shoulder"></div>
+						</div>
+						
+					</div>
+					
+				</div>
+				<div class="tips-box hide">
+					<div class="tips-arrow"></div>
+					<ul class="tips-inner">
+						<li>菜单</li>
+						<li>标签</li>
+						
+						
+						<li>关于我</li>
+						
+					</ul>
+				</div>
+			</div>
+		
+
+		<div class="switch-area">
+			<div class="switch-wrap">
+				<section class="switch-part switch-part1">
+					<nav class="header-menu">
+						<ul>
+						
+							<li><a href="/">主页</a></li>
+				        
+							<li><a href="/archives">所有文章</a></li>
+				        
+							<li><a href="/categories">分类</a></li>
+				        
+							<li><a href="/tags">标签</a></li>
+				        
+						</ul>
+					</nav>
+					<nav class="header-nav">
+						<div class="social">
+							
+								<a class="mail" target="_blank" href="/bigtiger079@gmail.com" title="mail">mail</a>
+					        
+						</div>
+					</nav>
+				</section>
+				
+				
+				<section class="switch-part switch-part2">
+					<div class="widget tagcloud" id="js-tagcloud">
+						<a href="/tags/Android/" style="font-size: 10px;">Android</a> <a href="/tags/C/" style="font-size: 10px;">C++</a> <a href="/tags/Cpp基础/" style="font-size: 10px;">Cpp基础</a> <a href="/tags/Hexo/" style="font-size: 10px;">Hexo</a> <a href="/tags/JNI/" style="font-size: 10px;">JNI</a> <a href="/tags/RecyclerView/" style="font-size: 16.67px;">RecyclerView</a> <a href="/tags/android/" style="font-size: 10px;">android</a> <a href="/tags/linux/" style="font-size: 20px;">linux</a> <a href="/tags/线性表/" style="font-size: 13.33px;">线性表</a>
+					</div>
+				</section>
+				
+				
+				
+
+				
+				
+				<section class="switch-part switch-part3">
+				
+					<div id="js-aboutme">我是谁，我从哪里来，我到哪里去？我就是我，是颜色不一样的吃货…</div>
+				</section>
+				
+			</div>
+		</div>
+	</header>				
+</div>
+
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+  	<div class="overlay">
+  		<div class="slider-trigger"></div>
+  		<h1 class="header-author js-mobile-header hide">Bigtiger</h1>
+  	</div>
+	<div class="intrude-less">
+		<header id="header" class="inner">
+			<div class="profilepic">
+			
+				<img lazy-src="http://7xlrpi.com1.z0.glb.clouddn.com/avatar.png" class="js-avatar">
+			
+			</div>
+			<hgroup>
+			  <h1 class="header-author">Bigtiger</h1>
+			</hgroup>
+			
+			<nav class="header-menu">
+				<ul>
+				
+					<li><a href="/">主页</a></li>
+		        
+					<li><a href="/archives">所有文章</a></li>
+		        
+					<li><a href="/categories">分类</a></li>
+		        
+					<li><a href="/tags">标签</a></li>
+		        
+		        <div class="clearfix"></div>
+				</ul>
+			</nav>
+			<nav class="header-nav">
+				<div class="social">
+					
+						<a class="mail" target="_blank" href="/bigtiger079@gmail.com" title="mail">mail</a>
+			        
+				</div>
+			</nav>
+		</header>				
+	</div>
+</nav>
+
+      <div class="body-wrap"><article id="post-Manifest文件属性" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2015/09/13/Manifest文件属性/" class="article-date">
+  	<time datetime="2015-09-13T13:54:18.000Z" itemprop="datePublished">2015-09-13</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Manifest文件属性
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/android/">android</a></li></ul>
+	</div>
+
+        
+	<div class="article-category tagcloud">
+	<a class="article-category-link" href="/categories/android/">android</a>
+	</div>
+
+
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="u4E00_u3001_u5173_u4E8EAndroidManifest-xml"><a href="#u4E00_u3001_u5173_u4E8EAndroidManifest-xml" class="headerlink" title="一、关于AndroidManifest.xml"></a>一、关于AndroidManifest.xml</h2><p>AndroidManifest.xml 是每个android程序中必须的文件。它位于整个项目的根目录，描述了package中暴露的组件（activities, services, 等等），他们各自的实现类，各种能被处理的数据和启动位置。 除了能声明程序中的Activities, ContentProviders, Services, 和Intent Receivers,还能指定permissions和instrumentation（安全控制和测试）</p>
+<h2 id="u4E8C_u3001AndroidManifest-xml_u7ED3_u6784"><a href="#u4E8C_u3001AndroidManifest-xml_u7ED3_u6784" class="headerlink" title="二、AndroidManifest.xml结构"></a>二、AndroidManifest.xml结构</h2><pre><code>&lt;?xmlversion=&quot;1.0&quot;encoding=&quot;utf-8&quot;?&gt;
+&lt;manifest&gt;
+    &lt;application&gt;
+           &lt;activity&gt;
+           &lt;intent-filter&gt;
+               &lt;action/&gt;
+               &lt;category/&gt;
+            &lt;/intent-filter&gt;
+         &lt;/activity&gt;
+         &lt;activity-alias&gt;
+             &lt;intent-filter&gt;&lt;/intent-filter&gt;
+            &lt;meta-data/&gt;
+         &lt;/activity-alias&gt;
+         &lt;service&gt;
+             &lt;intent-filter&gt;&lt;/intent-filter&gt;
+            &lt;meta-data/&gt;
+         &lt;/service&gt;
+         &lt;receiver&gt;
+             &lt;intent-filter&gt;&lt;/intent-filter&gt;
+            &lt;meta-data/&gt;
+         &lt;/receiver&gt;
+         &lt;provider&gt;
+            &lt;grant-uri-permission/&gt;
+            &lt;meta-data/&gt;
+         &lt;/provider&gt;
+        &lt;uses-library/&gt;
+    &lt;/application&gt;
+    &lt;uses-permission/&gt;
+    &lt;permission/&gt;
+    &lt;permission-tree/&gt;
+    &lt;permission-group/&gt;
+    &lt;instrumentation/&gt;
+    &lt;uses-sdk/&gt;
+    &lt;uses-configuration/&gt; 
+    &lt;uses-feature/&gt; 
+    &lt;supports-screens/&gt;
+&lt;/manifest&gt;
+</code></pre><h2 id="u4E09_u3001_u5404_u4E2A_u8282_u70B9_u7684_u8BE6_u7EC6_u4ECB_u7ECD"><a href="#u4E09_u3001_u5404_u4E2A_u8282_u70B9_u7684_u8BE6_u7EC6_u4ECB_u7ECD" class="headerlink" title="三、各个节点的详细介绍"></a>三、各个节点的详细介绍</h2><p>上面就是整个am(androidManifest).xml的结构，下面以外向内开始阐述～～</p>
+<h3 id="1_u3001_u7B2C_u4E00_u5C42_28Manifest_29_3A_28_u5C5E_u6027_29"><a href="#1_u3001_u7B2C_u4E00_u5C42_28Manifest_29_3A_28_u5C5E_u6027_29" class="headerlink" title="1、第一层(Manifest):(属性)"></a>1、第一层(Manifest):(属性)</h3><pre><code>&lt;manifest  xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;
+      package=&quot;com.woody.test&quot;
+      android:sharedUserId=&quot;string&quot;
+      android:sharedUserLabel=&quot;string resource&quot;
+      android:versionCode=&quot;integer&quot;
+      android:versionName=&quot;string&quot;
+      android:installLocation=[&quot;auto&quot; | &quot;internalOnly&quot; | &quot;preferExternal&quot;] &gt;
+&lt;/manifest&gt;
+</code></pre><p> A、xmlns:android<br>定义android命名空间，一般为<a href="http://schemas.android.com/apk/res/android，这样使得Android中各种标准属性能在文件中使用，提供了大部分元素中的数据。" target="_blank" rel="external">http://schemas.android.com/apk/res/android，这样使得Android中各种标准属性能在文件中使用，提供了大部分元素中的数据。</a></p>
+<p>B、package<br>指定本应用内java主程序包的包名，它也是一个应用进程的默认名称</p>
+<p>C、sharedUserId<br>表明数据权限，因为默认情况下，Android给每个APK分配一个唯一的UserID，所以是默认禁止不同APK访问共享数据的。若要共享数据，第一可以采用Share Preference方法，第二种就可以采用sharedUserId了，将不同APK的sharedUserId都设为一样，则这些APK之间就可以互相共享数据了。</p>
+<p>D、sharedUserLabel<br>一个共享的用户名，它只有在设置了sharedUserId属性的前提下才会有意义</p>
+<p>E、versionCode<br>是给设备程序识别版本(升级)用的必须是一个interger值代表app更新过多少次，比如第一版一般为1，之后若要更新版本就设置为2，3等等。。。</p>
+<p> F、versionName<br>这个名称是给用户看的，你可以将你的APP版本号设置为1.1版，后续更新版本设置为1.2、2.0版本等等。。。</p>
+<p>G、installLocation<br>安装参数，是Android2.2中的一个新特性，installLocation有三个值可以选择：internalOnly、auto、preferExternal</p>
+<blockquote>
+<p>选择preferExternal,系统会优先考虑将APK安装到SD卡上(当然最终用户可以选择为内部ROM存储上，如果SD存储已满，也会安装到内部存储上)</p>
+<p>选择auto，系统将会根据存储空间自己去适应</p>
+<p>选择internalOnly是指必须安装到内部才能运行<br>(注：需要进行后台类监控的APP最好安装在内部，而一些较大的游戏APP最好安装在SD卡上。现默认为安装在内部，如果把APP安装在SD卡上，首先得 设置你的level为8，并且要配置android:installLocation这个参数的属性为preferExternal)</p>
+</blockquote>
+<h3 id="2_u3001_u7B2C_u4E8C_u5C42_28Application_29_3A_u5C5E_u6027"><a href="#2_u3001_u7B2C_u4E8C_u5C42_28Application_29_3A_u5C5E_u6027" class="headerlink" title="2、第二层(Application):属性"></a>2、第二层(Application):属性</h3><p>一个AndroidManifest.xml中必须含有一个Application标签，这个标签声明了每一个应用程序的组件及其属性(如icon,label,permission等)</p>
+<pre><code>&lt;application  android:allowClearUserData=[&quot;true&quot; | &quot;false&quot;]
+     android:allowTaskReparenting=[&quot;true&quot; | &quot;false&quot;]
+     android:backupAgent=&quot;string&quot;
+     android:debuggable=[&quot;true&quot; | &quot;false&quot;]
+     android:description=&quot;string resource&quot;
+     android:enabled=[&quot;true&quot; | &quot;false&quot;]
+     android:hasCode=[&quot;true&quot; | &quot;false&quot;]
+     android:icon=&quot;drawable resource&quot;
+     android:killAfterRestore=[&quot;true&quot; | &quot;false&quot;]
+     android:label=&quot;string resource&quot;
+     android:manageSpaceActivity=&quot;string&quot;
+     android:name=&quot;string&quot;
+     android:permission=&quot;string&quot;
+     android:persistent=[&quot;true&quot; | &quot;false&quot;]
+     android:process=&quot;string&quot;
+     android:restoreAnyVersion=[&quot;true&quot; | &quot;false&quot;]
+     android:taskAffinity=&quot;string&quot;
+     android:theme=&quot;resource or theme&quot; &gt;
+&lt;/application&gt;
+</code></pre><p> A、android:allowClearUserData(‘true’ or ‘false’)<br>用户是否能选择自行清除数据，默认为true，程序管理器包含一个选择允许用户清除数据。当为true时，用户可自己清理用户数据，反之亦然</p>
+<p> B、android:allowTaskReparenting(‘true’ or ‘false’)<br>是否允许activity更换从属的任务，比如从短信息任务切换到浏览器任务</p>
+<p>C、android:backupAgent<br>这也是Android2.2中的一个新特性，设置该APP的备份，属性值应该是一个完整的类名，如com.project.TestCase，此属性并没有默认值，并且类名必须得指定(就是个备份工具，将数据备份到云端的操作)</p>
+<p> D、android:debuggable<br>这个从字面上就可以看出是什么作用的，当设置为true时，表明该APP在手机上可以被调试。默认为false,在false的情况下调试该APP，就会报以下错误：<br>Device XXX requires that applications explicitely declare themselves as debuggable in their manifest.<br>Application XXX does not have the attribute ‘debuggable’ set to TRUE in its manifest and cannot be debugged.</p>
+<p>E、android:description/android:label<br>此两个属性都是为许可提供的，均为字符串资源，当用户去看许可列表(android:label)或者某个许可的详细信息 (android:description)时，这些字符串资源就可以显示给用户。label应当尽量简短，之需要告知用户该许可是在保护什么功能就行。 而description可以用于具体描述获取该许可的程序可以做哪些事情，实际上让用户可以知道如果他们同意程序获取该权限的话，该程序可以做什么。我 们通常用两句话来描述许可，第一句描述该许可，第二句警告用户如果批准该权限会可能有什么不好的事情发生</p>
+<p>F、android:enabled<br>Android系统是否能够实例化该应用程序的组件，如果为true，每个组件的enabled属性决定那个组件是否可以被 enabled。如果为false，它覆盖组件指定的值；所有组件都是disabled。</p>
+<p>G、android:hasCode(‘true’ or ‘false’)<br>表示此APP是否包含任何的代码，默认为true，若为false，则系统在运行组件时，不会去尝试加载任何的APP代码<br>一个应用程序自身不会含有任何的代码，除非内置组件类，比如Activity类，此类使用了AliasActivity类，当然这是个罕见的现象<br>(在Android2.3可以用标准C来开发应用程序，可在androidManifest.xml中将此属性设置为false,因为这个APP本身已经不含有任何的JAVA代码了)</p>
+<p>H、android:icon<br>这个很简单，就是声明整个APP的图标，图片一般都放在drawable文件夹下<br>I、android:killAfterRestore<br>J、android:manageSpaceActivity<br>K、android:name<br>为应用程序所实现的Application子类的全名。当应用程序进程开始时，该类在所有应用程序组件之前被实例化。<br>若该类(比方androidMain类)是在声明的package下，则可以直接声明android:name=”androidMain”,但此类是在 package下面的子包的话，就必须声明为全路径或android:name=”package名称.子包名成.androidMain”</p>
+<p>L、android:permission<br>设置许可名，这个属性若在<application>上定义的话，是一个给应用程序的所有组件设置许可的便捷方式，当然它是被各组件设置的许可名所覆盖的</application></p>
+<p>M、android:presistent<br>该应用程序是否应该在任何时候都保持运行状态,默认为false。因为应用程序通常不应该设置本标识，持续模式仅仅应该设置给某些系统应用程序才是有意义的。</p>
+<p>N、android:process<br>应用程序运行的进程名，它的默认值为<manifest>元素里设置的包名，当然每个组件都可以通过设置该属性来覆盖默认值。如果你想两个应 用程序共用一个进程的话，你可以设置他们的android:process相同，但前提条件是他们共享一个用户ID及被赋予了相同证书的时候</manifest></p>
+<p>O、android:restoreAnyVersion<br>同样也是android2.2的一个新特性，用来表明应用是否准备尝试恢复所有的备份，甚至该备份是比当前设备上更要新的版本，默认是false</p>
+<p>P、android:taskAffinity<br>拥有相同的affinity的Activity理论上属于相同的Task，应用程序默认的affinity的名字是<manifest>元素中设定的package名</manifest></p>
+<p>Q、android:theme<br>是一个资源的风格，它定义了一个默认的主题风格给所有的activity,当然也可以在自己的theme里面去设置它，有点类似style。</p>
+<h3 id="3_u3001_u7B2C_u4E09_u5C42_28Activity_29_3A_u5C5E_u6027"><a href="#3_u3001_u7B2C_u4E09_u5C42_28Activity_29_3A_u5C5E_u6027" class="headerlink" title="3、第三层(Activity):属性"></a>3、第三层(Activity):属性</h3><pre><code> &lt;activity android:allowTaskReparenting=[&quot;true&quot; | &quot;false&quot;]
+     android:alwaysRetainTaskState=[&quot;true&quot; | &quot;false&quot;]
+     android:clearTaskOnLaunch=[&quot;true&quot; | &quot;false&quot;]
+     android:configChanges=[&quot;mcc&quot;, &quot;mnc&quot;, &quot;locale&quot;,
+                        &quot;touchscreen&quot;, &quot;keyboard&quot;, &quot;keyboardHidden&quot;,
+                        &quot;navigation&quot;, &quot;orientation&quot;, &quot;screenLayout&quot;,
+                        &quot;fontScale&quot;, &quot;uiMode&quot;]
+     android:enabled=[&quot;true&quot; | &quot;false&quot;]
+     android:excludeFromRecents=[&quot;true&quot; | &quot;false&quot;]
+     android:exported=[&quot;true&quot; | &quot;false&quot;]
+     android:finishOnTaskLaunch=[&quot;true&quot; | &quot;false&quot;]
+     android:icon=&quot;drawable resource&quot;
+     android:label=&quot;string resource&quot;
+     android:launchMode=[&quot;multiple&quot; | &quot;singleTop&quot; |
+                     &quot;singleTask&quot; | &quot;singleInstance&quot;]
+     android:multiprocess=[&quot;true&quot; | &quot;false&quot;]
+     android:name=&quot;string&quot;
+     android:noHistory=[&quot;true&quot; | &quot;false&quot;]  
+     android:permission=&quot;string&quot;
+     android:process=&quot;string&quot;
+     android:screenOrientation=[&quot;unspecified&quot; | &quot;user&quot; | &quot;behind&quot; |
+                                &quot;landscape&quot; | &quot;portrait&quot; |
+                                &quot;sensor&quot; | &quot;nosensor&quot;]
+     android:stateNotNeeded=[&quot;true&quot; | &quot;false&quot;]
+     android:taskAffinity=&quot;string&quot;
+     android:theme=&quot;resource or theme&quot;
+     android:windowSoftInputMode=[&quot;stateUnspecified&quot;,
+                              &quot;stateUnchanged&quot;, &quot;stateHidden&quot;,
+                              &quot;stateAlwaysHidden&quot;, &quot;stateVisible&quot;,
+                              &quot;stateAlwaysVisible&quot;, &quot;adjustUnspecified&quot;,
+                              &quot;adjustResize&quot;, &quot;adjustPan&quot;] &gt;   
+&lt;/activity&gt;
+</code></pre><p>(注：有些在application中重复的就不多阐述了)</p>
+<p>1、android:alwaysRetainTaskState<br>是否保留状态不变， 比如切换回home, 再从新打开，activity处于最后的状态。比如一个浏览器拥有很多状态(当打开了多个TAB的时候)，用户并不希望丢失这些状态时，此时可将此属性设置为true</p>
+<p>2、android:clearTaskOnLaunch<br>比如 P 是 activity, Q 是被P 触发的 activity, 然后返回Home, 重新启动 P，是否显示 Q</p>
+<p>3、android:configChanges<br>当配置list发生修改时， 是否调用 onConfigurationChanged() 方法  比如 “locale|navigation|orientation”. </p>
+<p> 这个我用过,主要用来看手机方向改变的. android手机在旋转后,layout会重新布局, 如何做到呢?<br>正常情况下. 如果手机旋转了.当前Activity后杀掉,然后根据方向重新加载这个Activity. 就会从onCreate开始重新加载.</p>
+<p>如果你设置了 这个选项, 当手机旋转后,当前Activity之后调用onConfigurationChanged() 方法. 而不跑onCreate方法等.</p>
+<p>4、android:excludeFromRecents<br>是否可被显示在最近打开的activity列表里，默认是false</p>
+<p>5、android:finishOnTaskLaunch<br>当用户重新启动这个任务的时候，是否关闭已打开的activity，默认是false<br>如果这个属性和allowTaskReparenting都是true,这个属性就是王牌。Activity的亲和力将被忽略。该Activity已经被摧毁并非re-parented</p>
+<p>6、android:launchMode(Activity加载模式)<br>在多Activity开发中，有可能是自己应用之间的Activity跳转，或者夹带其他应用的可复用Activity。可能会希望跳转到原来某个 Activity实例，而不是产生大量重复的Activity。这需要为Activity配置特定的加载模式，而不是使用默认的加载模式</p>
+<p>Activity有四种加载模式：<br>standard、singleTop、singleTask、singleInstance(其中前两个是一组、后两个是一组)，默认为standard </p>
+<ul>
+<li>standard：就是intent将发送给新的实例，所以每次跳转都会生成新的activity。</li>
+<li>singleTop：也是发送新的实例，但不同standard的一点是，在请求的Activity正好位于栈顶时(配置成singleTop的Activity)，不会构造新的实例</li>
+<li>singleTask：和后面的singleInstance都只创建一个实例，当intent到来，需要创建设置为singleTask的Activity的时候，系统会检查栈里面是否已经有该Activity的实例。如果有直接将intent发送给它。</li>
+<li>singleInstance：<br>首先说明一下task这个概念，Task可以认为是一个栈，可放入多个Activity。比如启动一个应用，那么Android就创建了一个Task，然 后启动这个应用的入口Activity，那在它的界面上调用其他的Activity也只是在这个task里面。那如果在多个task中共享一个 Activity的话怎么办呢。举个例来说，如果开启一个导游服务类的应用程序，里面有个Activity是开启GOOGLE地图的，当按下home键退 回到主菜单又启动GOOGLE地图的应用时，显示的就是刚才的地图，实际上是同一个Activity，实际上这就引入了singleInstance。 singleInstance模式就是将该Activity单独放入一个栈中，这样这个栈中只有这一个Activity，不同应用的intent都由这个 Activity接收和展示，这样就做到了共享。当然前提是这些应用都没有被销毁，所以刚才是按下的HOME键，如果按下了返回键，则无效</li>
+</ul>
+<p>7、android:multiprocess<br>是否允许多进程，默认是false</p>
+<p>8、android:noHistory<br>当用户从Activity上离开并且它在屏幕上不再可见时，Activity是否从Activity stack中清除并结束。默认是false。Activity不会留下历史痕迹</p>
+<p>9、android:screenOrientation<br>activity显示的模式</p>
+<ul>
+<li><p>默认为unspecified：由系统自动判断显示方向</p>
+</li>
+<li><p>landscape横屏模式，宽度比高度大</p>
+</li>
+<li><p>portrait竖屏模式, 高度比宽度大</p>
+</li>
+<li><p>user模式，用户当前首选的方向</p>
+</li>
+<li><p>behind模式：和该Activity下面的那个Activity的方向一致(在Activity堆栈中的)</p>
+</li>
+<li><p>sensor模式：有物理的感应器来决定。如果用户旋转设备这屏幕会横竖屏切换</p>
+</li>
+<li><p>nosensor模式：忽略物理感应器，这样就不会随着用户旋转设备而更改了</p>
+</li>
+</ul>
+<p>10、android:stateNotNeeded<br>activity被销毁或者成功重启时是否保存状态</p>
+<p>11、android:windowSoftInputMode<br>activity主窗口与软键盘的交互模式，可以用来避免输入法面板遮挡问题，Android1.5后的一个新特性。</p>
+<p>这个属性能影响两件事情：</p>
+<pre><code>【A】当有焦点产生时，软键盘是隐藏还是显示
+
+【B】是否减少活动主窗口大小以便腾出空间放软键盘
+</code></pre><p>各值的含义：</p>
+<pre><code>【A】stateUnspecified：软键盘的状态并没有指定，系统将选择一个合适的状态或依赖于主题的设置
+
+【B】stateUnchanged：当这个activity出现时，软键盘将一直保持在上一个activity里的状态，无论是隐藏还是显示
+
+【C】stateHidden：用户选择activity时，软键盘总是被隐藏
+
+【D】stateAlwaysHidden：当该Activity主窗口获取焦点时，软键盘也总是被隐藏的
+
+【E】stateVisible：软键盘通常是可见的
+
+【F】stateAlwaysVisible：用户选择activity时，软键盘总是显示的状态
+
+【G】adjustUnspecified：默认设置，通常由系统自行决定是隐藏还是显示
+
+【H】adjustResize：该Activity总是调整屏幕的大小以便留出软键盘的空间
+
+【I】adjustPan：当前窗口的内容将自动移动以便当前焦点从不被键盘覆盖和用户能总是看到输入内容的部分
+</code></pre><p>12、android:allowTaskReparenting<br>与许任务重定向 , 如果设置为true , 则之前打开的页面依然存在.</p>
+<h3 id="4_u3001_u7B2C_u56DB_u5C42_28intent-filter_29"><a href="#4_u3001_u7B2C_u56DB_u5C42_28intent-filter_29" class="headerlink" title="4、第四层(intent-filter)"></a>4、第四层(intent-filter)</h3><p>结构图：<br>    <intent-filter android:icon="drawable resource" android:label="string resource" android:priority="integer"><br>        <action><br>        <category><br>        <data><br>    </data></category></action></intent-filter> </p>
+<p>intent-filter属性 </p>
+<ul>
+<li>android:priority(解释：有序广播主要是按照声明的优先级别，如A的级别高于B，那么，广播先传给A，再传给B。优先级别就是用设置priority属性来确定，范围是从-1000～1000，数越大优先级别越高)</li>
+</ul>
+<p>Intent filter内会设定的资料包括action,data与category三种。也就是说filter只会与intent里的这三种资料作对比动作</p>
+<ul>
+<li><p>action属性<br>action很简单，只有android:name这个属性。常见的android:name值为android.intent.action.MAIN，表明此activity是作为应用程序的入口。有关android:name具体有哪些值，可参照这个网址：<a href="http://hi.baidu.com/linghtway/bl" target="_blank" rel="external">http://hi.baidu.com/linghtway/bl</a> … d053170ff477a7.html</p>
+</li>
+<li><p>category属性<br>category也只有android:name属性。常见的android:name值为android.intent.category.LAUNCHER(决定应用程序是否显示在程序列表里)<br>有关android:name具体有哪些值，可参照这个网址： <a href="http://chroya.javaeye.com/blog/685871" target="_blank" rel="external">http://chroya.javaeye.com/blog/685871</a></p>
+</li>
+<li><p>data属性<br>  &lt;data  android:host=”string”</p>
+<pre><code>android:mimeType=&quot;string&quot;
+android:path=&quot;string&quot;
+android:pathPattern=&quot;string&quot;
+android:pathPrefix=&quot;string&quot;
+android:port=&quot;string&quot;
+android:scheme=&quot;string&quot;/&gt;
+</code></pre></li>
+</ul>
+<p>【1】每个<data>元素指定一个URI和数据类型（MIME类型）。它有四个属性scheme、host、port、path对应于URI的每个部分：<br>scheme://host:port/path<br>scheme的值一般为”http”，host为包名，port为端口号，path为具体地址。如：<a href="http://com.test.project:200/folder/etc" target="_blank" rel="external">http://com.test.project:200/folder/etc</a><br>其中host和port合起来构成URI的凭据(authority)，如果host没有指定，则port也会被忽略<br>要让authority有意义，scheme也必须要指定。要让path有意义，scheme+authority也必须要指定</data></p>
+<p>【2】mimeType（指定数据类型），若mimeType为’Image’，则会从content Provider的指定地址中获取image类型的数据。还有’video’啥的，若设置为video/mp4，则表示在指定地址中获取mp4格式的video文件</p>
+<p>【3】而pathPattern和PathPrefix主要是为了格式化path所使用的</p>
+<h3 id="5_u3001_u7B2C_u56DB_u5C42_28meta-data_29"><a href="#5_u3001_u7B2C_u56DB_u5C42_28meta-data_29" class="headerlink" title="5、第四层(meta-data)"></a>5、第四层(meta-data)</h3><pre><code>&lt;meta-data android:name=&quot;string&quot;
+    android:resource=&quot;resource specification&quot;
+    android:value=&quot;string&quot;/&gt;
+</code></pre><p>这是该元素的基本结构.可以包含在<activity> <activity-alias> <service> <receiver>四个元素中。</receiver></service></activity-alias></activity></p>
+<ul>
+<li>android:name（解释：元数据项的名字，为了保证这个名字是唯一的，采用java风格的命名规范，如com.woody.project.fried)</li>
+<li>android:resource(解释：资源的一个引用，指定给这个项的值是该资源的id。该id可以通过方法Bundle.getInt()来从meta-data中找到。)</li>
+<li>android:value(解释：指定给这一项的值。可以作为值来指定的数据类型并且组件用来找回那些值的Bundle方法：[getString],[getInt],[getFloat],[getString],[getBoolean])</li>
+</ul>
+<h3 id="6_u3001_u7B2C_u4E09_u5C42_28activity-alias_29_u5C5E_u6027"><a href="#6_u3001_u7B2C_u4E09_u5C42_28activity-alias_29_u5C5E_u6027" class="headerlink" title="6、第三层(activity-alias)属性"></a>6、第三层(activity-alias)属性</h3><pre><code>&lt;activity-alias android:enabled=[&quot;true&quot; | &quot;false&quot;]
+    android:exported=[&quot;true&quot; | &quot;false&quot;]
+    android:icon=&quot;drawable resource&quot;
+    android:label=&quot;string resource&quot;
+    android:name=&quot;string&quot;
+    android:permission=&quot;string&quot;
+    android:targetActivity=&quot;string&quot;&gt;
+    &lt;intent-filter/&gt;     
+    &lt;meta-data/&gt;
+&lt;/activity-alias&gt;
+</code></pre><p><activity-alias>是为activity创建快捷方式的，如下实例：</activity-alias></p>
+<pre><code>&lt;activity android:name=&quot;.shortcut&quot;&gt;
+    &lt;intent-filter&gt;
+        &lt;action android:name=&quot;android.intent.action.MAIN&quot; /&gt;
+    &lt;/intent-filter&gt;
+&lt;/activity&gt;
+&lt;activity-alias android:name=&quot;.CreateShortcuts&quot; 
+    android:targetActivity=&quot;.shortcut&quot; 
+    android:label=&quot;@string/shortcut&quot;&gt;
+    &lt;intent-filter&gt;
+    &lt;action android:name=&quot;android.intent.action.CREATE_SHORTCUT&quot; /&gt;
+    &lt;category android:name=&quot;android.intent.category.DEFAULT&quot; /&gt;
+    &lt;/intent-filter&gt;
+&lt;/activity-alias&gt;
+</code></pre><p>其中android.targetActivity是指向对应快捷方式的activity,如上述的shortcut(此Activity名)<br>android:label是指快捷方式的名称，而快捷方式的图标默认是给定的application图标</p>
+<h3 id="7_u3001_u7B2C_u4E09_u5C42_28service_29"><a href="#7_u3001_u7B2C_u4E09_u5C42_28service_29" class="headerlink" title="7、第三层(service)"></a>7、第三层(service)</h3><p>【1】service与activity同级，与activity不同的是，它不能自己启动的，运行在后台的程序，如果我们退出应用时，Service进程并没有结束，它仍然在后台运行。比如听音乐，网络下载数据等，都是由service运行的</p>
+<p>【2】service生命周期：Service只继承了onCreate(),onStart(),onDestroy()三个方法，第一次启动 Service时，先后调用了onCreate(),onStart()这两个方法，当停止Service时，则执行onDestroy()方法，如果 Service已经启动了，当我们再次启动Service时，不会在执行onCreate()方法，而是直接执行onStart()方法</p>
+<p>【3】service与activity间的通信<br>Service后端的数据最终还是要呈现在前端Activity之上的，因为启动Service时，系统会重新开启一个新的进程，这就涉及到不同进程间通信的问题了(AIDL)，Activity与service间的通信主要用IBinder负责。</p>
+<p>【4】<br>    <service android:enabled="["true"" |="" "false"]="" android:exported[="true" android:icon="drawable resource" android:label="string resource" android:name="string" android:permission="string" android:process="string"><br>    </service><br>service标签内的属性之前已有描述，在此不重复了～</p>
+<h3 id="8_u3001_u7B2C_u4E09_u5C42_28receiver_29"><a href="#8_u3001_u7B2C_u4E09_u5C42_28receiver_29" class="headerlink" title="8、第三层(receiver)"></a>8、第三层(receiver)</h3><p>receiver的属性与service一样，这里就不显示了<br>BroadcastReceiver：用于发送广播，broadcast是在应用程序之间传输信息的一种机制，而BroadcastReceiver是对发送出来的 Broadcast进行过滤接受并响应的一类组件，具体参照<a href="http://kevin2562.javaeye.com/blog/686787" target="_blank" rel="external">http://kevin2562.javaeye.com/blog/686787</a></p>
+<h3 id="9_u3001_u7B2C_u4E09_u5C42_28provider_29_u5C5E_u6027"><a href="#9_u3001_u7B2C_u4E09_u5C42_28provider_29_u5C5E_u6027" class="headerlink" title="9、第三层(provider)属性"></a>9、第三层(provider)属性</h3><pre><code>&lt;provider android:authorities=&quot;list&quot;
+      android:enabled=[&quot;true&quot; | &quot;false&quot;]
+      android:exported=[&quot;true&quot; | &quot;false&quot;]
+      android:grantUriPermissions=[&quot;true&quot; | &quot;false&quot;]
+      android:icon=&quot;drawable resource&quot;
+      android:initOrder=&quot;integer&quot;
+      android:label=&quot;string resource&quot;
+      android:multiprocess=[&quot;true&quot; | &quot;false&quot;]
+      android:name=&quot;string&quot;
+      android:permission=&quot;string&quot;
+      android:process=&quot;string&quot;
+      android:readPermission=&quot;string&quot;
+      android:syncable=[&quot;true&quot; | &quot;false&quot;]
+      android:writePermission=&quot;string&quot;&gt;
+    &lt;grant-uri-permission/&gt;
+    &lt;meta-data/&gt;
+&lt;/provider&gt;
+</code></pre><p>contentProvider(数据存储)<br>【1】android:authorities：标识这个ContentProvider，调用者可以根据这个标识来找到它</p>
+<p>【2】android:grantUriPermission：对某个URI授予的权限</p>
+<p>【3】android:initOrder</p>
+<h3 id="10_u3001_u7B2C_u4E09_u5C42uses-library"><a href="#10_u3001_u7B2C_u4E09_u5C42uses-library" class="headerlink" title="10、第三层uses-library"></a>10、第三层<code>uses-library</code></h3><p>用户库，可自定义。所有android的包都可以引用</p>
+<h3 id="11_u3001_u7B2C_u4E00_u5C42_supports-screens"><a href="#11_u3001_u7B2C_u4E00_u5C42_supports-screens" class="headerlink" title="11、第一层 supports-screens"></a>11、第一层 <code>supports-screens</code></h3><pre><code>&lt;supports-screens  android:smallScreens=[&quot;true&quot; | &quot;false&quot;] 
+    android:normalScreens=[&quot;true&quot; | &quot;false&quot;] 
+    android:largeScreens=[&quot;true&quot; | &quot;false&quot;] 
+    android:anyDensity=[&quot;true&quot; | &quot;false&quot;] /&gt;
+</code></pre><p>这是在android1.6以后的新特性，支持多屏幕机制<br>各属性含义：这四个属性，是否支持大屏，是否支持中屏，是否支持小屏，是否支持多种不同密度</p>
+<h3 id="12_u3001_u7B2C_u4E8C_u5C42uses-configuration_u4E0Euses-feature_u6027_u80FD_u90FD_u5DEE_u4E0D_u591A"><a href="#12_u3001_u7B2C_u4E8C_u5C42uses-configuration_u4E0Euses-feature_u6027_u80FD_u90FD_u5DEE_u4E0D_u591A" class="headerlink" title="12、第二层uses-configuration与uses-feature性能都差不多"></a>12、第二层<code>uses-configuration</code>与<code>uses-feature</code>性能都差不多</h3><pre><code> &lt;uses-configuration  android:reqFiveWayNav=[&quot;true&quot; | &quot;false&quot;] 
+        android:reqHardKeyboard=[&quot;true&quot; | &quot;false&quot;]
+        android:reqKeyboardType=[&quot;undefined&quot; | &quot;nokeys&quot; | &quot;qwerty&quot; |   &quot;twelvekey&quot;]
+        android:reqNavigation=[&quot;undefined&quot; | &quot;nonav&quot; | &quot;dpad&quot; |  &quot;trackball&quot; | &quot;wheel&quot;]
+        android:reqTouchScreen=[&quot;undefined&quot; | &quot;notouch&quot; | &quot;stylus&quot; | &quot;finger&quot;] /&gt;
+&lt;uses-feature android:glEsVersion=&quot;integer&quot;
+          android:name=&quot;string&quot;
+          android:required=[&quot;true&quot; | &quot;false&quot;] /&gt;
+</code></pre><p>这两者都是在描述应用所需要的硬件和软件特性，以便防止应用在没有这些特性的设备上安装。</p>
+<p>###13、第二层<code>uses-sdk</code> </p>
+<pre><code>&lt;uses-sdk android:minSdkVersion=&quot;integer&quot;
+     android:targetSdkVersion=&quot;integer&quot;
+     android:maxSdkVersion=&quot;integer&quot;/&gt;
+</code></pre><p>描述应用所需的api level，就是版本，目前是android 2.2 = 8，android2.1 = 7，android1.6 = 4，android1.5=3<br>在此属性中可以指定支持的最小版本，目标版本以及最大版本</p>
+<h3 id="14_u3001_u7B2C_u4E8C_u5C42_instrumentation"><a href="#14_u3001_u7B2C_u4E8C_u5C42_instrumentation" class="headerlink" title="14、第二层 instrumentation"></a>14、第二层 instrumentation</h3><pre><code>&lt;instrumentation android:functionalTest=[&quot;true&quot; | &quot;false&quot;]
+       android:handleProfiling=[&quot;true&quot; | &quot;false&quot;]
+       android:icon=&quot;drawable resource&quot;
+       android:label=&quot;string resource&quot;
+       android:name=&quot;string&quot;
+       android:targetPackage=&quot;string&quot;/&gt;
+</code></pre><p>定义一些用于探测和分析应用性能等等相关的类，可以监控程序。在各个应用程序的组件之前instrumentation类被实例化<br>android:functionalTest(解释：instrumentation类是否能运行一个功能测试，默认为false)</p>
+<h3 id="15_u3001_26lt_3Bpermission_26gt_3B_u3001_26lt_3Buses-permission_26gt_3B_u3001_26lt_3Bpermission-tree_/_26gt_3B_u3001_26lt_3Bpermission-group_/_26gt_3B_u533A_u522B_uFF5E"><a href="#15_u3001_26lt_3Bpermission_26gt_3B_u3001_26lt_3Buses-permission_26gt_3B_u3001_26lt_3Bpermission-tree_/_26gt_3B_u3001_26lt_3Bpermission-group_/_26gt_3B_u533A_u522B_uFF5E" class="headerlink" title="15、&lt;permission&gt;、&lt;uses-permission&gt;、&lt;permission-tree /&gt;、&lt;permission-group /&gt;区别～"></a>15、<code>&lt;permission&gt;、&lt;uses-permission&gt;、&lt;permission-tree /&gt;</code>、<code>&lt;permission-group /&gt;</code>区别～</h3><p>最常用的当属<code>&lt;uses-permission&gt;</code>，当我们需要获取某个权限的时候就必须在我们的manifest文件中声明，此<code>&lt;uses-permission&gt;</code>与<code>&lt;application&gt;</code>同级，具体权限列表请看此处<br>通常情况下我们不需要为自己的应用程序声明某个权限，除非你提供了供其他应用程序调用的代码或者数据。这个时候你才需要使用<code>&lt;permission&gt;</code> 这个标签。很显然这个标签可以让我们声明自己的权限。比如：<br>    <permission android:name="com.teleca.project.MY_SECURITY" .=""><br>那么在activity中就可以声明该自定义权限了，如：<br>    <application .=""><br>        <activity android:name="XXX" .=""><br>        android:permission=”com.teleca.project.MY_SECURITY”&gt; </activity><br>    </application><br>当然自己声明的permission也不能随意的使用，还是需要使用<uses-permission>来声明你需要该权限<br><code>&lt;permission-group&gt;</code>就是声明一个标签，该标签代表了一组permissions，而<code>&lt;permission-tree&gt;</code>是为一组permissions声明了一个namespace。</uses-permission></permission></p>
+
+      
+    </div>
+    
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2015/09/14/RecyclerView-创建LayoutManager-1/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption"><</strong>
+      <div class="article-nav-title">
+        
+          RecyclerView 创建LayoutManager-1
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2015/09/13/markdown-简明语法-0/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">markdown 简明语法</div>
+      <strong class="article-nav-caption">></strong>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+<div class="share_jia">
+	<!-- JiaThis Button BEGIN -->
+	<div class="jiathis_style">
+		<span class="jiathis_txt">分享到: &nbsp; </span>
+		<a class="jiathis_button_facebook"></a> 
+    <a class="jiathis_button_twitter"></a>
+    <a class="jiathis_button_plus"></a> 
+    <a class="jiathis_button_tsina"></a>
+		<a class="jiathis_button_cqq"></a>
+		<a class="jiathis_button_douban"></a>
+		<a class="jiathis_button_weixin"></a>
+		<a class="jiathis_button_tumblr"></a>
+    <a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jtico jtico_jiathis" target="_blank"></a>
+	</div>
+	<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js?uid=1405949716054953" charset="utf-8"></script>
+	<!-- JiaThis Button END -->
+</div>
+
+
+
+
+
+
+<div class="duoshuo">
+	<!-- 多说评论框 start -->
+	<div class="ds-thread" data-thread-key="Manifest文件属性" data-title="Manifest文件属性" data-url="http://www.bigtiger079.com/2015/09/13/Manifest文件属性/"></div>
+	<!-- 多说评论框 end -->
+	<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+	<script type="text/javascript">
+	var duoshuoQuery = {short_name:"true"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0] 
+		 || document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+	</script>
+	<!-- 多说公共JS代码 end -->
+</div>
+
+
+
+
+</div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info">
+    	<div class="footer-left">
+    		&copy; 2016 Bigtiger
+    	</div>
+      	<div class="footer-right">
+      		<a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/litten/hexo-theme-yilia" target="_blank">Yilia</a> by Litten
+      	</div>
+    </div>
+  </div>
+</footer>
+    </div>
+    
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css" type="text/css">
+
+
+<script>
+	var yiliaConfig = {
+		fancybox: true,
+		mathjax: true,
+		animate: true,
+		isHome: false,
+		isPost: true,
+		isArchive: false,
+		isTag: false,
+		isCategory: false,
+		open_in_new: false
+	}
+</script>
+<script src="http://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js" type="text/javascript"></script>
+<script src="/js/main.js" type="text/javascript"></script>
+
+
+
+
+
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';                 
+    }       
+});
+</script>
+
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  </div>
+</body>
+</html>

@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" >
+  <title>Linux进程控制 | Bigtiger&#39;s blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="Linux进程模型传统的Linux模型里有三种创建或者修改进程的操作:
+
+system用于调用shell, 执行一个指定命令
+fork用于创建一个新的进程,该进程几乎是当前进程的一个完全拷贝
+exec可以在进程中用另外的程序来替换当前运行的进程
+
+什么是进程
+
+进程是一个正在执行的程序实例,他也是Linux基本的调度单位,一个进程由如下元素组成
+进程当前上下文(context),它是进程当前执行状">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Linux进程控制">
+<meta property="og:url" content="http://www.bigtiger079.com/2015/10/07/Linux进程控制/index.html">
+<meta property="og:site_name" content="Bigtiger's blog">
+<meta property="og:description" content="Linux进程模型传统的Linux模型里有三种创建或者修改进程的操作:
+
+system用于调用shell, 执行一个指定命令
+fork用于创建一个新的进程,该进程几乎是当前进程的一个完全拷贝
+exec可以在进程中用另外的程序来替换当前运行的进程
+
+什么是进程
+
+进程是一个正在执行的程序实例,他也是Linux基本的调度单位,一个进程由如下元素组成
+进程当前上下文(context),它是进程当前执行状">
+<meta property="og:updated_time" content="2016-01-28T12:49:21.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Linux进程控制">
+<meta name="twitter:description" content="Linux进程模型传统的Linux模型里有三种创建或者修改进程的操作:
+
+system用于调用shell, 执行一个指定命令
+fork用于创建一个新的进程,该进程几乎是当前进程的一个完全拷贝
+exec可以在进程中用另外的程序来替换当前运行的进程
+
+什么是进程
+
+进程是一个正在执行的程序实例,他也是Linux基本的调度单位,一个进程由如下元素组成
+进程当前上下文(context),它是进程当前执行状">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  <link rel="stylesheet" href="/css/style.css" type="text/css">
+</head>
+
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+	<header id="header" class="inner">
+		<a href="/" class="profilepic">
+			
+			<img lazy-src="http://7xlrpi.com1.z0.glb.clouddn.com/avatar.png" class="js-avatar">
+			
+		</a>
+
+		<hgroup>
+		  <h1 class="header-author"><a href="/">Bigtiger</a></h1>
+		</hgroup>
+
+		
+
+		
+			<div class="switch-btn">
+				<div class="icon">
+					<div class="icon-ctn">
+						<div class="icon-wrap icon-house" data-idx="0">
+							<div class="birdhouse"></div>
+							<div class="birdhouse_holes"></div>
+						</div>
+						<div class="icon-wrap icon-ribbon hide" data-idx="1">
+							<div class="ribbon"></div>
+						</div>
+						
+						
+						<div class="icon-wrap icon-me hide" data-idx="3">
+							<div class="user"></div>
+							<div class="shoulder"></div>
+						</div>
+						
+					</div>
+					
+				</div>
+				<div class="tips-box hide">
+					<div class="tips-arrow"></div>
+					<ul class="tips-inner">
+						<li>菜单</li>
+						<li>标签</li>
+						
+						
+						<li>关于我</li>
+						
+					</ul>
+				</div>
+			</div>
+		
+
+		<div class="switch-area">
+			<div class="switch-wrap">
+				<section class="switch-part switch-part1">
+					<nav class="header-menu">
+						<ul>
+						
+							<li><a href="/">主页</a></li>
+				        
+							<li><a href="/archives">所有文章</a></li>
+				        
+							<li><a href="/categories">分类</a></li>
+				        
+							<li><a href="/tags">标签</a></li>
+				        
+						</ul>
+					</nav>
+					<nav class="header-nav">
+						<div class="social">
+							
+								<a class="mail" target="_blank" href="/bigtiger079@gmail.com" title="mail">mail</a>
+					        
+						</div>
+					</nav>
+				</section>
+				
+				
+				<section class="switch-part switch-part2">
+					<div class="widget tagcloud" id="js-tagcloud">
+						<a href="/tags/Android/" style="font-size: 10px;">Android</a> <a href="/tags/C/" style="font-size: 10px;">C++</a> <a href="/tags/Cpp基础/" style="font-size: 10px;">Cpp基础</a> <a href="/tags/Hexo/" style="font-size: 10px;">Hexo</a> <a href="/tags/JNI/" style="font-size: 10px;">JNI</a> <a href="/tags/RecyclerView/" style="font-size: 16.67px;">RecyclerView</a> <a href="/tags/android/" style="font-size: 10px;">android</a> <a href="/tags/linux/" style="font-size: 20px;">linux</a> <a href="/tags/线性表/" style="font-size: 13.33px;">线性表</a>
+					</div>
+				</section>
+				
+				
+				
+
+				
+				
+				<section class="switch-part switch-part3">
+				
+					<div id="js-aboutme">我是谁，我从哪里来，我到哪里去？我就是我，是颜色不一样的吃货…</div>
+				</section>
+				
+			</div>
+		</div>
+	</header>				
+</div>
+
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+  	<div class="overlay">
+  		<div class="slider-trigger"></div>
+  		<h1 class="header-author js-mobile-header hide">Bigtiger</h1>
+  	</div>
+	<div class="intrude-less">
+		<header id="header" class="inner">
+			<div class="profilepic">
+			
+				<img lazy-src="http://7xlrpi.com1.z0.glb.clouddn.com/avatar.png" class="js-avatar">
+			
+			</div>
+			<hgroup>
+			  <h1 class="header-author">Bigtiger</h1>
+			</hgroup>
+			
+			<nav class="header-menu">
+				<ul>
+				
+					<li><a href="/">主页</a></li>
+		        
+					<li><a href="/archives">所有文章</a></li>
+		        
+					<li><a href="/categories">分类</a></li>
+		        
+					<li><a href="/tags">标签</a></li>
+		        
+		        <div class="clearfix"></div>
+				</ul>
+			</nav>
+			<nav class="header-nav">
+				<div class="social">
+					
+						<a class="mail" target="_blank" href="/bigtiger079@gmail.com" title="mail">mail</a>
+			        
+				</div>
+			</nav>
+		</header>				
+	</div>
+</nav>
+
+      <div class="body-wrap"><article id="post-Linux进程控制" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2015/10/07/Linux进程控制/" class="article-date">
+  	<time datetime="2015-10-07T08:28:01.000Z" itemprop="datePublished">2015-10-07</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Linux进程控制
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/">linux</a></li></ul>
+	</div>
+
+        
+	<div class="article-category tagcloud">
+	<a class="article-category-link" href="/categories/C/">C++</a>
+	</div>
+
+
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="Linux_u8FDB_u7A0B_u6A21_u578B"><a href="#Linux_u8FDB_u7A0B_u6A21_u578B" class="headerlink" title="Linux进程模型"></a>Linux进程模型</h2><p>传统的Linux模型里有三种创建或者修改进程的操作:</p>
+<ul>
+<li>system用于调用shell, 执行一个指定命令</li>
+<li>fork用于创建一个新的进程,该进程几乎是当前进程的一个完全拷贝</li>
+<li>exec可以在进程中用另外的程序来替换当前运行的进程</li>
+</ul>
+<h3 id="u4EC0_u4E48_u662F_u8FDB_u7A0B"><a href="#u4EC0_u4E48_u662F_u8FDB_u7A0B" class="headerlink" title="什么是进程"></a>什么是进程</h3><blockquote>
+<ul>
+<li>进程是一个正在执行的程序实例,他也是Linux基本的调度单位,一个进程由如下元素组成</li>
+<li>进程当前上下文(context),它是进程当前执行状态</li>
+<li>进程当前执行目录</li>
+<li>进程访问的文件和目录</li>
+<li>程序的访问权限</li>
+<li>内存和其他分配给进程的系统资源</li>
+</ul>
+</blockquote>
+<ul>
+<li>内核使用进程来控制对CPU和其他系统资源的访问,并且使用进程来决定在CPU上运行那个程序, 运行多久以及采用什么特性运行它</li>
+<li>内核的调度器负责所有的进程间分配CPU时间,称为时间片, 它轮流在每个进程分的时间片用完后从进程那里抢回控制权</li>
+<li>时间片非常小,小到让系统上的几个进程仿佛是在同一时间运行一样</li>
+<li>每个进程还包含了有关他们自身的成分信息, 必要的时候内核能在执行与不执行它之间进行切换</li>
+<li>进程具有许多能位移定义它们的属性和特性</li>
+<li>进程的属性或特性能够吧它们表示出来并且规定他们的行为</li>
+<li>Linux内核维护了关于每个进程的大量信息, 并且对外提供一个访问这些信息的接口</li>
+</ul>
+<h3 id="u8FDB_u7A0B_u6807_u8BC6_u53F7"><a href="#u8FDB_u7A0B_u6807_u8BC6_u53F7" class="headerlink" title="进程标识号"></a>进程标识号</h3><p>进程最知名的属性就是进程号(processID,PID)和它父进程号(parent processID, PPID)</p>
+<ul>
+<li>PID和PPID都是非零整数</li>
+<li>一个PID唯一标识一个进程</li>
+<li>一个进程创建另一个新进程称为子进程,相反地,创建的进程称为父进程</li>
+<li>所有进程追溯其祖先最终都会落到进程号为1的进程身上,这个进程叫init进程<ul>
+<li>init进程是linux内核启动后第一个执行的进程</li>
+<li>init引导系统,启动守护进程并且运行必要的程序</li>
+</ul>
+</li>
+</ul>
+<p>虽然计算机用数字工作挺好,但普通人甚至程序员还是感到使用名字更舒服一些, 幸运的是有两种方法能把UID转换为人可读的名字:</p>
+<blockquote>
+<p>getlogin函数返回执行程序的用户登录名<br>可以把登录名最为参数传递给getpwnam函数,这个函数能返回/etc/passwd文件中与该登录名响应的一行完整信息</p>
+</blockquote>
+<pre><code>#include&lt;pwd.h&gt;
+struct passwd *getpwnam(const char *name);
+</code></pre><blockquote>
+<p>name必须是一个指向包含用户名的字符串指针<br>getpwnam返回一个指向passwd结构的指针</p>
+</blockquote>
+<pre><code>#include&lt;sys/types.h&gt;
+#include&lt;pwd.h&gt;
+int main(void)
+{
+    char *login = getlogin();
+    struct passwd *ps = getpwnam(login);
+    printf(&quot;user name=%s\n&quot;, ps-&gt;pw_name);
+    printf(&quot;UID=%d\n&quot;, ps-&gt;pw_uid);
+    printf(&quot;home dir=%s\n&quot;, ps-&gt;pw_dir);
+    return EXIT_SUCCESS;
+
+}
+</code></pre><h2 id="u521B_u5EFA_u8FDB_u7A0B"><a href="#u521B_u5EFA_u8FDB_u7A0B" class="headerlink" title="创建进程"></a>创建进程</h2><h3 id="system_u7CFB_u7EDF_u8C03_u7528"><a href="#system_u7CFB_u7EDF_u8C03_u7528" class="headerlink" title="system系统调用"></a>system系统调用</h3><pre><code>#include&lt;stdlib.h&gt;
+int system(const char *string);
+</code></pre><blockquote>
+<p>system函数传递给/bin/sh -c 来执行string所指定的命令<br>string中可以包含选项和参数<br>如果没有找到/bin/sh,函数返回127, 如果出现其他错误返回-1,成功返回0,但如果string为NULL,返回一个非0值</p>
+</blockquote>
+<h3 id="fork_u7CFB_u7EDF_u8C03_u7528"><a href="#fork_u7CFB_u7EDF_u8C03_u7528" class="headerlink" title="fork系统调用"></a>fork系统调用</h3><pre><code>#include &lt;unistd.h&gt;
+pid_t fork(void);
+</code></pre><blockquote>
+<p>fork执行成功, 向父进程返回子进程的PID,并向子进程返回0,这意味着fork即使只调用一次,也会返回两次<br>fork创建的新进程是和父进程(除PID和PPID)一样的副本<br>父进程和子进程之间有点区别,子进程没有继承父进程的超时设置(使用alarm调用)、父进程创建的文件锁，或者未决信号</p>
+</blockquote>
+<pre><code>int main（void）
+{
+    pid_t child = fork();
+    if(child == -1)
+    {    
+
+        return -1;
+    }
+    if(child == 0)
+    {
+        printf(&quot;is child\n&quot;);
+    }
+    else
+    {
+        printf(&quot;is parent, child pid is %d\n&quot;, getpid());
+    }
+}
+</code></pre><ul>
+<li>你不能预计父进程是在它的子进程之前还是之后运行, 它的执行是无序的, 是异步的.</li>
+<li>fork的异步行为意味着你不应该在子进程中执行依赖与父进程的代码,反之亦然</li>
+<li>fork调用可能失败,原因上是系统上已经运行了太多进程,已经超过了允许执行的最大进程数</li>
+<li><p>fork执行失败,会向父进程返回-1,而且不创建子进程</p>
+</li>
+<li><p>fork过程包括把父进程全部内存映像复制给子进程,这个过程很慢</p>
+</li>
+<li>UNIX的设计者创建了vfork调用,vfork调用也创建新进程,但它不产生父进程的副本</li>
+<li>Linux已经使用了写时复制技术,因此Linux的fork和UNIX的vfork一样快</li>
+</ul>
+<h3 id="execve"><a href="#execve" class="headerlink" title="execve"></a>execve</h3><pre><code>int execve(const char *path, const char *arg, char *const envp[]);
+</code></pre><blockquote>
+<p>fork创建了一个新的进程,产生一个新的PID<br>execve用被执行的程序全部替换了调用进程的映像<br>execve启动一个新程序,替换原有进程,所以被执行进程的PID不会改变<br>execve函数接受三个参数<br>-path- 要执行的文件完整路径<br>-argv-传递给程序完整参数列表,包括argv[0],它一般是执行程序的名字<br>-envp-是指向执行execed程序的环境指针,可以设为NULL</p>
+</blockquote>
+<h4 id="u793A_u4F8B"><a href="#u793A_u4F8B" class="headerlink" title="示例"></a>示例</h4><pre><code>int main(int arg, char *args[])
+{
+    close(STDOUT_FILENO);//关闭标准输出
+    open(&quot;/dev/pts/2&quot;,O_WRONLY);// 打开&quot;/dev/pts/2&quot;,作为标准输出
+    pid_t pid = fork();//调用一个fork产生一个子进程
+    int status;
+    if(pid == -1)
+    {
+        printf(&quot;fork failed\n&quot;);
+        return 0;
+    }
+    if(pid == 0)//子进程调用execve,执行ls -l 命令
+    {
+        char *gars[] = {&quot;/bin/ls&quot;,&quot;-1&quot;, NULL};
+        execve(&quot;/bin/ls&quot;, args, NULL);
+    }
+    else
+    {
+        return 0;//父进程退出
+    }
+}
+</code></pre><h3 id="u6536_u96C6_u5B50_u8FDB_u7A0B_u9000_u51FA_u72B6_u6001"><a href="#u6536_u96C6_u5B50_u8FDB_u7A0B_u9000_u51FA_u72B6_u6001" class="headerlink" title="收集子进程退出状态"></a>收集子进程退出状态</h3><p>wait和waitpid函数可以收集子进程的退出状态</p>
+<pre><code>#include &lt;sys/wait.h&gt;
+pid_t wait(int *status);
+pid_t waitpid(pid_t pid, int *status, int options);
+</code></pre><blockquote>
+<p>status保存进程的退出状态<br>pid为等待进程的PID,它能接受下表列出的4种值中的一个</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>值</th>
+<th>描述 </th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td> -1</td>
+<td>等待任何PGID等于PID的绝对值子进程 </td>
+</tr>
+<tr>
+<td> 1</td>
+<td>等待任何子进程 </td>
+</tr>
+<tr>
+<td> 0</td>
+<td>等待任何PGID等于调用进程的子进程 </td>
+</tr>
+<tr>
+<td> &gt;0</td>
+<td>等待PID等于pid的子进程 </td>
+</tr>
+</tbody>
+</table>
+<p>用fork或者exec函数创建了一个新进程,为了收集新进程的退出状态并防止出现僵死进程(zombie process), 父进程应该调用waitpid等待子进程的终止</p>
+<h4 id="u50F5_u6B7B_u8FDB_u7A0B"><a href="#u50F5_u6B7B_u8FDB_u7A0B" class="headerlink" title="僵死进程"></a>僵死进程</h4><ul>
+<li>一个僵死进程是在父进程有机会用wait或者waitpid收集它退出状态之前就终止的子进程</li>
+<li>之所以被称为僵死进程是因为它虽死掉了, 但依然在进程表中存在</li>
+<li>子进程退出后分配给它的内存和资源都被释放,但它还是在内核进程表中保留了一条,内核在父进程回收子进程的退出状态之前一直保留它</li>
+<li>有一两个僵死进程不算什么问题, 但一旦一个程序频繁执行fork或者exec却又不能收集退出状态,那么最终将填满进程表,这会影响性能,可能导致系统重新启动</li>
+</ul>
+<h4 id="u5B64_u513F_u8FDB_u7A0B"><a href="#u5B64_u513F_u8FDB_u7A0B" class="headerlink" title="孤儿进程"></a>孤儿进程</h4><ul>
+<li>孤儿进程是一个父进程调用wait或者waitpid之前就已经退出的子进程, 此时init进程称为子进程的父进程</li>
+<li>init进程为子进程的父进程收集退出状态,从而避免出现僵死进程</li>
+</ul>
+<h2 id="u7ED3_u675F_u8FDB_u7A0B"><a href="#u7ED3_u675F_u8FDB_u7A0B" class="headerlink" title="结束进程"></a>结束进程</h2><p>一个进程由于以下5个原因中的一个终止:</p>
+<ul>
+<li>main函数调用了return</li>
+<li>调用了exit函数</li>
+<li>调用了_exit函数</li>
+<li>调用了abort函数</li>
+<li>被一个信号终止</li>
+</ul>
+<p>前三个原因都是正常终止,后面两个是非正常终止</p>
+<p>无论进程为何中止,最后都执行相同的内核代码, 关闭打开的文件,释放内存资源, 和其他清理工作</p>
+<h3 id="exit_u51FD_u6570"><a href="#exit_u51FD_u6570" class="headerlink" title="exit函数"></a>exit函数</h3><pre><code>int exit(int status);
+</code></pre><blockquote>
+<p>exit导致程序正常终止,并且返回给父进程的状态</p>
+</blockquote>
+<h3 id="abort__u51FD_u6570"><a href="#abort__u51FD_u6570" class="headerlink" title="abort 函数"></a>abort 函数</h3><pre><code>void abort(void)
+</code></pre><blockquote>
+<p>abort导致程序异常终止<br>abort还可以让程序产生core,这是大多数调试器用于分析程序崩溃时的文件</p>
+</blockquote>
+<ul>
+<li>虽然任何打开的文件都被关闭了, 但是abort仍然是一个粗暴的调用, 应该作为最后的手段来使用</li>
+</ul>
+<h3 id="kill_u51FD_u6570"><a href="#kill_u51FD_u6570" class="headerlink" title="kill函数"></a>kill函数</h3><pre><code>#include&lt;signal.h&gt;
+#include&lt;sys/types.h&gt;
+int kill(pid_t pid, int sig);
+</code></pre><blockquote>
+<p>exit,abort用来杀死进程自己<br>kill函数用来杀死另一个进程<br>参数pid指定一个要杀死的进程,而sig是要发送的信号,SIGKILL</p>
+</blockquote>
+
+      
+    </div>
+    
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2015/10/10/Linux进程间通信/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption"><</strong>
+      <div class="article-nav-title">
+        
+          Linux进程间通信
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2015/10/07/Linux文件输入输出和目录操作/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">Linux文件输入输出和目录操作</div>
+      <strong class="article-nav-caption">></strong>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+<div class="share_jia">
+	<!-- JiaThis Button BEGIN -->
+	<div class="jiathis_style">
+		<span class="jiathis_txt">分享到: &nbsp; </span>
+		<a class="jiathis_button_facebook"></a> 
+    <a class="jiathis_button_twitter"></a>
+    <a class="jiathis_button_plus"></a> 
+    <a class="jiathis_button_tsina"></a>
+		<a class="jiathis_button_cqq"></a>
+		<a class="jiathis_button_douban"></a>
+		<a class="jiathis_button_weixin"></a>
+		<a class="jiathis_button_tumblr"></a>
+    <a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jtico jtico_jiathis" target="_blank"></a>
+	</div>
+	<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js?uid=1405949716054953" charset="utf-8"></script>
+	<!-- JiaThis Button END -->
+</div>
+
+
+
+
+
+
+<div class="duoshuo">
+	<!-- 多说评论框 start -->
+	<div class="ds-thread" data-thread-key="Linux进程控制" data-title="Linux进程控制" data-url="http://www.bigtiger079.com/2015/10/07/Linux进程控制/"></div>
+	<!-- 多说评论框 end -->
+	<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+	<script type="text/javascript">
+	var duoshuoQuery = {short_name:"true"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0] 
+		 || document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+	</script>
+	<!-- 多说公共JS代码 end -->
+</div>
+
+
+
+
+</div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info">
+    	<div class="footer-left">
+    		&copy; 2016 Bigtiger
+    	</div>
+      	<div class="footer-right">
+      		<a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/litten/hexo-theme-yilia" target="_blank">Yilia</a> by Litten
+      	</div>
+    </div>
+  </div>
+</footer>
+    </div>
+    
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css" type="text/css">
+
+
+<script>
+	var yiliaConfig = {
+		fancybox: true,
+		mathjax: true,
+		animate: true,
+		isHome: false,
+		isPost: true,
+		isArchive: false,
+		isTag: false,
+		isCategory: false,
+		open_in_new: false
+	}
+</script>
+<script src="http://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js" type="text/javascript"></script>
+<script src="/js/main.js" type="text/javascript"></script>
+
+
+
+
+
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';                 
+    }       
+});
+</script>
+
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  </div>
+</body>
+</html>

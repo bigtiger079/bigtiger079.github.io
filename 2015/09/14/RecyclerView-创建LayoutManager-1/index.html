@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" >
+  <title>RecyclerView 创建LayoutManager-1 | Bigtiger&#39;s blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="现如今，如果你是 Android 开发者，你肯定听说过 RecyclerView 这个控件；它是一个已经加入 support library 之中的新组件，通过方便的视图复用轻松实现自定义高效的视图集。已经有很多优秀的文章介绍了 RecyclerView 基础，讲解如何使用RecyclerView 提供的内建部分，包括 item animations。所以，我们就不再重复前人的工作了，下面是一些帮">
+<meta property="og:type" content="article">
+<meta property="og:title" content="RecyclerView 创建LayoutManager-1">
+<meta property="og:url" content="http://www.bigtiger079.com/2015/09/14/RecyclerView-创建LayoutManager-1/index.html">
+<meta property="og:site_name" content="Bigtiger's blog">
+<meta property="og:description" content="现如今，如果你是 Android 开发者，你肯定听说过 RecyclerView 这个控件；它是一个已经加入 support library 之中的新组件，通过方便的视图复用轻松实现自定义高效的视图集。已经有很多优秀的文章介绍了 RecyclerView 基础，讲解如何使用RecyclerView 提供的内建部分，包括 item animations。所以，我们就不再重复前人的工作了，下面是一些帮">
+<meta property="og:updated_time" content="2016-01-28T12:49:21.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="RecyclerView 创建LayoutManager-1">
+<meta name="twitter:description" content="现如今，如果你是 Android 开发者，你肯定听说过 RecyclerView 这个控件；它是一个已经加入 support library 之中的新组件，通过方便的视图复用轻松实现自定义高效的视图集。已经有很多优秀的文章介绍了 RecyclerView 基础，讲解如何使用RecyclerView 提供的内建部分，包括 item animations。所以，我们就不再重复前人的工作了，下面是一些帮">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  <link rel="stylesheet" href="/css/style.css" type="text/css">
+</head>
+
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+	<header id="header" class="inner">
+		<a href="/" class="profilepic">
+			
+			<img lazy-src="http://7xlrpi.com1.z0.glb.clouddn.com/avatar.png" class="js-avatar">
+			
+		</a>
+
+		<hgroup>
+		  <h1 class="header-author"><a href="/">Bigtiger</a></h1>
+		</hgroup>
+
+		
+
+		
+			<div class="switch-btn">
+				<div class="icon">
+					<div class="icon-ctn">
+						<div class="icon-wrap icon-house" data-idx="0">
+							<div class="birdhouse"></div>
+							<div class="birdhouse_holes"></div>
+						</div>
+						<div class="icon-wrap icon-ribbon hide" data-idx="1">
+							<div class="ribbon"></div>
+						</div>
+						
+						
+						<div class="icon-wrap icon-me hide" data-idx="3">
+							<div class="user"></div>
+							<div class="shoulder"></div>
+						</div>
+						
+					</div>
+					
+				</div>
+				<div class="tips-box hide">
+					<div class="tips-arrow"></div>
+					<ul class="tips-inner">
+						<li>菜单</li>
+						<li>标签</li>
+						
+						
+						<li>关于我</li>
+						
+					</ul>
+				</div>
+			</div>
+		
+
+		<div class="switch-area">
+			<div class="switch-wrap">
+				<section class="switch-part switch-part1">
+					<nav class="header-menu">
+						<ul>
+						
+							<li><a href="/">主页</a></li>
+				        
+							<li><a href="/archives">所有文章</a></li>
+				        
+							<li><a href="/categories">分类</a></li>
+				        
+							<li><a href="/tags">标签</a></li>
+				        
+						</ul>
+					</nav>
+					<nav class="header-nav">
+						<div class="social">
+							
+								<a class="mail" target="_blank" href="/bigtiger079@gmail.com" title="mail">mail</a>
+					        
+						</div>
+					</nav>
+				</section>
+				
+				
+				<section class="switch-part switch-part2">
+					<div class="widget tagcloud" id="js-tagcloud">
+						<a href="/tags/Android/" style="font-size: 10px;">Android</a> <a href="/tags/C/" style="font-size: 10px;">C++</a> <a href="/tags/Cpp基础/" style="font-size: 10px;">Cpp基础</a> <a href="/tags/Hexo/" style="font-size: 10px;">Hexo</a> <a href="/tags/JNI/" style="font-size: 10px;">JNI</a> <a href="/tags/RecyclerView/" style="font-size: 16.67px;">RecyclerView</a> <a href="/tags/android/" style="font-size: 10px;">android</a> <a href="/tags/linux/" style="font-size: 20px;">linux</a> <a href="/tags/线性表/" style="font-size: 13.33px;">线性表</a>
+					</div>
+				</section>
+				
+				
+				
+
+				
+				
+				<section class="switch-part switch-part3">
+				
+					<div id="js-aboutme">我是谁，我从哪里来，我到哪里去？我就是我，是颜色不一样的吃货…</div>
+				</section>
+				
+			</div>
+		</div>
+	</header>				
+</div>
+
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+  	<div class="overlay">
+  		<div class="slider-trigger"></div>
+  		<h1 class="header-author js-mobile-header hide">Bigtiger</h1>
+  	</div>
+	<div class="intrude-less">
+		<header id="header" class="inner">
+			<div class="profilepic">
+			
+				<img lazy-src="http://7xlrpi.com1.z0.glb.clouddn.com/avatar.png" class="js-avatar">
+			
+			</div>
+			<hgroup>
+			  <h1 class="header-author">Bigtiger</h1>
+			</hgroup>
+			
+			<nav class="header-menu">
+				<ul>
+				
+					<li><a href="/">主页</a></li>
+		        
+					<li><a href="/archives">所有文章</a></li>
+		        
+					<li><a href="/categories">分类</a></li>
+		        
+					<li><a href="/tags">标签</a></li>
+		        
+		        <div class="clearfix"></div>
+				</ul>
+			</nav>
+			<nav class="header-nav">
+				<div class="social">
+					
+						<a class="mail" target="_blank" href="/bigtiger079@gmail.com" title="mail">mail</a>
+			        
+				</div>
+			</nav>
+		</header>				
+	</div>
+</nav>
+
+      <div class="body-wrap"><article id="post-RecyclerView-创建LayoutManager-1" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2015/09/14/RecyclerView-创建LayoutManager-1/" class="article-date">
+  	<time datetime="2015-09-14T06:25:15.000Z" itemprop="datePublished">2015-09-14</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      RecyclerView 创建LayoutManager-1
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/RecyclerView/">RecyclerView</a></li></ul>
+	</div>
+
+        
+	<div class="article-category tagcloud">
+	<a class="article-category-link" href="/categories/android/">android</a>
+	</div>
+
+
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>现如今，如果你是 Android 开发者，你肯定听说过 RecyclerView 这个控件；<br>它是一个已经加入 support library 之中的新组件，通过方便的视图复用轻松实现自定义高效的视图集。<br>已经有很多优秀的文章介绍了 RecyclerView 基础，讲解如何使用RecyclerView 提供的内建部分，包括 item animations。所以，我们就不再重复前人的工作了，下面是一些帮你入门的资料：</p>
+<ul>
+<li><a href="http://www.grokkingandroid.com/first-glance-androids-recyclerview/" target="_blank" rel="external">A First Glance at Android’s RecyclerView</a></li>
+<li><a href="http://lucasr.org/2014/07/31/the-new-twowayview/" target="_blank" rel="external">The new TwoWayView</a></li>
+<li><a href="https://github.com/gabrielemariotti/RecyclerViewItemAnimators" target="_blank" rel="external">RecyclerViewItemAnimators</a></li>
+</ul>
+<p>我们的这个系列文章会关注 RecyclerView 底层细节，涉及到创建你自己的LayoutManager，做些比单一的 垂直/水平 滚动列表稍稍复杂的东西。</p>
+<blockquote>
+<p>在我们开始前，你需要知道 LayoutManager API 之所以能够让我们实现<br>强大复杂的布局是因为它只替你做了很少的工作；这就意味着你不得不自己完成数量可观的代码。如果要在一个项目中使用自定义视图，<br>不要陷入过度优化或过度泛化代码之中。你只需要关心在你的用例中需要实现的特性就可以了。</p>
+</blockquote>
+<h2 id="RecyclerView_Playground"><a href="#RecyclerView_Playground" class="headerlink" title="RecyclerView Playground"></a>RecyclerView Playground</h2><p>这个系列中所有的代码段都取自 <a href="https://github.com/devunwired/recyclerview-playground" target="_blank" rel="external">RecyclerView Playground sample</a> 这个项目，示例应用里包含了各个方面使用 RecyclerView 的实例，从创建简单的 list到自定义 LayoutManagers。</p>
+<p>本文的代码来自 FixedGridLayoutManager ，一个可以垂直和水平滚动的二维的网格布局。</p>
+<blockquote>
+<p>support library 里也有一个自定义的 LayoutManager；本质上是一个自定义 vertical linear list 的实现：<br>[SDK_PATH]/extras/android/compatibility/samples/Support7Demos/src/com/example/android/supportv7/widget/RecyclerViewActivity.java<br>同时，Android L 和 新的 support libraries 可能还没加入 AOSP之中，不过 RecyclerView 提供了 JAR 资源，可以在这里找到：<br>[SDK_PATH]/extras/android/m2repository/com/android/support/recyclerview-v7/21.0.0-rc1/recyclerview-v7-21.0.0-rc1-sources.jar</p>
+</blockquote>
+<h2 id="The_Recycler"><a href="#The_Recycler" class="headerlink" title="The Recycler"></a>The Recycler</h2><p>首先，了解下 API 的结构。当你需要从一个可能再生的前子视图中回收旧的 view 或者 获取新的 view 时，你的 LayoutManager 可以访问一个 Recycler 实例。<br>Recycler 也免掉了直接访问 view 当前适配器方法的麻烦。当你的LayoutManager 需要一个新的子视图时，只要调用 getViewForPosition()<br>这个方法，Recycler 会决定到底是从头创建一个新的视图还是重用一个已存在的废弃视图。<br>你的 LayoutManager 需要及时将不再显示的视图传递给 Recycler，避免 Recycler 创建不必要的 view 对象。</p>
+<h2 id="Detach_vs-_Remove"><a href="#Detach_vs-_Remove" class="headerlink" title="Detach vs. Remove"></a>Detach vs. Remove</h2><p>布局更新时有两个方法处理已存在的子视图：detach 和remove (分离和移除)。Detach 是一个轻量的记录 view 操作。<br>被 detach 的视图在你的代码返回前能够重新连接。可以通过 Recycler在不 重新绑定/重新构建 子视图的情况下修改已连接子视图的索引。<br>Remove 意味着这个 view 已经不需要了。任何被永久移除的 view 都应该放到 Recycler 中，方便以后重用，不过 API 并没有强制要求。被 remove 的视图是否被回收取决于你。</p>
+<h3 id="Scrap_vs-_Recycle"><a href="#Scrap_vs-_Recycle" class="headerlink" title="Scrap vs. Recycle"></a>Scrap vs. Recycle</h3><p>Recycler 有两级视图缓存系统： scrap heap 和 recycle pool (垃圾堆和回收池)，Scrap heap 是一个轻量的集合，视图可以不经过适配器直接返回给LayoutManager 。通常被 detach但会在同一布局重新使用的视图会临时储存在这里。Recycle pool 存放的是那些假定并没有得到正确数据(相应位置的数据)的视图，因此它们都要经过适配器重新绑定后才能返回给 LayoutManager。当要给 LayoutManager 提供一个新 view 时，Recycler 首先会检查 scrap heap 有没有对应的 position/id；如果有对应的内容，就直接返回数据不需要通过适配器重新绑定。如果没有的话，Recycler 就会从 recycle pool 里弄一个合适的视图出来，然后用 adapter 给它绑定必要的数据(就是调用 RecyclerView.Adapter.bindViewHolder() ) 再返回。如果 recycle pool 中也不存在有效 view ，就会在绑定数据前创建新的 view (就是 RecyclerView.Adapter.createViewHolder() )，最后返回数据。</p>
+<h2 id="u7ECF_u9A8C_u6CD5_u5219"><a href="#u7ECF_u9A8C_u6CD5_u5219" class="headerlink" title="经验法则"></a>经验法则</h2><p>只要你原意，LayoutManager 的 API 允许你独立完成所有这些任务，所以可能的组合有点多。通常来说，如果你想要临时整理并且希望稍后在同一布局中重新使用某个 view 的话，可以对它调用 detachAndScrapView() 。如果基于当前布局你不再需要某个 view 的话，对其调用 removeAndRecycleView() 。</p>
+<h2 id="Building_The_Core"><a href="#Building_The_Core" class="headerlink" title="Building The Core"></a>Building The Core</h2><p>LayoutManager 需要实时添加，测量和布局所有它需要的子视图。当用户滚动屏幕时，布局管理器将来决定什么时候添加新的子视图，什么时候可以 detache/scrap (分离/废弃)视图。你需要实现下面这些方法创建一个可行的 LayoutManager 最小系统。</p>
+<h3 id="generateDefaultLayoutParams_28_29"><a href="#generateDefaultLayoutParams_28_29" class="headerlink" title="generateDefaultLayoutParams()"></a>generateDefaultLayoutParams()</h3><p>事实上你只要重写这个方法你的 LayoutManager 就能编译通过了。实现也很简单，返回一个你想要默认应用给所有从Recycler 中获得的子视图做参数的 RecyclerView.LayoutParams 实例。这些参数会在对应的 getViewForPosition() 返回前赋值给相应的子视图。</p>
+<pre><code>@Override
+public RecyclerView.LayoutParams generateDefaultLayoutParams() {
+    return new RecyclerView.LayoutParams(
+        RecyclerView.LayoutParams.WRAP_CONTENT,
+        RecyclerView.LayoutParams.WRAP_CONTENT);
+}
+</code></pre><h3 id="onLayoutChildren_28_29"><a href="#onLayoutChildren_28_29" class="headerlink" title="onLayoutChildren()"></a>onLayoutChildren()</h3><p>onLayoutChildren() 是 LayoutManager 的主入口。它会在 view 需要初始化布局时调用，当适配器的数据改变时(或者整个适配器被换掉时)会再次调用。</p>
+<p>注意！这个方法不是在每次你对布局作出改变时调用的。它是 初始化布局 或者 在数据改变时重置子视图布局的好位置。</p>
+<p>在接下来的部分，我们会分析在适配器更新时是怎样使用它基于当前可见元素刷新布局的。现在，我们将简单地解决这个问题当做子视图布局第一关。</p>
+<p>下面是 FixedGridLayoutManager 示例的精简版：</p>
+<pre><code>@Override
+public void onLayoutChildren(RecyclerView.Recycler recycler, RecyclerView.State state) {
+      //Scrap measure one child
+      View scrap = recycler.getViewForPosition(0);
+      addView(scrap);
+      measureChildWithMargins(scrap, 0, 0);
+      /*
+        * We make some assumptions in this code based on every child
+        * view being the same size (i.e. a uniform grid). This allows
+        * us to compute the following values up front because they
+        * won&apos;t change.
+        */
+      mDecoratedChildWidth = getDecoratedMeasuredWidth(scrap);
+      mDecoratedChildHeight = getDecoratedMeasuredHeight(scrap);
+      detachAndScrapView(scrap, recycler);
+      updateWindowSizing();
+      int childLeft;
+      int childTop;
+      /*
+        * Reset the visible and scroll positions
+        */
+      mFirstVisiblePosition = 0;
+      childLeft = childTop = 0;
+      //Clear all attached views into the recycle bin
+      detachAndScrapAttachedViews(recycler);
+      //Fill the grid for the initial layout of views
+      fillGrid(DIRECTION_NONE, childLeft, childTop, recycler);
+}
+</code></pre><p>我们会对子视图做一些记录和安排(为了简便，假设来自适配器的所有子视图都是一样大的)，确保所有已存在的视图在 scrap heap 之中。我将<br>大部分工作抽象到 fillGrid() 这个辅助方法中以便重用。我们很快就会看到这个方法在更新可见视图和滚动屏幕中被大量调用。</p>
+<blockquote>
+<p>就像是自定义实现一个 ViewGroup，你负责触发测量和布局每一个从 Recycler 获取到的子视图。API 没有直接完成这项工作 。</p>
+</blockquote>
+<p>通常来说，在这类方法之中你需要完成的主要步骤如下：</p>
+<ol>
+<li>在滚动事件结束后检查所有附加视图当前的偏移位置。</li>
+<li>判断是否需要添加新视图填充由滚动屏幕产生的空白部分。并从 Recycler 中获取视图。</li>
+<li>判断当前视图是否不再显示。移除它们并放置到 Recycler 中。</li>
+<li>判断剩余视图是否需要整理。发生上述变化后可能 需要你修改视图的子索引来更好地和它们的适配器位置校准。</li>
+</ol>
+<p>注意我们放进 FixedGridLayoutManager.fillGrid() 里填充 RecyclerView 的主要步骤。</p>
+<p>当到达最大行数时，这个 manager 将位置从右到左排序，封装。</p>
+<ol>
+<li><p>清点目前我们所有的视图。将他们 Detach 以便稍后重新连接。</p>
+<pre><code>SparseArray&lt;View&gt; viewCache = new SparseArray&lt;View&gt;(getChildCount());
+//...
+if (getChildCount() != 0) {
+    //...
+    //Cache all views by their existing position, before updating counts
+      for (int i=0; i &lt; getChildCount(); i++) {
+        int position = positionOfIndex(i);
+        final View child = getChildAt(i);
+        viewCache.put(position, child);
+      }
+      //Temporarily detach all views.
+      // Views we still need will be added back at the proper index.
+      for (int i=0; i &lt; viewCache.size(); i++) {
+        detachView(viewCache.valueAt(i));
+      }
+}
+</code></pre></li>
+<li><p>测量/布局每一个当前可见的子视图。重新连接已有的视图很简单；新的视图是从 Recycler 之中获取的。</p>
+<pre><code>for (int i = 0; i &lt; getVisibleChildCount(); i++) {
+      //...
+      //Layout this position
+      View view = viewCache.get(nextPosition);
+      if (view == null) {
+        /*
+           * The Recycler will give us either a newly constructed view,
+           * or a recycled view it has on-hand. In either case, the
+           * view will already be fully bound to the data by the
+            * adapter for us.
+           */
+        view = recycler.getViewForPosition(nextPosition);
+        addView(view);
+        /*
+           * It is prudent to measure/layout each new view we
+            * receive from the Recycler. We don&apos;t have to do
+           * this for views we are just re-arranging.
+           */
+        measureChildWithMargins(view, 0, 0);
+        layoutDecorated(view, leftOffset, topOffset,
+        leftOffset + mDecoratedChildWidth,
+        topOffset + mDecoratedChildHeight);
+      } else {
+        //Re-attach the cached view at its new index
+        attachView(view);
+        viewCache.remove(nextPosition);
+      }
+      //...
+}
+</code></pre></li>
+<li><p>最终，所有在第一步中 detach 并且没有被重新连接的视图都不可见。将它们移入 Recycler 中，以备后用。</p>
+<pre><code>for (int i=0; i &lt; viewCache.size(); i++) {
+    recycler.recycleView(viewCache.valueAt(i));
+}
+</code></pre></li>
+</ol>
+<p>说明一下，先将所有视图 detach 之后再将需要的视图重新连接是为了保持每一个视图子索引的顺序 (就是 getChildAt() 的索引)。我们希望可见视图从左上到右下的索引从 0 开始，到 getChildCount()-1 结束。当我们上下滑动视图，新的子视图被添加，它的索引顺序会变得不可靠。我们需要保留正确的索引来在任意点上定位每一个视图。在一个简单地LayoutManager (比如 LinearLayoutManager)中，子视图可以轻松地插入list 的两端， 记录层就没有存在的必要了。</p>
+<h2 id="u6DFB_u52A0_u7528_u6237_u4EA4_u4E92"><a href="#u6DFB_u52A0_u7528_u6237_u4EA4_u4E92" class="headerlink" title="添加用户交互"></a>添加用户交互</h2><p>目前，我们已经有一个非常好的初始布局，但是它并不能动起来。RecyclerView 的关键就在于当用户浏览一组数据时动态提供视图。覆盖一些方法就能实现我们的目的。</p>
+<h3 id="canScrollHorizontally_28_29__26amp_3B_canScrollVertically_28_29"><a href="#canScrollHorizontally_28_29__26amp_3B_canScrollVertically_28_29" class="headerlink" title="canScrollHorizontally() &amp; canScrollVertically()"></a>canScrollHorizontally() &amp; canScrollVertically()</h3><p>这些方法很简单，在你想要滚动方向对应的方法里返回 true ，不想要滚动方向对应的方法里返回 false。</p>
+<pre><code>@Override
+public boolean canScrollVertically() {
+    //We do allow scrolling
+    return true;
+}
+</code></pre><h3 id="scrollHorizontallyBy_28_29__26amp_3B_scrollVerticallyBy_28_29"><a href="#scrollHorizontallyBy_28_29__26amp_3B_scrollVerticallyBy_28_29" class="headerlink" title="scrollHorizontallyBy() &amp; scrollVerticallyBy()"></a>scrollHorizontallyBy() &amp; scrollVerticallyBy()</h3><p>在这里你应该实现 content 移动的逻辑。RecyclerView 已经处理了 scrolling和 <a href="http://www.google.com/design/spec/patterns/gestures.html#gestures-touch-mechanics" target="_blank" rel="external">flinging</a> (注：Fling: Gross gesture, no on-screen target)触摸操作，不需要处理 MotionEvents 或者 GestureDetectors 这些麻烦事。<br>你只需要完成下面这三个任务：</p>
+<ol>
+<li>将所有的子视图移动适当的位置 (对的，你得自己做这个)。</li>
+<li>决定移动视图后 添加/移除 视图。</li>
+<li>返回滚动的实际距离。框架会根据它判断你是否触碰到边界。</li>
+</ol>
+<p>在 FixedGridLayoutManager 里，这两个方法很像。这里是精简后的垂直滚动实现：</p>
+<pre><code>@Override
+public int scrollVerticallyBy(int dy, RecyclerView.Recycler recycler,
+    RecyclerView.State state) {
+  if (getChildCount() == 0) {
+    return 0;
+  }
+  //Take top measurements from the top-left child
+  final View topView = getChildAt(0);
+  //Take bottom measurements from the bottom-right child.
+  final View bottomView = getChildAt(getChildCount()-1);
+  //Optimize the case where the entire data set is too small to scroll
+  int viewSpan = getDecoratedBottom(bottomView) - getDecoratedTop(topView);
+  if (viewSpan &lt;= getVerticalSpace()) {
+    //We cannot scroll in either direction
+    return 0;
+  }
+  int delta;
+  int maxRowCount = getTotalRowCount();
+  boolean topBoundReached = getFirstVisibleRow() == 0;
+  boolean bottomBoundReached = getLastVisibleRow() &gt;= maxRowCount;
+  if (dy &gt; 0) { // Contents are scrolling up
+    //Check against bottom bound
+    if (bottomBoundReached) {
+      //If we&apos;ve reached the last row, enforce limits
+      int bottomOffset;
+      if (rowOfIndex(getChildCount() - 1) &gt;= (maxRowCount - 1)) {
+        //We are truly at the bottom, determine how far
+        bottomOffset = getVerticalSpace() - getDecoratedBottom(bottomView)
+            + getPaddingBottom();
+      } else {
+        /*
+         * Extra space added to account for allowing bottom space in the grid.
+         * This occurs when the overlap in the last row is not large enough to
+         * ensure that at least one element in that row isn&apos;t fully recycled.
+         */
+        bottomOffset = getVerticalSpace() - (getDecoratedBottom(bottomView)
+            + mDecoratedChildHeight) + getPaddingBottom();
+      }
+      delta = Math.max(-dy, bottomOffset);
+    } else {
+      //No limits while the last row isn&apos;t visible
+      delta = -dy;
+    }
+  } else { // Contents are scrolling down
+    //Check against top bound
+    if (topBoundReached) {
+      int topOffset = -getDecoratedTop(topView) + getPaddingTop();
+      delta = Math.min(-dy, topOffset);
+    } else {
+      delta = -dy;
+    }
+  }
+  offsetChildrenVertical(delta);
+  if (dy &gt; 0) {
+    if (getDecoratedBottom(topView) &lt; 0 &amp;&amp; !bottomBoundReached) {
+      fillGrid(DIRECTION_DOWN, recycler);
+     } else if (!bottomBoundReached) {
+      fillGrid(DIRECTION_NONE, recycler);
+     }
+  } else {
+    if (getDecoratedTop(topView) &gt; 0 &amp;&amp; !topBoundReached) {
+      fillGrid(DIRECTION_UP, recycler);
+    } else if (!topBoundReached) {
+      fillGrid(DIRECTION_NONE, recycler);
+    }
+  }
+  /*
+   * Return value determines if a boundary has been reached
+   * (for edge effects and flings). If returned value does not
+   * match original delta (passed in), RecyclerView will draw
+   * an edge effect.
+   */
+  return -delta;
+}
+</code></pre><p>我们获得了滚动距离(dx/dy)的增量来验证。方法的第一部分判断按照所给的距离(标志给了滚动方向)滚动会不会超过边界。如果会，我们需要计算出视图实际滚动的距离。</p>
+<p>在这个方法里，我们需要自己手工移动这些视图。offsetChildrenVertical() 和 offsetChildrenHorizontal()这两个方法 可以帮助我们处理匀速移动。如果你不实现它，你的视图就不会滚动。</p>
+<p>移动视图操作完成后，我们触发另一个填充操作，根据滚动的距离替换视图。</p>
+<p>最后，将实际位移距离应用给子视图。RecyclerView 根据这个值判断是否绘制到达边界的效果。一般意义上，如果返回值不等于传入的值就意味着需要绘制边缘的发光效果了。如果你返回了一个带有错误方向的值，框架的函数会把这个当做一个大的变化你将不能获得正确的边缘发光特效。</p>
+<p>除了用来判断绘制边界特效外，返回值还被用来决定什么时候取消 flings。返回错误的值会让你失去对 content fling 的控制。框架会认为你已经提前触碰到边缘并取消了 fling。</p>
+<h2 id="u70ED_u8EAB_u7ED3_u675F_7E"><a href="#u70ED_u8EAB_u7ED3_u675F_7E" class="headerlink" title="热身结束~"></a>热身结束~</h2><p>目前，我们已经实现了基本的功能。它少了很多的细节部分，不过滚动和适当的视图回收已经完成了。关于自定义 LayoutManager 还有很多要说的东西。接下来 ，我们会细致的介绍 decorations, data set changes还有实现滚动到特定位置。</p>
+
+      
+    </div>
+    
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2015/09/14/RecyclerView-创建LayoutManager-2/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption"><</strong>
+      <div class="article-nav-title">
+        
+          RecyclerView 创建LayoutManager-2
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2015/09/13/Manifest文件属性/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">Manifest文件属性</div>
+      <strong class="article-nav-caption">></strong>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+<div class="share_jia">
+	<!-- JiaThis Button BEGIN -->
+	<div class="jiathis_style">
+		<span class="jiathis_txt">分享到: &nbsp; </span>
+		<a class="jiathis_button_facebook"></a> 
+    <a class="jiathis_button_twitter"></a>
+    <a class="jiathis_button_plus"></a> 
+    <a class="jiathis_button_tsina"></a>
+		<a class="jiathis_button_cqq"></a>
+		<a class="jiathis_button_douban"></a>
+		<a class="jiathis_button_weixin"></a>
+		<a class="jiathis_button_tumblr"></a>
+    <a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jtico jtico_jiathis" target="_blank"></a>
+	</div>
+	<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js?uid=1405949716054953" charset="utf-8"></script>
+	<!-- JiaThis Button END -->
+</div>
+
+
+
+
+
+
+<div class="duoshuo">
+	<!-- 多说评论框 start -->
+	<div class="ds-thread" data-thread-key="RecyclerView-创建LayoutManager-1" data-title="RecyclerView 创建LayoutManager-1" data-url="http://www.bigtiger079.com/2015/09/14/RecyclerView-创建LayoutManager-1/"></div>
+	<!-- 多说评论框 end -->
+	<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+	<script type="text/javascript">
+	var duoshuoQuery = {short_name:"true"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0] 
+		 || document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+	</script>
+	<!-- 多说公共JS代码 end -->
+</div>
+
+
+
+
+</div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info">
+    	<div class="footer-left">
+    		&copy; 2016 Bigtiger
+    	</div>
+      	<div class="footer-right">
+      		<a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/litten/hexo-theme-yilia" target="_blank">Yilia</a> by Litten
+      	</div>
+    </div>
+  </div>
+</footer>
+    </div>
+    
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css" type="text/css">
+
+
+<script>
+	var yiliaConfig = {
+		fancybox: true,
+		mathjax: true,
+		animate: true,
+		isHome: false,
+		isPost: true,
+		isArchive: false,
+		isTag: false,
+		isCategory: false,
+		open_in_new: false
+	}
+</script>
+<script src="http://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js" type="text/javascript"></script>
+<script src="/js/main.js" type="text/javascript"></script>
+
+
+
+
+
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';                 
+    }       
+});
+</script>
+
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  </div>
+</body>
+</html>

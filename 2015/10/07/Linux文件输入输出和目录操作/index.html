@@ -1,0 +1,840 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" >
+  <title>Linux文件输入输出和目录操作 | Bigtiger&#39;s blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="文件系统文件系统是一种存储和组织计算机文件和资料的方法
+它的主要内容是:(1)定义磁盘文件结构(2)定义文件操作(3)冗错(4)对上接口
+文件结构:(1)引导区(2)超级块Master(3)存放数据区data(4)索引区 INode
+文件系统分类:磁盘文件系统 :NTFS,EXT3闪存文件系统 :JFFS2,YAFFS数据库文件系统 :BFS,WINFS网络文件系统 :NFS虚拟文件系统 :VFS">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Linux文件输入输出和目录操作">
+<meta property="og:url" content="http://www.bigtiger079.com/2015/10/07/Linux文件输入输出和目录操作/index.html">
+<meta property="og:site_name" content="Bigtiger's blog">
+<meta property="og:description" content="文件系统文件系统是一种存储和组织计算机文件和资料的方法
+它的主要内容是:(1)定义磁盘文件结构(2)定义文件操作(3)冗错(4)对上接口
+文件结构:(1)引导区(2)超级块Master(3)存放数据区data(4)索引区 INode
+文件系统分类:磁盘文件系统 :NTFS,EXT3闪存文件系统 :JFFS2,YAFFS数据库文件系统 :BFS,WINFS网络文件系统 :NFS虚拟文件系统 :VFS">
+<meta property="og:updated_time" content="2016-01-28T12:49:21.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Linux文件输入输出和目录操作">
+<meta name="twitter:description" content="文件系统文件系统是一种存储和组织计算机文件和资料的方法
+它的主要内容是:(1)定义磁盘文件结构(2)定义文件操作(3)冗错(4)对上接口
+文件结构:(1)引导区(2)超级块Master(3)存放数据区data(4)索引区 INode
+文件系统分类:磁盘文件系统 :NTFS,EXT3闪存文件系统 :JFFS2,YAFFS数据库文件系统 :BFS,WINFS网络文件系统 :NFS虚拟文件系统 :VFS">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  <link rel="stylesheet" href="/css/style.css" type="text/css">
+</head>
+
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+	<header id="header" class="inner">
+		<a href="/" class="profilepic">
+			
+			<img lazy-src="http://7xlrpi.com1.z0.glb.clouddn.com/avatar.png" class="js-avatar">
+			
+		</a>
+
+		<hgroup>
+		  <h1 class="header-author"><a href="/">Bigtiger</a></h1>
+		</hgroup>
+
+		
+
+		
+			<div class="switch-btn">
+				<div class="icon">
+					<div class="icon-ctn">
+						<div class="icon-wrap icon-house" data-idx="0">
+							<div class="birdhouse"></div>
+							<div class="birdhouse_holes"></div>
+						</div>
+						<div class="icon-wrap icon-ribbon hide" data-idx="1">
+							<div class="ribbon"></div>
+						</div>
+						
+						
+						<div class="icon-wrap icon-me hide" data-idx="3">
+							<div class="user"></div>
+							<div class="shoulder"></div>
+						</div>
+						
+					</div>
+					
+				</div>
+				<div class="tips-box hide">
+					<div class="tips-arrow"></div>
+					<ul class="tips-inner">
+						<li>菜单</li>
+						<li>标签</li>
+						
+						
+						<li>关于我</li>
+						
+					</ul>
+				</div>
+			</div>
+		
+
+		<div class="switch-area">
+			<div class="switch-wrap">
+				<section class="switch-part switch-part1">
+					<nav class="header-menu">
+						<ul>
+						
+							<li><a href="/">主页</a></li>
+				        
+							<li><a href="/archives">所有文章</a></li>
+				        
+							<li><a href="/categories">分类</a></li>
+				        
+							<li><a href="/tags">标签</a></li>
+				        
+						</ul>
+					</nav>
+					<nav class="header-nav">
+						<div class="social">
+							
+								<a class="mail" target="_blank" href="/bigtiger079@gmail.com" title="mail">mail</a>
+					        
+						</div>
+					</nav>
+				</section>
+				
+				
+				<section class="switch-part switch-part2">
+					<div class="widget tagcloud" id="js-tagcloud">
+						<a href="/tags/Android/" style="font-size: 10px;">Android</a> <a href="/tags/C/" style="font-size: 10px;">C++</a> <a href="/tags/Cpp基础/" style="font-size: 10px;">Cpp基础</a> <a href="/tags/Hexo/" style="font-size: 10px;">Hexo</a> <a href="/tags/JNI/" style="font-size: 10px;">JNI</a> <a href="/tags/RecyclerView/" style="font-size: 16.67px;">RecyclerView</a> <a href="/tags/android/" style="font-size: 10px;">android</a> <a href="/tags/linux/" style="font-size: 20px;">linux</a> <a href="/tags/线性表/" style="font-size: 13.33px;">线性表</a>
+					</div>
+				</section>
+				
+				
+				
+
+				
+				
+				<section class="switch-part switch-part3">
+				
+					<div id="js-aboutme">我是谁，我从哪里来，我到哪里去？我就是我，是颜色不一样的吃货…</div>
+				</section>
+				
+			</div>
+		</div>
+	</header>				
+</div>
+
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+  	<div class="overlay">
+  		<div class="slider-trigger"></div>
+  		<h1 class="header-author js-mobile-header hide">Bigtiger</h1>
+  	</div>
+	<div class="intrude-less">
+		<header id="header" class="inner">
+			<div class="profilepic">
+			
+				<img lazy-src="http://7xlrpi.com1.z0.glb.clouddn.com/avatar.png" class="js-avatar">
+			
+			</div>
+			<hgroup>
+			  <h1 class="header-author">Bigtiger</h1>
+			</hgroup>
+			
+			<nav class="header-menu">
+				<ul>
+				
+					<li><a href="/">主页</a></li>
+		        
+					<li><a href="/archives">所有文章</a></li>
+		        
+					<li><a href="/categories">分类</a></li>
+		        
+					<li><a href="/tags">标签</a></li>
+		        
+		        <div class="clearfix"></div>
+				</ul>
+			</nav>
+			<nav class="header-nav">
+				<div class="social">
+					
+						<a class="mail" target="_blank" href="/bigtiger079@gmail.com" title="mail">mail</a>
+			        
+				</div>
+			</nav>
+		</header>				
+	</div>
+</nav>
+
+      <div class="body-wrap"><article id="post-Linux文件输入输出和目录操作" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2015/10/07/Linux文件输入输出和目录操作/" class="article-date">
+  	<time datetime="2015-10-07T08:20:50.000Z" itemprop="datePublished">2015-10-07</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Linux文件输入输出和目录操作
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/">linux</a></li></ul>
+	</div>
+
+        
+	<div class="article-category tagcloud">
+	<a class="article-category-link" href="/categories/c/">c++</a>
+	</div>
+
+
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="u6587_u4EF6_u7CFB_u7EDF"><a href="#u6587_u4EF6_u7CFB_u7EDF" class="headerlink" title="文件系统"></a>文件系统</h2><p>文件系统是一种存储和组织计算机文件和资料的方法</p>
+<p><strong>它的主要内容是:</strong><br>(1)定义磁盘文件结构<br>(2)定义文件操作<br>(3)冗错<br>(4)对上接口</p>
+<h4 id="u6587_u4EF6_u7ED3_u6784_3A"><a href="#u6587_u4EF6_u7ED3_u6784_3A" class="headerlink" title="文件结构:"></a>文件结构:</h4><p>(1)引导区<br>(2)超级块Master<br>(3)存放数据区data<br>(4)索引区 INode</p>
+<h4 id="u6587_u4EF6_u7CFB_u7EDF_u5206_u7C7B_3A"><a href="#u6587_u4EF6_u7CFB_u7EDF_u5206_u7C7B_3A" class="headerlink" title="文件系统分类:"></a>文件系统分类:</h4><p>磁盘文件系统 :NTFS,EXT3<br>闪存文件系统 :JFFS2,YAFFS<br>数据库文件系统 :BFS,WINFS<br>网络文件系统 :NFS<br>虚拟文件系统 :VFS(Proc)</p>
+<h3 id="u4E00_u5207_u7686_u6587_u4EF6"><a href="#u4E00_u5207_u7686_u6587_u4EF6" class="headerlink" title="一切皆文件"></a>一切皆文件</h3><blockquote>
+<p>Linux中一切皆文件</p>
+</blockquote>
+<p>Linux中文件类型:</p>
+<table>
+<thead>
+<tr>
+<th>类型</th>
+<th>标示符</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>一般文件</td>
+<td>-</td>
+</tr>
+<tr>
+<td>目录文件</td>
+<td>d</td>
+</tr>
+<tr>
+<td>链接文件</td>
+<td>l</td>
+</tr>
+<tr>
+<td>块设备</td>
+<td>b</td>
+</tr>
+<tr>
+<td>字符设备</td>
+<td>c</td>
+</tr>
+<tr>
+<td>socket</td>
+<td>s     </td>
+</tr>
+<tr>
+<td>管道</td>
+<td>p</td>
+</tr>
+</tbody>
+</table>
+<p>管道:把一个文件的出口写到另一个文件的入口,或者是把一个程序的出口写到另一个程序的入口</p>
+<h3 id="u6587_u4EF6_u5C5E_u6027"><a href="#u6587_u4EF6_u5C5E_u6027" class="headerlink" title="文件属性"></a>文件属性</h3><p>例如: <code>drwxr-xr-x</code><br>我们可以将文件属性分成4部分: </p>
+<table>
+<thead>
+<tr>
+<th>d</th>
+<th>rwx</th>
+<th>r-x</th>
+<th>r-x</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>文件类型</td>
+<td>owner权限</td>
+<td>用户组权限</td>
+<td>其他用户权限</td>
+</tr>
+</tbody>
+</table>
+<p><strong>文件颜色:</strong></p>
+<p>蓝色–目录<br>绿色–可执行文件<br>红色–压缩文件<br>浅蓝色–链接文件<br>灰色–其他文件</p>
+<h3 id="Linux_u76EE_u5F55_u7ED3_u6784"><a href="#Linux_u76EE_u5F55_u7ED3_u6784" class="headerlink" title="Linux目录结构"></a>Linux目录结构</h3><p>/bin        二进制    存放系统可执行文件<br>/sbin                    存放管理员系统可执行文件<br>/etc                      配置文件<br>/lib                      共享类库<br>/dev                    设备<br>/tmp                   临时文件<br>/boot                  启动<br>/root                   root用户目录<br>/mnt                   挂载目录<br>/opt                    优化目录<br>/usr                     用户程序目录<br>/user/bin (sbin)    用户可执行文件目录<br>/var                    系统变量<br>/proc                  虚拟文件系统FVS<br>/lost+found        当系统崩溃时用户找回文件<br>/home                 用户文档</p>
+<h2 id="u4F7F_u7528_u6587_u4EF6_u63CF_u8FF0_u7B26"><a href="#u4F7F_u7528_u6587_u4EF6_u63CF_u8FF0_u7B26" class="headerlink" title="使用文件描述符"></a>使用文件描述符</h2><h3 id="u6253_u5F00_u548C_u5173_u95ED_u6587_u4EF6_u63CF_u8FF0_u7B26"><a href="#u6253_u5F00_u548C_u5173_u95ED_u6587_u4EF6_u63CF_u8FF0_u7B26" class="headerlink" title="打开和关闭文件描述符"></a>打开和关闭文件描述符</h3><pre><code>#include&lt;sys/types.h&gt;
+#include&lt;sys/stat.h&gt;
+#inlcude&lt;fcntl.h&gt;
+#include&lt;unistd.h&gt;
+int open(const char *pathname, int flags);
+int close()int fd;
+</code></pre><blockquote>
+<p>open试图打开参数pathname中的一个文件<br>参数flags指定访问该文件的方式<br>必须把flags设置为O_RDONLY、O_WRONLY、O_RDWR、O_CREAT、O_APPEND分别表示只读、只写、读写 如果文件不存在就创建、追加<br>open成功后会返回一个文件描述符<br>open失败后会返回-1,并设置errno变量</p>
+</blockquote>
+<h4 id="errno_u793A_u4F8B"><a href="#errno_u793A_u4F8B" class="headerlink" title="errno示例"></a>errno示例</h4><pre><code>#include&lt;sys/types.h&gt;
+#include&lt;sys/stat.h&gt;
+#inlcude&lt;fcntl.h&gt;
+#include&lt;unistd.h&gt;
+#include&lt;errno.h&gt;
+
+int main(void)
+{
+    char s[] = &quot;abc.txt&quot;
+    int fd = open(s, O_RDONLY);
+    if(fd == -1)
+    {
+        printf(&quot;%s\n&quot;, strerror(errno));
+    }
+    else
+    {
+        printf(&quot;fd = %d\n&quot;, fd);
+        close(fd);
+    }
+    return EXIT_SUCCESS;
+}
+</code></pre><p>若当前目录下没有abc.txt文件, 则会打印”No such file or derctory “</p>
+<blockquote>
+<p>在一个文件描述符用完后一定要用close()函数关闭它, 这样才能保证该进程对文件所有加的锁全部被释放</p>
+</blockquote>
+<h4 id="u5B9E_u9A8C_u2013_u6587_u4EF6_u63CF_u8FF0_u7B26_u7684_u4F5C_u7528"><a href="#u5B9E_u9A8C_u2013_u6587_u4EF6_u63CF_u8FF0_u7B26_u7684_u4F5C_u7528" class="headerlink" title="实验–文件描述符的作用"></a>实验–文件描述符的作用</h4><p>把上面的打开文件做成一个死循环</p>
+<pre><code>int main(void)
+{
+    char s[] = &quot;abc.txt&quot;
+    int fd = open(s, O_RDONLY);
+    if(fd == -1)
+    {
+        printf(&quot;%s\n&quot;, strerror(errno));
+    }
+    else
+    {
+        while(1)
+        {
+            printf(&quot;fd = %d\n&quot;, fd);
+            sleep(1);  //代表休眠1秒
+        }
+        close(fd);
+    }
+    return EXIT_SUCCESS;
+}
+</code></pre><p>查看进程编号: </p>
+<pre><code>ps -u test
+</code></pre><p>显示编号为: 12421 pts/2    00:00:00 abc</p>
+<p>进入proc/12421/fd目录下:</p>
+<pre><code>cd  /proc/12421/fd
+</code></pre><p>列出fd目录下的内容:</p>
+<pre><code>ls
+</code></pre><p>显示结果为: 0  1  2  3<br>其中: 0代表标准输入, 1代表标准输出, 2代表标准错误, 3就是代表所代开的abc.txt文件</p>
+<p>查看文件3的属性:</p>
+<pre><code>file 3
+</code></pre><p>显示结果为: 3:symbolic link to ‘/home/test/1/1/abc.txt’<br>表示文件的路径</p>
+<p>通过<code>cat 3</code> 就是可以查看文件内容</p>
+<h4 id="u901A_u8FC7open_u51FD_u6570_u6539_u53D8_u6807_u51C6_u8F93_u51FA_u7684_u65B9_u6CD5"><a href="#u901A_u8FC7open_u51FD_u6570_u6539_u53D8_u6807_u51C6_u8F93_u51FA_u7684_u65B9_u6CD5" class="headerlink" title="通过open函数改变标准输出的方法"></a>通过open函数改变标准输出的方法</h4><pre><code>int main(void)
+{
+    char s[] = &quot;abc.txt&quot;;
+    int i = 0;
+
+    close(STDOUT_FILENO);//关闭标准输出文件描述符
+    int fd1 = open(&quot;/dev/pts/1&quot;, O_WRONLY);//打开设备文件/dev/pts/1，该设备将做为标准输出文件描述符
+    int fd = open(s, O_RDONLY);//
+    if (fd == -1)
+    {
+        printf(&quot;%s\n&quot;, strerror(errno));//
+    }else
+    {
+        while(1)
+        {
+            printf(&quot;fd1 = %d, fd = %d:%d\n&quot;, fd1, fd, i++);//printf语句将会打印到/dev/pts/1上
+            sleep(1);//
+        }
+        close(fd);
+    }
+    return EXIT_SUCCESS;
+}
+</code></pre><h3 id="u8BFB_u5199_u6587_u4EF6_u63CF_u8FF0_u7B26"><a href="#u8BFB_u5199_u6587_u4EF6_u63CF_u8FF0_u7B26" class="headerlink" title="读写文件描述符"></a>读写文件描述符</h3><pre><code>ssize_t read(int fd, void *buf, size_t count);
+ssize_t write(int fd, void *bug, size_t count);
+</code></pre><blockquote>
+<p>read用于从该文件描述符对应的文件读取数据, 调用成功返回读出的字节数<br>参数fd必须是用open调用返回的有效文件描述符<br>参数buf为读出数据的缓冲区, count指定读出的字节数<br>成功返回读取字节数, 如果遇到EOF, 返回0, 出错返回-1</p>
+</blockquote>
+<h5 id="read_u51FD_u6570_u793A_u4F8B"><a href="#read_u51FD_u6570_u793A_u4F8B" class="headerlink" title="read函数示例"></a>read函数示例</h5><pre><code>int main()
+{
+    char s[] = &quot;abc.txt&quot;
+    int fd = open(s, O_RDONLY);//只读方式打开文件
+    if(fd == -1)
+    {
+        printf(&quot;error is %s\n&quot;, strerror(errno));
+    } else
+    {
+        printf(&quot;success fd=%d\n&quot;, fd);
+        char buf[100];
+        memset(buf, 0, sizeof(buf));
+        while(read(fd, buf, sizeof(buf) -1) &gt; 0)//循环读取文件内容, 指导文件结尾, 退出循环
+        {
+            printf(&quot;%s\n&quot;, buf);
+            memset(buf, 0, sizeof(buf));//buf清0
+        }
+
+        close(fd);
+    }
+    return 0;
+}
+</code></pre><h4 id="write_u51FD_u6570_u793A_u4F8B"><a href="#write_u51FD_u6570_u793A_u4F8B" class="headerlink" title="write函数示例"></a>write函数示例</h4><pre><code>int main(int arg, char *args[])
+{
+    char s[] = &quot;abc.txt&quot;;
+    int fd = open(s, O_RDWR | O_APPEND);//用读写追加方式打开文件
+    if (fd == -1)
+    {
+        printf(&quot;error is %s\n&quot;, strerror(errno));
+    }else
+    {
+        printf(&quot;success fd = %d\n&quot;, fd);
+        char buf[100];
+        memset(buf, 0, sizeof(buf));
+        strcpy(buf, &quot;hello world\n&quot;);
+        int i = write(fd, buf, strlen(buf));//这里要用strlen函数,不能用sizeof
+        close(fd);
+    }
+    return 0;
+}
+</code></pre><h3 id="u83B7_u53D6_u6587_u4EF6_u4FE1_u606F"><a href="#u83B7_u53D6_u6587_u4EF6_u4FE1_u606F" class="headerlink" title="获取文件信息"></a>获取文件信息</h3><p>使用fstat获取文件信息</p>
+<pre><code>int fstat(int fd, struct stat *buf)
+</code></pre><blockquote>
+<p>参数fd必须是用open调用返回的有效描述符</p>
+</blockquote>
+<p>使用 stat获取文件信息</p>
+<pre><code>int stat(int fd, struct stat *buf)
+</code></pre><blockquote>
+<p>参数path是路径加文件名的字符串</p>
+</blockquote>
+<h4 id="Struct_stat_u5B9A_u4E49_u5982_u4E0B"><a href="#Struct_stat_u5B9A_u4E49_u5982_u4E0B" class="headerlink" title="Struct stat定义如下"></a>Struct stat定义如下</h4><pre><code>struct stat{
+    dev_t        st_dev;     /* ID of device containing file */
+    ino_t       st_ino;     /* inode number */
+    mode_t      st_mode;     /* protection */
+    nlink_t     st_nlink;     /* number of hard links */
+    uid_t         st_uid;     /* user ID of owner */
+    gid_t         st_gid;     /* group ID of owner */
+    dev_t         st_rdev;     /* device ID (if special file) */
+    off_t         st_size;     /* total size, in bytes */
+    blksize_t     st_blksize; /* block size for filesystem I/O */
+    blkcnt_t     st_blocks;     /* number of blocks allocated */
+    time_t         st_atime;     /* time of last access */
+    time_t         st_mtime;     /* time of last modification */
+    time_t         st_ctime;     /* time of last status change */
+};
+</code></pre><p>为了正确解释文件类型, 有一套宏能够计算stat接口的st_mode成员</p>
+<pre><code>#define S_IRWXU 00700   /* mask for file owner permissions */  
+#define S_IRUSR 00400   /* owner has read permission */  
+#define S_IWUSR 00200   /* owner has write permission */  
+#define S_IXUSR 00100   /* owner has execute permission */  
+
+#define S_IRWXG 00070   /* mask for group permissions */  
+#define S_IRGRP 00040   /* group has read permission */  
+#define S_IWGRP 00020   /* group has write permission */  
+#define S_IXGRP 00010   /* group has execute permission */  
+
+#define S_IRWXO 00007   /* mask for permissions for others (not in group) */  
+#define S_IROTH 00004   /* others have read permission */  
+#define S_IWOTH 00002   /* others have write permission */  
+#define S_IXOTH 00001   /* others have execute permission */  
+</code></pre><h4 id="u5F97_u5230_u6587_u4EF6_u72B6_u6001_u4EE3_u7801_u793A_u4F8B"><a href="#u5F97_u5230_u6587_u4EF6_u72B6_u6001_u4EE3_u7801_u793A_u4F8B" class="headerlink" title="得到文件状态代码示例"></a>得到文件状态代码示例</h4><pre><code>int main(int arg, char *args[])
+{
+    int fd = open(args[1], O_RDONLY);
+    if (fd == -1)
+    {
+        printf(&quot;error is %s\n&quot;, strerror(errno));
+    }else
+    {
+        printf(&quot;success fd = %d\n&quot;, fd);
+        struct stat buf;
+        fstat(fd, &amp;buf);
+        if (S_ISREG(buf.st_mode))//判断文件是否为标准文件
+        {
+            printf(&quot;%s is charfile\n&quot;, args[1]);
+        }
+        if (S_ISDIR(buf.st_mode))//判断文件是否为目录
+        {
+            printf(&quot;%s is dir\n&quot;, args[1]);
+        }
+
+        printf(&quot;%s size =%d\n&quot;, args[1], buf.st_size);//得到文件大小
+
+        close(fd);
+    }
+    return 0;
+}
+</code></pre><h3 id="u8BFB_u5199_u7528_u6237_u8F93_u5165_2C__u5C4F_u5E55_u4E0D_u56DE_u663E"><a href="#u8BFB_u5199_u7528_u6237_u8F93_u5165_2C__u5C4F_u5E55_u4E0D_u56DE_u663E" class="headerlink" title="读写用户输入, 屏幕不回显"></a>读写用户输入, 屏幕不回显</h3><pre><code>char *getpass(const char *prompt);
+</code></pre><blockquote>
+<p>getpass函数用于从键盘读取用户输入, 但屏幕不回显<br>参数prompt为屏幕提示字符<br>函数返回值为用户键盘输入的字符</p>
+</blockquote>
+<h2 id="u6587_u4EF6_u548C_u76EE_u5F55_u64CD_u4F5C"><a href="#u6587_u4EF6_u548C_u76EE_u5F55_u64CD_u4F5C" class="headerlink" title="文件和目录操作"></a>文件和目录操作</h2><p>这里介绍的函数是库函数, 而不是系统调用</p>
+<blockquote>
+<p>库函数和系统函数调用的区别在于系统调用能够让你直接访问linux内核提供的服务<br>系统调用函数存在于内核空间, 库函数都是用户模式, 所以系统调用不当可能会破坏系统, 但库函数调用风险就要小很多<br>库函数对I/O操作进行缓冲, 减少了系统调用开销, 同时移植性也更好</p>
+</blockquote>
+<h3 id="u6253_u5F00_u548C_u5173_u95ED_u6587_u4EF6"><a href="#u6253_u5F00_u548C_u5173_u95ED_u6587_u4EF6" class="headerlink" title="打开和关闭文件"></a>打开和关闭文件</h3><pre><code>FILE *p fopen(const char *path, const char *mode);
+int fclose(FILE *stream);
+</code></pre><blockquote>
+<p>fopen以mode模式打开名为path的文件<br>fopen 返回一个文件指针<br>出现错误, fopen返回NULL, 并把errno设置为恰当的值</p>
+</blockquote>
+<p>参数mode字符串则代表着流形态。<br>mode有下列几种形态字符串:</p>
+<pre><code>r 打开只读文件，该文件必须存在。
+
+r+ 打开可读写的文件，该文件必须存在。
+
+rb+ 读写打开一个二进制文件，只允许读写数据。
+
+rt+ 读写打开一个文本文件，允许读和写。
+
+w 打开只写文件，若文件存在则文件长度清为0，即该文件内容会消失。若文件不存在则建立该文件。
+
+w+ 打开可读写文件，若文件存在则文件长度清为零，即该文件内容会消失。若文件不存在则建立该文件。
+
+a 以附加的方式打开只写文件。若文件不存在，则会建立该文件，如果文件存在，写入的数据会被加到文件尾，即文件原先的内容会被保留。（EOF符保留）
+
+a+ 以附加方式打开可读写的文件。若文件不存在，则会建立该文件，如果文件存在，写入的数据会被加到文件尾后，即文件原先的内容会被保留。 （原来的EOF符不保留）
+
+wb 只写打开或新建一个二进制文件；只允许写数据。
+
+wb+ 读写打开或建立一个二进制文件，允许读和写。
+
+wt+ 读写打开或着建立一个文本文件；允许读写。
+
+at+ 读写打开一个文本文件，允许读或在文本末追加数据。
+
+ab+ 读写打开一个二进制文件，允许读或在文件末追加数据。
+</code></pre><h3 id="u8BFB_u5199_u6587_u4EF6"><a href="#u8BFB_u5199_u6587_u4EF6" class="headerlink" title="读写文件"></a>读写文件</h3><pre><code>size_t fread(void *ptr, size_t size, size_t nmemb, FILE *stream);
+size_t fwrite(void *ptr, size_t size, size_t nmemb, FILE *stream);
+</code></pre><blockquote>
+<p>参数ptr指向缓冲区保存或读取的数据<br>参数size控制记录大小<br>参数nmemb为记录数<br>函数返回读取或回写的数据</p>
+</blockquote>
+<h4 id="C_u5E93_u51FD_u6570_u8BFB_u53D6_u6587_u4EF6_u7684_u4EE3_u7801"><a href="#C_u5E93_u51FD_u6570_u8BFB_u53D6_u6587_u4EF6_u7684_u4EE3_u7801" class="headerlink" title="C库函数读取文件的代码"></a>C库函数读取文件的代码</h4><pre><code>int main(int arg, char *args[])
+{
+    FILE *p = fopen(args[1], &quot;r+&quot;);
+    if (p == NULL)
+    {
+        printf(&quot;error is %s\n&quot;, strerror(errno));
+    }
+    else
+    {
+        printf(&quot;success\n&quot;);
+        char buf[100];
+        size_t rc = 0;
+        while(1)
+        {
+            size_t tmp = fread(buf, 1, sizeof(buf), p);//原则是第二个参数乘以第三个参数的大小不能超过缓冲区
+            rc += tmp;
+            if (tmp == 0)
+                break;
+
+        }
+        printf(&quot;rc = %d\n&quot;, rc);
+        fclose(p);
+    }
+    return 0;
+}
+</code></pre><h4 id="c_u5E93_u51FD_u6570_u8BFB_u5199_u4E8C_u8FDB_u5236_u6587_u4EF6_u7684_u4EE3_u7801"><a href="#c_u5E93_u51FD_u6570_u8BFB_u5199_u4E8C_u8FDB_u5236_u6587_u4EF6_u7684_u4EE3_u7801" class="headerlink" title="c库函数读写二进制文件的代码"></a>c库函数读写二进制文件的代码</h4><pre><code>struct person
+{
+    int id;
+    char name[20];
+    int age;
+    int sex;
+    char tel[20];
+};
+
+//以二进制的形式将信息写入文件中
+int main(int arg, char *args[])
+{
+    FILE *p = fopen(args[1], &quot;w&quot;); //如果是Windows下,这里要使用&quot;wb&quot;
+    if (p == NULL)
+    {
+        printf(&quot;error is %s\n&quot;, strerror(errno));
+    } else
+    {
+        printf(&quot;success\n&quot;);
+        struct person man[10];
+        memset(&amp;man, 0, sizeof(man));
+
+        man[0].id = 0;
+        strcpy(man[0].name, &quot;苍井空&quot;);
+        man[0].age = 50;
+        man[0].sex = 1;
+        strcpy(man[0].tel, &quot;911&quot;);
+
+        man[1].id = 1;
+        strcpy(man[1].name, &quot;饭岛爱&quot;);
+        man[1].age = 20;
+        man[1].sex = 0;
+        strcpy(man[1].tel, &quot;119&quot;);
+
+        fwrite(&amp;man, sizeof(struct person), 2, p);
+        fclose(p);
+    }
+    return 0;
+}
+</code></pre><p>读取:</p>
+<pre><code>int main(int arg, char *args[])
+{
+    FILE *p = fopen(args[1], &quot;w&quot;);
+    if (p == NULL)
+    {
+        printf(&quot;error is %s\n&quot;, strerror(errno));
+    } else
+    {
+        printf(&quot;success\n&quot;);
+        struct person man;
+        memset(&amp;man, 0, sizeof(man));
+
+        while(fread(&amp;man, sizeof(struct person), 1, p))
+        {
+            printf(&quot;id=%d\n&quot;, man.id);
+            printf(&quot;name=%s\n&quot;, man.name);
+            printf(&quot;age=%d\n&quot;, man.age);
+            printf(&quot;tel=%s\n&quot;, man.tel);
+        }
+        fclose(p);
+    }
+    return 0;
+}
+</code></pre><h3 id="u683C_u5F0F_u5316_u8F93_u5165_u548C_u8F93_u51FA"><a href="#u683C_u5F0F_u5316_u8F93_u5165_u548C_u8F93_u51FA" class="headerlink" title="格式化输入和输出"></a>格式化输入和输出</h3><pre><code>int fprintf(FILE *stream, const char *fornat, ...);
+int fscanf(FILE *stream, const char *fornat, ...);
+</code></pre><h3 id="u884C_u8F93_u5165_u548C_u884C_u8F93_u51FA"><a href="#u884C_u8F93_u5165_u548C_u884C_u8F93_u51FA" class="headerlink" title="行输入和行输出"></a>行输入和行输出</h3><pre><code>char fgets(char *s, int size, FILE *stream);
+char fputs(const char *s, FILE *stream);
+</code></pre><blockquote>
+<p>fgets从文件中读取一行, 返回EOF代表文件结尾<br>fputs向文件中写入一行</p>
+</blockquote>
+<h3 id="u6587_u4EF6_u5220_u9664_u548C_u6539_u540D"><a href="#u6587_u4EF6_u5220_u9664_u548C_u6539_u540D" class="headerlink" title="文件删除和改名"></a>文件删除和改名</h3><pre><code>int remove(const char *pathname);
+int rename(cnst char *oldpath, const char *newpath);
+</code></pre><blockquote>
+<p>remove函数删除pathname指向的文件名<br>rename函数修改文件名称<br>执行成功返回0, 失败返回-1, 错误码保存在变量errno中</p>
+</blockquote>
+<h4 id="u5199log_u7684_u4EE3_u7801"><a href="#u5199log_u7684_u4EE3_u7801" class="headerlink" title="写log的代码"></a>写log的代码</h4><pre><code>void writelog(const char *log)
+{
+    time_t tDate;
+    struct tm *eventTime;
+    time(&amp;tDate);//得到系统当前时间
+    eventTime = localtime(&amp;tDate);//将time_t数据类型转化为struct tm结构
+    int iYear = eventTime-&gt;tm_year + 1900;
+    int iMon = eventTime-&gt;tm_mon + 1;
+    int iDay = eventTime-&gt;tm_mday;
+    int iHour = eventTime-&gt;tm_hour;
+    int iMin = eventTime-&gt;tm_min;
+    int iSec = eventTime-&gt;tm_sec;
+
+    printf(&quot;tm_isdst = %d\n&quot;, eventTime-&gt;tm_isdst);
+
+    char sDate[16];
+    sprintf(sDate, &quot;%04d-%02d-%02d&quot;, iYear, iMon, iDay);
+    char sTime[16];
+    sprintf(sTime, &quot;%02d:%02d:%02d&quot;, iHour, iMin, iSec);
+    char s[1024];
+    sprintf(s, &quot;%s %s %s\n&quot;, sDate, sTime, log);
+    FILE *p = fopen(&quot;my.log&quot;, &quot;a+&quot;);
+    if (p == NULL)
+    {
+        printf(&quot;write log my.log error:%s\n&quot;, strerror(errno));
+    }else
+    {
+        fputs(s, p);
+        fclose(p);
+    }
+    return;
+}
+</code></pre><h3 id="u627E_u5230_u5F53_u524D_u76EE_u5F55"><a href="#u627E_u5230_u5F53_u524D_u76EE_u5F55" class="headerlink" title="找到当前目录"></a>找到当前目录</h3><pre><code>char *getcwd(char *buf, size_t size);
+</code></pre><blockquote>
+<p>getcwd函数把当前工作目录的据对路径名复制到buf中, size只是buf的大小<br>如果buf不够大,布恩那个装下整个路径名, getcwd返回NULL</p>
+</blockquote>
+<h3 id="u83B7_u5F97_u76EE_u5F55_u5217_u8868"><a href="#u83B7_u5F97_u76EE_u5F55_u5217_u8868" class="headerlink" title="获得目录列表"></a>获得目录列表</h3><ul>
+<li>用opendir函数打开目录文件</li>
+<li>用readdir函数读取目录文件内容</li>
+<li>用closedir函数关闭目录文件</li>
+<li>这些函数都在<dirent.h>中声明</dirent.h></li>
+</ul>
+<pre><code>DIR *opendir(const char *pathname);
+struct dirent *readdir(DIR *dir);
+int closedir(DIR *dir);
+</code></pre><blockquote>
+<p>opendir函数打开pathname指向的目录文件, 如果错误返回NULL</p>
+</blockquote>
+<h4 id="u8BFB_u76EE_u5F55_u7684_u793A_u4F8B"><a href="#u8BFB_u76EE_u5F55_u7684_u793A_u4F8B" class="headerlink" title="读目录的示例"></a>读目录的示例</h4><pre><code>int main(int arg, char *args[])
+{
+    if (arg &lt;2)
+        return 0;
+
+    DIR *dp;
+    struct dirent *dirp;
+    dp = opendir(args[1]);//打开目录文件
+    if (dp == NULL)
+    {
+        printf(&quot;error is %s\n&quot;, strerror(errno));
+        return 0;
+    }
+
+    while((dirp = readdir(dp)) != NULL)//用readdir循环读取目录内容，读到目录尾，循环break
+    {
+        printf(&quot;%s\n&quot;, dirp-&gt;d_name);//将目录下的文件名打印到屏幕
+
+    }
+
+    closedir(dp);//关闭目录
+
+    return 0;
+}
+</code></pre>
+      
+    </div>
+    
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2015/10/07/Linux进程控制/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption"><</strong>
+      <div class="article-nav-title">
+        
+          Linux进程控制
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2015/10/04/Liux-内存管理/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">Liux 内存管理</div>
+      <strong class="article-nav-caption">></strong>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+<div class="share_jia">
+	<!-- JiaThis Button BEGIN -->
+	<div class="jiathis_style">
+		<span class="jiathis_txt">分享到: &nbsp; </span>
+		<a class="jiathis_button_facebook"></a> 
+    <a class="jiathis_button_twitter"></a>
+    <a class="jiathis_button_plus"></a> 
+    <a class="jiathis_button_tsina"></a>
+		<a class="jiathis_button_cqq"></a>
+		<a class="jiathis_button_douban"></a>
+		<a class="jiathis_button_weixin"></a>
+		<a class="jiathis_button_tumblr"></a>
+    <a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jtico jtico_jiathis" target="_blank"></a>
+	</div>
+	<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js?uid=1405949716054953" charset="utf-8"></script>
+	<!-- JiaThis Button END -->
+</div>
+
+
+
+
+
+
+<div class="duoshuo">
+	<!-- 多说评论框 start -->
+	<div class="ds-thread" data-thread-key="Linux文件输入输出和目录操作" data-title="Linux文件输入输出和目录操作" data-url="http://www.bigtiger079.com/2015/10/07/Linux文件输入输出和目录操作/"></div>
+	<!-- 多说评论框 end -->
+	<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+	<script type="text/javascript">
+	var duoshuoQuery = {short_name:"true"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0] 
+		 || document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+	</script>
+	<!-- 多说公共JS代码 end -->
+</div>
+
+
+
+
+</div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info">
+    	<div class="footer-left">
+    		&copy; 2016 Bigtiger
+    	</div>
+      	<div class="footer-right">
+      		<a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/litten/hexo-theme-yilia" target="_blank">Yilia</a> by Litten
+      	</div>
+    </div>
+  </div>
+</footer>
+    </div>
+    
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css" type="text/css">
+
+
+<script>
+	var yiliaConfig = {
+		fancybox: true,
+		mathjax: true,
+		animate: true,
+		isHome: false,
+		isPost: true,
+		isArchive: false,
+		isTag: false,
+		isCategory: false,
+		open_in_new: false
+	}
+</script>
+<script src="http://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js" type="text/javascript"></script>
+<script src="/js/main.js" type="text/javascript"></script>
+
+
+
+
+
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';                 
+    }       
+});
+</script>
+
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  </div>
+</body>
+</html>

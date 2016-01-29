@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" >
+  <title>Linux进程间通信 | Bigtiger&#39;s blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="linux中的共享库so
+so文件在linux中为共享库,与windows下的dll类似
+so文件中的函数可以供多个进程调用, 最大可能的提供二进制代码的复用
+共享库可以使代码的维护工作大大简化,当修正了一些错误或者添加了新特性的时候,用户只需要获得升级后的so并安装它就可以
+注意:即使不同的进程调用同一个so文件,通过共享库不能实现不同进程间的通讯, 因为同一个so文件被不同进程加载到不同的内存">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Linux进程间通信">
+<meta property="og:url" content="http://www.bigtiger079.com/2015/10/10/Linux进程间通信/index.html">
+<meta property="og:site_name" content="Bigtiger's blog">
+<meta property="og:description" content="linux中的共享库so
+so文件在linux中为共享库,与windows下的dll类似
+so文件中的函数可以供多个进程调用, 最大可能的提供二进制代码的复用
+共享库可以使代码的维护工作大大简化,当修正了一些错误或者添加了新特性的时候,用户只需要获得升级后的so并安装它就可以
+注意:即使不同的进程调用同一个so文件,通过共享库不能实现不同进程间的通讯, 因为同一个so文件被不同进程加载到不同的内存">
+<meta property="og:updated_time" content="2016-01-28T12:49:21.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Linux进程间通信">
+<meta name="twitter:description" content="linux中的共享库so
+so文件在linux中为共享库,与windows下的dll类似
+so文件中的函数可以供多个进程调用, 最大可能的提供二进制代码的复用
+共享库可以使代码的维护工作大大简化,当修正了一些错误或者添加了新特性的时候,用户只需要获得升级后的so并安装它就可以
+注意:即使不同的进程调用同一个so文件,通过共享库不能实现不同进程间的通讯, 因为同一个so文件被不同进程加载到不同的内存">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  <link rel="stylesheet" href="/css/style.css" type="text/css">
+</head>
+
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+	<header id="header" class="inner">
+		<a href="/" class="profilepic">
+			
+			<img lazy-src="http://7xlrpi.com1.z0.glb.clouddn.com/avatar.png" class="js-avatar">
+			
+		</a>
+
+		<hgroup>
+		  <h1 class="header-author"><a href="/">Bigtiger</a></h1>
+		</hgroup>
+
+		
+
+		
+			<div class="switch-btn">
+				<div class="icon">
+					<div class="icon-ctn">
+						<div class="icon-wrap icon-house" data-idx="0">
+							<div class="birdhouse"></div>
+							<div class="birdhouse_holes"></div>
+						</div>
+						<div class="icon-wrap icon-ribbon hide" data-idx="1">
+							<div class="ribbon"></div>
+						</div>
+						
+						
+						<div class="icon-wrap icon-me hide" data-idx="3">
+							<div class="user"></div>
+							<div class="shoulder"></div>
+						</div>
+						
+					</div>
+					
+				</div>
+				<div class="tips-box hide">
+					<div class="tips-arrow"></div>
+					<ul class="tips-inner">
+						<li>菜单</li>
+						<li>标签</li>
+						
+						
+						<li>关于我</li>
+						
+					</ul>
+				</div>
+			</div>
+		
+
+		<div class="switch-area">
+			<div class="switch-wrap">
+				<section class="switch-part switch-part1">
+					<nav class="header-menu">
+						<ul>
+						
+							<li><a href="/">主页</a></li>
+				        
+							<li><a href="/archives">所有文章</a></li>
+				        
+							<li><a href="/categories">分类</a></li>
+				        
+							<li><a href="/tags">标签</a></li>
+				        
+						</ul>
+					</nav>
+					<nav class="header-nav">
+						<div class="social">
+							
+								<a class="mail" target="_blank" href="/bigtiger079@gmail.com" title="mail">mail</a>
+					        
+						</div>
+					</nav>
+				</section>
+				
+				
+				<section class="switch-part switch-part2">
+					<div class="widget tagcloud" id="js-tagcloud">
+						<a href="/tags/Android/" style="font-size: 10px;">Android</a> <a href="/tags/C/" style="font-size: 10px;">C++</a> <a href="/tags/Cpp基础/" style="font-size: 10px;">Cpp基础</a> <a href="/tags/Hexo/" style="font-size: 10px;">Hexo</a> <a href="/tags/JNI/" style="font-size: 10px;">JNI</a> <a href="/tags/RecyclerView/" style="font-size: 16.67px;">RecyclerView</a> <a href="/tags/android/" style="font-size: 10px;">android</a> <a href="/tags/linux/" style="font-size: 20px;">linux</a> <a href="/tags/线性表/" style="font-size: 13.33px;">线性表</a>
+					</div>
+				</section>
+				
+				
+				
+
+				
+				
+				<section class="switch-part switch-part3">
+				
+					<div id="js-aboutme">我是谁，我从哪里来，我到哪里去？我就是我，是颜色不一样的吃货…</div>
+				</section>
+				
+			</div>
+		</div>
+	</header>				
+</div>
+
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+  	<div class="overlay">
+  		<div class="slider-trigger"></div>
+  		<h1 class="header-author js-mobile-header hide">Bigtiger</h1>
+  	</div>
+	<div class="intrude-less">
+		<header id="header" class="inner">
+			<div class="profilepic">
+			
+				<img lazy-src="http://7xlrpi.com1.z0.glb.clouddn.com/avatar.png" class="js-avatar">
+			
+			</div>
+			<hgroup>
+			  <h1 class="header-author">Bigtiger</h1>
+			</hgroup>
+			
+			<nav class="header-menu">
+				<ul>
+				
+					<li><a href="/">主页</a></li>
+		        
+					<li><a href="/archives">所有文章</a></li>
+		        
+					<li><a href="/categories">分类</a></li>
+		        
+					<li><a href="/tags">标签</a></li>
+		        
+		        <div class="clearfix"></div>
+				</ul>
+			</nav>
+			<nav class="header-nav">
+				<div class="social">
+					
+						<a class="mail" target="_blank" href="/bigtiger079@gmail.com" title="mail">mail</a>
+			        
+				</div>
+			</nav>
+		</header>				
+	</div>
+</nav>
+
+      <div class="body-wrap"><article id="post-Linux进程间通信" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2015/10/10/Linux进程间通信/" class="article-date">
+  	<time datetime="2015-10-10T06:05:15.000Z" itemprop="datePublished">2015-10-10</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Linux进程间通信
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/">linux</a></li></ul>
+	</div>
+
+        
+	<div class="article-category tagcloud">
+	<a class="article-category-link" href="/categories/C/">C++</a>
+	</div>
+
+
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="linux_u4E2D_u7684_u5171_u4EAB_u5E93so"><a href="#linux_u4E2D_u7684_u5171_u4EAB_u5E93so" class="headerlink" title="linux中的共享库so"></a>linux中的共享库so</h2><ul>
+<li>so文件在linux中为共享库,与windows下的dll类似</li>
+<li>so文件中的函数可以供多个进程调用, 最大可能的提供二进制代码的复用</li>
+<li>共享库可以使代码的维护工作大大简化,当修正了一些错误或者添加了新特性的时候,用户只需要获得升级后的so并安装它就可以</li>
+<li>注意:即使不同的进程调用同一个so文件,通过共享库不能实现不同进程间的通讯, 因为同一个so文件被不同进程加载到不同的内存空间</li>
+</ul>
+<h3 id="so_u6587_u4EF6_u7F16_u8BD1_u65B9_u6CD5"><a href="#so_u6587_u4EF6_u7F16_u8BD1_u65B9_u6CD5" class="headerlink" title="so文件编译方法"></a>so文件编译方法</h3><ul>
+<li>so文件的源文件中不需要有main函数,即使有也不会被执行</li>
+<li>编译的时候gcc需要加<code>-fPIC</code>选项,这样可以使gcc产生与位置无关的代码</li>
+<li>链接的时候gcc使用<code>-shared</code>选项,指示生成一个共享库文件</li>
+<li>共享库文件名要以lib开头,扩展名为.so</li>
+</ul>
+<h4 id="makefile"><a href="#makefile" class="headerlink" title="makefile"></a>makefile</h4><pre><code>.STUFFIXES:.c .o  
+CC=gcc
+SRCS=test.c  #要替换成自己的.c文件
+OBJS=$(SRCS:.c=.o)
+EXEC=libtest.so  
+
+start:$(OBJS)
+    $(CC) -shared -o $(EXEC) $(SRCS)
+    @echo &apos;----------OK---------&apos;
+
+#.c.o依赖的地方
+.c.o:
+    # $@就是输出的文件(.o文件)
+    $(CC) -g -fPIC -o $@ -c $&lt;    #自动根据$(OBJS)中的文件数量循环编译, 直到编译完所有的.c文件
+
+clean:
+    rm -f $(OBJS)
+</code></pre><h3 id="so_u6587_u4EF6_u7684_u4F7F_u7528"><a href="#so_u6587_u4EF6_u7684_u4F7F_u7528" class="headerlink" title="so文件的使用"></a>so文件的使用</h3><ul>
+<li>为了让Linux能够找到so文件的位置,需要在.bash_profile中添加 <code>export LD_LIBRARY+PATH=$LD_LIBRARY_PATH:.</code></li>
+<li>或者将so文件放入linux的系统目录<code>/usr/lib/</code></li>
+<li>在c文件中使用so文件,首先需要#include相关h文件</li>
+<li>gcc链接时添加 -L 参数指明so文件存放路径, -l参数指明so文件名</li>
+<li>以libtest.so文件在当前路径下举例</li>
+</ul>
+<pre><code>gcc -L. -ltest -o a a.o
+</code></pre><ul>
+<li>其中<code>-L.</code>意思为在当前路径下寻找so文件</li>
+<li><code>-ltest</code>意思为要链接libtest.so这个库文件</li>
+<li><code>-o a</code> 意思为编译后的可执行文件名为a</li>
+</ul>
+<h3 id="C_u548CC++_u6DF7_u5408_u4F7F_u7528"><a href="#C_u548CC++_u6DF7_u5408_u4F7F_u7528" class="headerlink" title="C和C++混合使用"></a>C和C++混合使用</h3><p>当我们在cpp文件中包含test.h文件, 用g++链接libtest.so这个库时会报错:</p>
+<p>为了使我们编写的so文件同时可以被C或者C++调用, 我们需要修改h文件中的函数声明部分</p>
+<blockquote>
+<p>增加带有 <code>__cplusplus</code>的预编译指令<br><code>__cplusplus</code>是c++编译器预定义的一个宏,比如用g++的时候这个宏就被提前定义了 </p>
+</blockquote>
+<h4 id="u793A_u4F8B"><a href="#u793A_u4F8B" class="headerlink" title="示例"></a>示例</h4><pre><code>#ifndef TEST_H_
+#define TEST_H_
+#ifndef __cpluscplus
+extern &quot;C&quot;{
+#endif
+
+int max(int a, int b);
+...
+
+# ifdef __cplusplus
+}
+#endif
+#endif 
+</code></pre><h2 id="u65E0_u540D_u7BA1_u9053"><a href="#u65E0_u540D_u7BA1_u9053" class="headerlink" title="无名管道"></a>无名管道</h2><p>无名管道是半双工的,就是对于一个管道来讲,只能读,或者写</p>
+<p>无名管道只能在相关的、有共同祖先的进程间使用</p>
+<p>一个fork或者exec调用创建的子进程继承了父进程的文件描述符</p>
+<h3 id="u6253_u5F00_u548C_u5173_u95ED_u7BA1_u9053"><a href="#u6253_u5F00_u548C_u5173_u95ED_u7BA1_u9053" class="headerlink" title="打开和关闭管道"></a>打开和关闭管道</h3><pre><code>int pipe(int filedes[2]);
+</code></pre><blockquote>
+<p>在你从一个管道中读出或者写入数据,这个管道必须存在<br>如果成功建立了管道,则会打开两个文件描述符并且把它们的值保存在一个整数数组中<br>第一个文件描述符用于读取数据,第二个文件描述符用于写入数据<br>如果出错返回-1, 同时设置errno<br>关闭一个管道用<code>close()</code>函数</p>
+</blockquote>
+<h3 id="u8BFB_u5199_u7BA1_u9053"><a href="#u8BFB_u5199_u7BA1_u9053" class="headerlink" title="读写管道"></a>读写管道</h3><p>读写管道与读写普通文件方式一样,调用write与read函数即可</p>
+<p>几乎不会在一个进程中打开一个管道仅供进程自己使用,管道是用来交换数据的</p>
+<p>因为一个进程已经能够访问它要通过管道共享的数据,和自己共享数据是没有意义的</p>
+<p>试图对一个管道的两端进行读写操作是一个严重的错误</p>
+<h4 id="u8BFB_u5199_u65E0_u540D_u7BA1_u9053_u7684_u793A_u4F8B"><a href="#u8BFB_u5199_u65E0_u540D_u7BA1_u9053_u7684_u793A_u4F8B" class="headerlink" title="读写无名管道的示例"></a>读写无名管道的示例</h4><pre><code>int main(int arg, char * args[])
+{
+    int fd[2];        //管道描述符
+    char buf[100];    //存放管道收发数据
+    int len;
+    pipe(fd);
+    memset(buf, 0, sizeof(buf)); //清空buf
+    int pid = fork();
+    if(pid == 0)
+    {
+        close(fd[1]);    //关闭第二个管道(写)
+        while((len = read(fd[0], buf, sizeof(buf)))&gt;0)    //循环读取第一个管道
+        {
+            write(STDOUT_FILENO, buf, len);
+        }
+        close(fd(0));
+    }
+    else
+    {
+        close(fd(0));    //关闭第一个管道(读)
+        strcpy(buf, &quot;hello world\n&quot;);
+        write(fd[1], buf, sizeof(buf));
+        close(fd[1]);
+        waitpid(pid, NULL, 0);
+    }
+    return 0;
+}
+</code></pre><h2 id="u6709_u540D_u7BA1_u9053_28FIFO_29"><a href="#u6709_u540D_u7BA1_u9053_28FIFO_29" class="headerlink" title="有名管道(FIFO)"></a>有名管道(FIFO)</h2><p>有名管道是持久稳定的</p>
+<p>它们存在于文件系统中</p>
+<p>FIFO比无名管道作用更大, 因为它们能让无关联的进程之间交换数据</p>
+<p>一个shell命令可以建立有名管道</p>
+<pre><code>mkfifo [option] name
+</code></pre><blockquote>
+<p>mkfifo 创建一个名为name的有名管道</p>
+</blockquote>
+<h3 id="fifo_u7684_u4F7F_u7528"><a href="#fifo_u7684_u4F7F_u7528" class="headerlink" title="fifo的使用"></a>fifo的使用</h3><pre><code>mkfifo fifo1
+</code></pre><blockquote>
+<p>创建一个有名管道fifo1</p>
+</blockquote>
+<pre><code>cat &lt; fifo1
+</code></pre><blockquote>
+<p>通过cat命令从fifo1中读取数据</p>
+</blockquote>
+<pre><code>ls &gt; fifo1
+</code></pre><blockquote>
+<p>将ls命令输出的结果写入fifo1中  </p>
+</blockquote>
+<h3 id="fifo"><a href="#fifo" class="headerlink" title="fifo"></a>fifo</h3><p>创建fifo</p>
+<pre><code>int mkfifo(const char *pathname, mode_t mode);
+</code></pre><blockquote>
+<p>函数执行成功返回1, 否则返回-1,并设置变量errno</p>
+</blockquote>
+<p>删除fifo</p>
+<pre><code>int unlink(const char *pathname);
+</code></pre><blockquote>
+<p>函数执行成功返回0, 否则返回-1, 并且设置变量errno</p>
+</blockquote>
+<h4 id="fifo__u793A_u4F8B"><a href="#fifo__u793A_u4F8B" class="headerlink" title="fifo 示例"></a>fifo 示例</h4><p>读fifo:</p>
+<pre><code>int main(void)
+{
+    int len = 0;
+    char buf[100];
+    memset(buf, 0, sizeof(buf));
+    int fd = open(&quot;fifo1&quot;, O_RDONLY);    //以只读方式打开fifo1
+    while((len = read(fd, buf, sizeof(buf)))&gt;0) //循环从fifo1中读取数据, 直到fifo1被关闭,循环终止
+    {
+        printf(&quot;%s\n&quot;, buf);
+        memset(buf, 0, sizeof(buf));    
+    }
+    close(fd);
+    return 0;
+}
+</code></pre><p>写fifo:</p>
+<pre><code>int main(void)
+{
+    int len = 0;
+    char buf[100];
+    memset(buf, 0, sizeof(buf));
+    int fd = open(&quot;fifo1&quot;, O_WRONLY);//以只写方式打开fifo1
+    while((1)
+    {
+        scanf(&quot;s%&quot;, buf);
+        if(buf[0] == &apos;0&apos;)    //如果用户输入&apos;0&apos;,退出循环
+            break;
+        write(fd, buf, sizeof(buf));    //将用户从键盘输入的字符通过fifo发送出去
+    }
+    close(fd);
+    return 0;
+}
+</code></pre><h2 id="u5185_u5B58_u5171_u4EAB"><a href="#u5185_u5B58_u5171_u4EAB" class="headerlink" title="内存共享"></a>内存共享</h2><p>共享内存是由内核出于在多个进程间交换信息的目的而留出的一块内存区</p>
+<p>如果段的权限设置恰当,每个要访问该段内存的进程都可以把它映像到自己的私有地址空间中</p>
+<p>如果一个进程更新了段中的数据, 其他进程页立即会看到更新</p>
+<p>由一个进程创建的段,也可以由另一个进程读写</p>
+<p>每个进程都把它自己对共享内存的映像放入自己的地址空间</p>
+<h3 id="u521B_u5EFA_u5171_u4EAB_u5185_u5B58"><a href="#u521B_u5EFA_u5171_u4EAB_u5185_u5B58" class="headerlink" title="创建共享内存"></a>创建共享内存</h3><pre><code>#include&lt;sys/ipc.h&gt;
+#include&lt;sys/shm.h&gt;
+int shmget(key_t key, size_t size, int shm-flg);
+</code></pre><blockquote>
+<p>参数key既可以是IPC_PRIVATE,也可以是fork函数返回的一个关键字<br>参数size指定段的大小<br>参数flags-八进制数, 0xxx,转化为二进制后分别代表rw-rw-rw-<br>shmget成功返回段标示符,失败返回-1</p>
+</blockquote>
+<p>创建共享内存后,在命令行执行 <code>ipcs -m</code>显示, 已经成功的创建了一块共享内存区</p>
+<blockquote>
+<p>nattch字段显示已经附加到这个内存区的进程数</p>
+</blockquote>
+<p>在命令行执行 <code>ipcrm shm shmid</code>删除共享内存</p>
+<h3 id="u9644_u52A0_u5171_u4EAB_u5185_u5B58_u533A"><a href="#u9644_u52A0_u5171_u4EAB_u5185_u5B58_u533A" class="headerlink" title="附加共享内存区"></a>附加共享内存区</h3><pre><code>void *shmat(int shmid, const void *shmaddr, int shmflg);
+int shmdt(const void *shmaddr);
+</code></pre><blockquote>
+<p>参数shmid是要附加的共享内存区标示符<br>总是把参数shmaddr设为0<br>参数shmflg可以为SHM_RDONLY,这意味着附加段是只读的<br>shmat成功返回被附加了段的地址, 失败返回-1, 并设置errno<br>函数shmdt是将附加在shmaddr的段从调用进程的地址空间分离出去,这个地址必须是shmat返回的</p>
+</blockquote>
+
+      
+    </div>
+    
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2015/10/25/Liux多线程/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption"><</strong>
+      <div class="article-nav-title">
+        
+          Liux多线程
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2015/10/07/Linux进程控制/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">Linux进程控制</div>
+      <strong class="article-nav-caption">></strong>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+<div class="share_jia">
+	<!-- JiaThis Button BEGIN -->
+	<div class="jiathis_style">
+		<span class="jiathis_txt">分享到: &nbsp; </span>
+		<a class="jiathis_button_facebook"></a> 
+    <a class="jiathis_button_twitter"></a>
+    <a class="jiathis_button_plus"></a> 
+    <a class="jiathis_button_tsina"></a>
+		<a class="jiathis_button_cqq"></a>
+		<a class="jiathis_button_douban"></a>
+		<a class="jiathis_button_weixin"></a>
+		<a class="jiathis_button_tumblr"></a>
+    <a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jtico jtico_jiathis" target="_blank"></a>
+	</div>
+	<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js?uid=1405949716054953" charset="utf-8"></script>
+	<!-- JiaThis Button END -->
+</div>
+
+
+
+
+
+
+<div class="duoshuo">
+	<!-- 多说评论框 start -->
+	<div class="ds-thread" data-thread-key="Linux进程间通信" data-title="Linux进程间通信" data-url="http://www.bigtiger079.com/2015/10/10/Linux进程间通信/"></div>
+	<!-- 多说评论框 end -->
+	<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+	<script type="text/javascript">
+	var duoshuoQuery = {short_name:"true"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0] 
+		 || document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+	</script>
+	<!-- 多说公共JS代码 end -->
+</div>
+
+
+
+
+</div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info">
+    	<div class="footer-left">
+    		&copy; 2016 Bigtiger
+    	</div>
+      	<div class="footer-right">
+      		<a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/litten/hexo-theme-yilia" target="_blank">Yilia</a> by Litten
+      	</div>
+    </div>
+  </div>
+</footer>
+    </div>
+    
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css" type="text/css">
+
+
+<script>
+	var yiliaConfig = {
+		fancybox: true,
+		mathjax: true,
+		animate: true,
+		isHome: false,
+		isPost: true,
+		isArchive: false,
+		isTag: false,
+		isCategory: false,
+		open_in_new: false
+	}
+</script>
+<script src="http://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js" type="text/javascript"></script>
+<script src="/js/main.js" type="text/javascript"></script>
+
+
+
+
+
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';                 
+    }       
+});
+</script>
+
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  </div>
+</body>
+</html>

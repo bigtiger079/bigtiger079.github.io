@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" >
+  <title>Liux多线程 | Bigtiger&#39;s blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="进程与线程进程是一个实体, 每个进程都有它自己的内存地址段(heap、stack等等)
+进程是执行中的程序, 程序是一个没有生命的实体,只有处理器赋予程序生命时,它才能成为一个活动的实体
+进程是操作系统中最基本、最重要的概念
+线程，又是被称为轻量级进程（Lightweight Process, LWP）,是程序执行的最小单元
+每个程序至少有一个线程,若程序只有一个线程,那就是程序本身
+单线程的进程">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Liux多线程">
+<meta property="og:url" content="http://www.bigtiger079.com/2015/10/25/Liux多线程/index.html">
+<meta property="og:site_name" content="Bigtiger's blog">
+<meta property="og:description" content="进程与线程进程是一个实体, 每个进程都有它自己的内存地址段(heap、stack等等)
+进程是执行中的程序, 程序是一个没有生命的实体,只有处理器赋予程序生命时,它才能成为一个活动的实体
+进程是操作系统中最基本、最重要的概念
+线程，又是被称为轻量级进程（Lightweight Process, LWP）,是程序执行的最小单元
+每个程序至少有一个线程,若程序只有一个线程,那就是程序本身
+单线程的进程">
+<meta property="og:updated_time" content="2016-01-28T12:49:21.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Liux多线程">
+<meta name="twitter:description" content="进程与线程进程是一个实体, 每个进程都有它自己的内存地址段(heap、stack等等)
+进程是执行中的程序, 程序是一个没有生命的实体,只有处理器赋予程序生命时,它才能成为一个活动的实体
+进程是操作系统中最基本、最重要的概念
+线程，又是被称为轻量级进程（Lightweight Process, LWP）,是程序执行的最小单元
+每个程序至少有一个线程,若程序只有一个线程,那就是程序本身
+单线程的进程">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  <link rel="stylesheet" href="/css/style.css" type="text/css">
+</head>
+
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+	<header id="header" class="inner">
+		<a href="/" class="profilepic">
+			
+			<img lazy-src="http://7xlrpi.com1.z0.glb.clouddn.com/avatar.png" class="js-avatar">
+			
+		</a>
+
+		<hgroup>
+		  <h1 class="header-author"><a href="/">Bigtiger</a></h1>
+		</hgroup>
+
+		
+
+		
+			<div class="switch-btn">
+				<div class="icon">
+					<div class="icon-ctn">
+						<div class="icon-wrap icon-house" data-idx="0">
+							<div class="birdhouse"></div>
+							<div class="birdhouse_holes"></div>
+						</div>
+						<div class="icon-wrap icon-ribbon hide" data-idx="1">
+							<div class="ribbon"></div>
+						</div>
+						
+						
+						<div class="icon-wrap icon-me hide" data-idx="3">
+							<div class="user"></div>
+							<div class="shoulder"></div>
+						</div>
+						
+					</div>
+					
+				</div>
+				<div class="tips-box hide">
+					<div class="tips-arrow"></div>
+					<ul class="tips-inner">
+						<li>菜单</li>
+						<li>标签</li>
+						
+						
+						<li>关于我</li>
+						
+					</ul>
+				</div>
+			</div>
+		
+
+		<div class="switch-area">
+			<div class="switch-wrap">
+				<section class="switch-part switch-part1">
+					<nav class="header-menu">
+						<ul>
+						
+							<li><a href="/">主页</a></li>
+				        
+							<li><a href="/archives">所有文章</a></li>
+				        
+							<li><a href="/categories">分类</a></li>
+				        
+							<li><a href="/tags">标签</a></li>
+				        
+						</ul>
+					</nav>
+					<nav class="header-nav">
+						<div class="social">
+							
+								<a class="mail" target="_blank" href="/bigtiger079@gmail.com" title="mail">mail</a>
+					        
+						</div>
+					</nav>
+				</section>
+				
+				
+				<section class="switch-part switch-part2">
+					<div class="widget tagcloud" id="js-tagcloud">
+						<a href="/tags/Android/" style="font-size: 10px;">Android</a> <a href="/tags/C/" style="font-size: 10px;">C++</a> <a href="/tags/Cpp基础/" style="font-size: 10px;">Cpp基础</a> <a href="/tags/Hexo/" style="font-size: 10px;">Hexo</a> <a href="/tags/JNI/" style="font-size: 10px;">JNI</a> <a href="/tags/RecyclerView/" style="font-size: 16.67px;">RecyclerView</a> <a href="/tags/android/" style="font-size: 10px;">android</a> <a href="/tags/linux/" style="font-size: 20px;">linux</a> <a href="/tags/线性表/" style="font-size: 13.33px;">线性表</a>
+					</div>
+				</section>
+				
+				
+				
+
+				
+				
+				<section class="switch-part switch-part3">
+				
+					<div id="js-aboutme">我是谁，我从哪里来，我到哪里去？我就是我，是颜色不一样的吃货…</div>
+				</section>
+				
+			</div>
+		</div>
+	</header>				
+</div>
+
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+  	<div class="overlay">
+  		<div class="slider-trigger"></div>
+  		<h1 class="header-author js-mobile-header hide">Bigtiger</h1>
+  	</div>
+	<div class="intrude-less">
+		<header id="header" class="inner">
+			<div class="profilepic">
+			
+				<img lazy-src="http://7xlrpi.com1.z0.glb.clouddn.com/avatar.png" class="js-avatar">
+			
+			</div>
+			<hgroup>
+			  <h1 class="header-author">Bigtiger</h1>
+			</hgroup>
+			
+			<nav class="header-menu">
+				<ul>
+				
+					<li><a href="/">主页</a></li>
+		        
+					<li><a href="/archives">所有文章</a></li>
+		        
+					<li><a href="/categories">分类</a></li>
+		        
+					<li><a href="/tags">标签</a></li>
+		        
+		        <div class="clearfix"></div>
+				</ul>
+			</nav>
+			<nav class="header-nav">
+				<div class="social">
+					
+						<a class="mail" target="_blank" href="/bigtiger079@gmail.com" title="mail">mail</a>
+			        
+				</div>
+			</nav>
+		</header>				
+	</div>
+</nav>
+
+      <div class="body-wrap"><article id="post-Liux多线程" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2015/10/25/Liux多线程/" class="article-date">
+  	<time datetime="2015-10-25T08:46:09.000Z" itemprop="datePublished">2015-10-25</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Liux多线程
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/">linux</a></li></ul>
+	</div>
+
+        
+	<div class="article-category tagcloud">
+	<a class="article-category-link" href="/categories/C/">C++</a>
+	</div>
+
+
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="u8FDB_u7A0B_u4E0E_u7EBF_u7A0B"><a href="#u8FDB_u7A0B_u4E0E_u7EBF_u7A0B" class="headerlink" title="进程与线程"></a>进程与线程</h2><p>进程是一个实体, 每个进程都有它自己的内存地址段(heap、stack等等)</p>
+<p>进程是执行中的程序, 程序是一个没有生命的实体,只有处理器赋予程序生命时,它才能成为一个活动的实体</p>
+<p>进程是操作系统中最基本、最重要的概念</p>
+<p>线程，又是被称为轻量级进程（Lightweight Process, LWP）,是程序执行的最小单元</p>
+<p>每个程序至少有一个线程,若程序只有一个线程,那就是程序本身</p>
+<p>单线程的进程可以简单的认为只有一个线程的进程</p>
+<p>一个进程在同一时间只做一件事,有了多线程后一个进程同一时间可以做多件事</p>
+<p>每个线程可以处理不同的事务</p>
+<p>无论系统有几个CPU,即使进程运行在单CPU上, 多线程也可以使进程并发处理多个事务</p>
+<p>一个线程阻塞并不会影响到另外一个线程</p>
+<p>多线程的进程可以尽可能的利用系统CPU资源</p>
+<p>线程包含了表示进程内执行环境必须的信息,包括标识线程的线程ID, 一组寄存器值,栈,调度优先级和策略,信号屏蔽字,errno变量以及线程私有数据</p>
+<p>进程内所有的信息对于线程都是共享的, 包括执行代码,全局变量,堆内存,栈以及文件描述符</p>
+<p>线程标识:</p>
+<ul>
+<li>就像每个进程有个进程ID一样,线程也有自己的ID</li>
+<li>进程ID用pid_t来表示, 他是一个unsigned int</li>
+<li>线程ID用pthread_t表示,pthread_t不能把它当做整数处理</li>
+<li>线程可以通过pthread_self()函数获取自身的线程ID</li>
+</ul>
+<h2 id="u7EBF_u7A0B_u8C03_u7528"><a href="#u7EBF_u7A0B_u8C03_u7528" class="headerlink" title="线程调用"></a>线程调用</h2><h3 id="u7EBF_u7A0B_u521B_u5EFA"><a href="#u7EBF_u7A0B_u521B_u5EFA" class="headerlink" title="线程创建"></a>线程创建</h3><ul>
+<li>在进程中只有一个控制线程</li>
+<li>程序开始运行的时候每个进程只有一个线程,它是以单线程方式启动的,在创建多个线程以前,进程的行为与传统的进程没有区别</li>
+<li>gcc在链接的时候需要增加<code>-lpthread</code>(链接libpthread.so库)选项</li>
+<li>创建一个线程调用pthread_create函数</li>
+</ul>
+<pre><code>#include &lt;pthread.h&gt;
+
+int pthread_create(pthread_t *thread, const pthread_attr_t * attr, void *(*start_routine)(void *), void *arg);
+</code></pre><blockquote>
+<p>如果<code>pthread_create</code>成功返回,由thread指向的内存单元被设置为新创建线程的线程ID<br>attr参数用于定制各种不同的线程属性<br>新创建的线程从<code>start_rtn</code>函数地址开始执行,该函数只有一个<code>void *</code>参数,如果需向<code>start_rtn</code>函数传递多个参数,就需要把这些参数放到一个结构中,然后把这个结构的地址做为<code>void *</code>传入<br>线程创建的时候不能保证哪个先运行<br>pthread函数成功返回0<br>注意: 每个线程都拥有一个errno副本,不同的线程拥有不同errno</p>
+</blockquote>
+<h3 id="u7EBF_u7A0B_u7EC8_u6B62"><a href="#u7EBF_u7A0B_u7EC8_u6B62" class="headerlink" title="线程终止"></a>线程终止</h3><ul>
+<li>任一线程调用了<code>exit</code>函数,整个进程就会终止</li>
+<li>如果信号默认动作是终止进程, 那么信号发送到该线程,整个进程也会被终止</li>
+</ul>
+<p>单个线程同过一下三个方式退出</p>
+<ul>
+<li>线程只是从启动函数中返回,返回值是线程的退出码</li>
+<li>线程可以被同一进程中的其他线程取消</li>
+<li><p>线程调用pthread_exit</p>
+<p>  void pthread_exit(void *arg);</p>
+</li>
+</ul>
+<blockquote>
+<p>arg是个无类型指针, 该指针会被其他线程调用pthread_jion捕捉</p>
+</blockquote>
+<h4 id="pthread_join"><a href="#pthread_join" class="headerlink" title="pthread_join"></a>pthread_join</h4><pre><code>int pthread_join(pthread_t th, void **thr_return);
+</code></pre><blockquote>
+<p><code>pthread_join</code> 函数用于挂起当前线程, 直至th指定的线程终止为止<br>如果另一个线程返回值不是NULL,则保存在<code>thr_return</code>地址中<br>一个线程所使用的内存资源在应用<code>phread_join</code>调用之前不会被重新分配, 所以对于每个线程必须调用一次<code>pthread_join</code>函数<br>其他线程不能对同一线程再应用pthread_join调用</p>
+</blockquote>
+<h4 id="pthread_detach"><a href="#pthread_detach" class="headerlink" title="pthread_detach"></a>pthread_detach</h4><pre><code>int pthread_detach(pthread_t th);
+</code></pre><blockquote>
+<p>pthread_detach函数使线程处于被分离状态<br>对于被分离状态的线程,不需要调用pthread_join,如果其他线程调用pthread_join失败,返回<code>EINVAL</code><br>如果不等待一个线程,同时对线程的返回值不感兴趣,可以设置这个线程为被分离状态,让系统在线程退出的时候自动回收它所占用的资源<br>一个线程不能自己调用pthread_detach改变自己被分离状态,只能由其他线程调用pthread_detach</p>
+</blockquote>
+<p>可分离线程的使用场景:</p>
+<ul>
+<li>主线程不需要等待子线程</li>
+<li>主线程不关心子线程的返回码</li>
+</ul>
+<h4 id="pthread_cancel"><a href="#pthread_cancel" class="headerlink" title="pthread_cancel"></a>pthread_cancel</h4><pre><code>int pthread_cancel(pthread_t th);
+</code></pre><blockquote>
+<p>pthread_cancel 函数允许一个线程取消th指定的另一个线程<br>函数成功返回0,否则返回非0</p>
+</blockquote>
+<h4 id="pthread_equal"><a href="#pthread_equal" class="headerlink" title="pthread_equal"></a>pthread_equal</h4><pre><code>int pthread_equal(pthread_t th1, pthread_t th2);
+</code></pre><blockquote>
+<p>pthread_equal函数比较th1与th2是否为同一个线程,由于不可以将pthread数据类型认为是整数,所以也不能用比较整数的方式比较pthread_t<br>如果th1与th2相同,函数返回非0值, 如果不同函数返回0</p>
+</blockquote>
+<h4 id="u7EBF_u7A0B_u5C5E_u6027"><a href="#u7EBF_u7A0B_u5C5E_u6027" class="headerlink" title="线程属性"></a>线程属性</h4><ul>
+<li>以前调用pthread_create传入的attr参数都是空指针,而不是指向pthread_attr_t结构的指针</li>
+<li>可以使用pthread_attr_t结构修改线程默认属性,并把这些属性与创建的线程联系起来</li>
+<li>可以使用pthread_attr_init函数初始化pthread_attr_t结构</li>
+<li>调用pthread_attr_init以后,pthread_attr_t的结构所包含的内容就是操作系统实现支持线程所有属性的默认值,如果要修改其中个别属性的值,需要调用其他函数</li>
+</ul>
+<pre><code>int pthread_attr_destory(pthread_attr_t *attr);
+int pthread_attr_init(pthread_attr_t *attr);
+</code></pre><blockquote>
+<p>函数pthread_attr_init初始化attr结构<br>函数pthread_attr_destory释放attr内存空间<br>pthread_attr_t的结构对于应用程序来讲是不透明的,应用程序不需要知道有关结构的内部组成<br>通过之前pthread_detach函数概念,可以通过pthread_attr_t在创建线程的时候就指定线程属性为detach,而不用创建以后再去修改线程属性</p>
+</blockquote>
+<pre><code>int pthread_attr_setdetachstate(pthread_attr_t *attr, int detachstate);
+</code></pre><blockquote>
+<p>函数pthread_attr_setdetachstate把线程属性设置为下面两个合法值之一</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>值</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>PTHREAD_CREATE_DETACHED</td>
+<td>　设置线程为分离状态</td>
+</tr>
+<tr>
+<td>PTHREAD_CREATE_JOINABLE</td>
+<td>　设置线程为正常状态</td>
+</tr>
+</tbody>
+</table>
+<h4 id="u793A_u4F8B_u4EE3_u7801"><a href="#u793A_u4F8B_u4EE3_u7801" class="headerlink" title="示例代码"></a>示例代码</h4><pre><code>pthread_t thrd;
+pthread_attr_t attr;
+pthread_attr_init(&amp;attr);
+pthread_attr_setdetachstate(&amp;attr, PTHREAD_CREATE_DETACHED);    //设置线程参数为可分离状态
+if(pthread_create(&amp;thread, &amp;attr, func1, NULL) != 0)
+{
+    printf(&quot;error is %s\n&quot;,strerror(errno));
+}
+pthread_attr_destory(&amp;attr);
+</code></pre><h2 id="u7EBF_u7A0B_u540C_u6B65_u6280_u672F"><a href="#u7EBF_u7A0B_u540C_u6B65_u6280_u672F" class="headerlink" title="线程同步技术"></a>线程同步技术</h2><p>线程共享进程的内存空间,打开文件描述符,全局变量</p>
+<p>当有多个线程同时访问一块内存空间或者一个变量、一个文件描述符，如果不加控制，那么可能会出现意想不到的结果</p>
+<h3 id="u4E92_u65A5_28mutex_29"><a href="#u4E92_u65A5_28mutex_29" class="headerlink" title="互斥(mutex)"></a>互斥(mutex)</h3><ul>
+<li>互斥是相互排斥的意思, 它是一种锁或者信号灯</li>
+<li>互斥用来保护多个线程共享的数据和结构不会被同时修改,一个互斥锁只能有两个状态</li>
+<li><ul>
+<li>locked—加锁</li>
+</ul>
+</li>
+<li><ul>
+<li>unlocked—解锁</li>
+</ul>
+</li>
+<li>加锁互斥后不能让其他线程访问</li>
+<li>任何时刻只能有一个线程来掌握某个互斥上锁</li>
+<li>有一个线程如果试图在一个已经加锁的互斥上再加锁,这个线程会被挂起,直到加锁的线程释放掉互斥锁为止</li>
+</ul>
+<pre><code>pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
+int pthread_mutex_lock(pthread_mutex_t, *mutex);
+int pthread_mutex_unlock_(pthread_mutex_t *mutex);
+</code></pre><blockquote>
+<p>PTHREAD_MUTEX_INITIALIZER是初始化一个快速锁的宏定义<br>pthread_mutex_lock用于给mutex加锁<br>pthread_mutex_unlock用于给mutex解锁</p>
+</blockquote>
+<h4 id="u7EBF_u7A0B_u4E92_u65A5_u793A_u4F8B"><a href="#u7EBF_u7A0B_u4E92_u65A5_u793A_u4F8B" class="headerlink" title="线程互斥示例"></a>线程互斥示例</h4><pre><code>pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;//初始化一个MUTEX锁
+
+void *func(void *arg)
+{
+    pthread_mutex_lock(&amp;mutex);//给mutex加锁,这是一个原子操作,不可能出现两个线程同时执行这个代码
+    int *a = (int *)arg;
+    int i;
+    for(i = 0;i&lt;10;i++)
+    {
+        printf(&quot;thread%d is running\n&quot;, *a);
+        sleep(1);
+    }
+    pthread_mutex_unloac(&amp;mutex);//给mutex解锁
+}
+
+int main(int arg, char* args[])
+{
+    pthread_t thr_d1,thr_d2;
+    int 1[2];
+    i[1] =1;
+    i[2] =2;
+    pthread_create(&amp;thr_d1, NULL, func1, &amp;i[0]);
+    pthread_create(&amp;thr_d1, NULL, func1, &amp;i[2]);
+    pthread_join(thr_d1, NULL);
+    pthread_join(thr_d1, NULL);    
+    return 0;
+}
+</code></pre><blockquote>
+<p>线程互斥与加锁到解锁之间的代码无关,只与互斥的锁有关</p>
+</blockquote>
+
+      
+    </div>
+    
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2015/10/25/Linux信号处理/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption"><</strong>
+      <div class="article-nav-title">
+        
+          Linux信号处理
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2015/10/10/Linux进程间通信/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">Linux进程间通信</div>
+      <strong class="article-nav-caption">></strong>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+<div class="share_jia">
+	<!-- JiaThis Button BEGIN -->
+	<div class="jiathis_style">
+		<span class="jiathis_txt">分享到: &nbsp; </span>
+		<a class="jiathis_button_facebook"></a> 
+    <a class="jiathis_button_twitter"></a>
+    <a class="jiathis_button_plus"></a> 
+    <a class="jiathis_button_tsina"></a>
+		<a class="jiathis_button_cqq"></a>
+		<a class="jiathis_button_douban"></a>
+		<a class="jiathis_button_weixin"></a>
+		<a class="jiathis_button_tumblr"></a>
+    <a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jtico jtico_jiathis" target="_blank"></a>
+	</div>
+	<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js?uid=1405949716054953" charset="utf-8"></script>
+	<!-- JiaThis Button END -->
+</div>
+
+
+
+
+
+
+<div class="duoshuo">
+	<!-- 多说评论框 start -->
+	<div class="ds-thread" data-thread-key="Liux多线程" data-title="Liux多线程" data-url="http://www.bigtiger079.com/2015/10/25/Liux多线程/"></div>
+	<!-- 多说评论框 end -->
+	<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+	<script type="text/javascript">
+	var duoshuoQuery = {short_name:"true"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0] 
+		 || document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+	</script>
+	<!-- 多说公共JS代码 end -->
+</div>
+
+
+
+
+</div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info">
+    	<div class="footer-left">
+    		&copy; 2016 Bigtiger
+    	</div>
+      	<div class="footer-right">
+      		<a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/litten/hexo-theme-yilia" target="_blank">Yilia</a> by Litten
+      	</div>
+    </div>
+  </div>
+</footer>
+    </div>
+    
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css" type="text/css">
+
+
+<script>
+	var yiliaConfig = {
+		fancybox: true,
+		mathjax: true,
+		animate: true,
+		isHome: false,
+		isPost: true,
+		isArchive: false,
+		isTag: false,
+		isCategory: false,
+		open_in_new: false
+	}
+</script>
+<script src="http://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js" type="text/javascript"></script>
+<script src="/js/main.js" type="text/javascript"></script>
+
+
+
+
+
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';                 
+    }       
+});
+</script>
+
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  </div>
+</body>
+</html>

@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" >
+  <title>认识 JNI开发 | Bigtiger&#39;s blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="JNI - Java Native Interface;">
+<meta property="og:type" content="article">
+<meta property="og:title" content="认识 JNI开发">
+<meta property="og:url" content="http://www.bigtiger079.com/2015/10/26/认识-JNI开发/index.html">
+<meta property="og:site_name" content="Bigtiger's blog">
+<meta property="og:description" content="JNI - Java Native Interface;">
+<meta property="og:updated_time" content="2016-01-29T01:40:02.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="认识 JNI开发">
+<meta name="twitter:description" content="JNI - Java Native Interface;">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  <link rel="stylesheet" href="/css/style.css" type="text/css">
+</head>
+
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+	<header id="header" class="inner">
+		<a href="/" class="profilepic">
+			
+			<img lazy-src="http://7xlrpi.com1.z0.glb.clouddn.com/avatar.png" class="js-avatar">
+			
+		</a>
+
+		<hgroup>
+		  <h1 class="header-author"><a href="/">Bigtiger</a></h1>
+		</hgroup>
+
+		
+
+		
+			<div class="switch-btn">
+				<div class="icon">
+					<div class="icon-ctn">
+						<div class="icon-wrap icon-house" data-idx="0">
+							<div class="birdhouse"></div>
+							<div class="birdhouse_holes"></div>
+						</div>
+						<div class="icon-wrap icon-ribbon hide" data-idx="1">
+							<div class="ribbon"></div>
+						</div>
+						
+						
+						<div class="icon-wrap icon-me hide" data-idx="3">
+							<div class="user"></div>
+							<div class="shoulder"></div>
+						</div>
+						
+					</div>
+					
+				</div>
+				<div class="tips-box hide">
+					<div class="tips-arrow"></div>
+					<ul class="tips-inner">
+						<li>菜单</li>
+						<li>标签</li>
+						
+						
+						<li>关于我</li>
+						
+					</ul>
+				</div>
+			</div>
+		
+
+		<div class="switch-area">
+			<div class="switch-wrap">
+				<section class="switch-part switch-part1">
+					<nav class="header-menu">
+						<ul>
+						
+							<li><a href="/">主页</a></li>
+				        
+							<li><a href="/archives">所有文章</a></li>
+				        
+							<li><a href="/categories">分类</a></li>
+				        
+							<li><a href="/tags">标签</a></li>
+				        
+						</ul>
+					</nav>
+					<nav class="header-nav">
+						<div class="social">
+							
+								<a class="mail" target="_blank" href="/bigtiger079@gmail.com" title="mail">mail</a>
+					        
+						</div>
+					</nav>
+				</section>
+				
+				
+				<section class="switch-part switch-part2">
+					<div class="widget tagcloud" id="js-tagcloud">
+						<a href="/tags/Android/" style="font-size: 10px;">Android</a> <a href="/tags/C/" style="font-size: 10px;">C++</a> <a href="/tags/Cpp基础/" style="font-size: 10px;">Cpp基础</a> <a href="/tags/Hexo/" style="font-size: 10px;">Hexo</a> <a href="/tags/JNI/" style="font-size: 10px;">JNI</a> <a href="/tags/RecyclerView/" style="font-size: 16.67px;">RecyclerView</a> <a href="/tags/android/" style="font-size: 10px;">android</a> <a href="/tags/linux/" style="font-size: 20px;">linux</a> <a href="/tags/线性表/" style="font-size: 13.33px;">线性表</a>
+					</div>
+				</section>
+				
+				
+				
+
+				
+				
+				<section class="switch-part switch-part3">
+				
+					<div id="js-aboutme">我是谁，我从哪里来，我到哪里去？我就是我，是颜色不一样的吃货…</div>
+				</section>
+				
+			</div>
+		</div>
+	</header>				
+</div>
+
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+  	<div class="overlay">
+  		<div class="slider-trigger"></div>
+  		<h1 class="header-author js-mobile-header hide">Bigtiger</h1>
+  	</div>
+	<div class="intrude-less">
+		<header id="header" class="inner">
+			<div class="profilepic">
+			
+				<img lazy-src="http://7xlrpi.com1.z0.glb.clouddn.com/avatar.png" class="js-avatar">
+			
+			</div>
+			<hgroup>
+			  <h1 class="header-author">Bigtiger</h1>
+			</hgroup>
+			
+			<nav class="header-menu">
+				<ul>
+				
+					<li><a href="/">主页</a></li>
+		        
+					<li><a href="/archives">所有文章</a></li>
+		        
+					<li><a href="/categories">分类</a></li>
+		        
+					<li><a href="/tags">标签</a></li>
+		        
+		        <div class="clearfix"></div>
+				</ul>
+			</nav>
+			<nav class="header-nav">
+				<div class="social">
+					
+						<a class="mail" target="_blank" href="/bigtiger079@gmail.com" title="mail">mail</a>
+			        
+				</div>
+			</nav>
+		</header>				
+	</div>
+</nav>
+
+      <div class="body-wrap"><article id="post-认识-JNI开发" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2015/10/26/认识-JNI开发/" class="article-date">
+  	<time datetime="2015-10-26T07:00:09.000Z" itemprop="datePublished">2015-10-26</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      认识 JNI开发
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Android/">Android</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JNI/">JNI</a></li></ul>
+	</div>
+
+        
+	<div class="article-category tagcloud">
+	<a class="article-category-link" href="/categories/笔记/">笔记</a>
+	</div>
+
+
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>JNI - Java Native Interface;</p>
+<a id="more"></a>
+<h3 id="u5982_u4F55_u8F7D_u5165*-so"><a href="#u5982_u4F55_u8F7D_u5165*-so" class="headerlink" title="如何载入*.so"></a>如何载入*.so</h3><h4 id="VM_u7684_u89D2_u8272"><a href="#VM_u7684_u89D2_u8272" class="headerlink" title="VM的角色"></a>VM的角色</h4><p>由于Android的应用层级类别都是以Java撰写的, 这些Java类转译为Dex形式的bytecode之后,必须依赖Dalvik虚拟机来执行它, VM在Android平台里扮演很重要的角色</p>
+<p>此外,在执行Java类的过程中,如果Java类需要与JNI本地模块沟通,VM就会去加载本地模块,然后让Java的函数顺利调用到本地模块的函数.此时,VM扮演着桥梁的角色, 让Java与本地模块能透过标准的JNI接口而相互沟通</p>
+<p>Java层的类是在VM上执行的, 而本地模块则不是在VM上执行的, 那么Java程序如何要求VM去加载所指定的C模块呢?<br>可以使用下述指令:</p>
+<pre><code>System.loadLibrary(*.so的文件名);
+</code></pre><p>例如, NativeJniAdder类:</p>
+<pre><code>public class NativeJniAdder{
+    static{
+        try{
+            Log.i(&quot;JNI&quot;, &quot;Trying to load libNativeJniAdder.so&quot;);
+            System.loadLibrary(&quot;NativeJniAdder&quot;);
+        }catch(UnsatisfiedLinkError e){
+            Log.i(&quot;JNI&quot;, &quot;cloud not load libNativeJniAdder.so&quot;);
+        }
+    }
+
+    public static native long newObject();
+    public static native long execute(long refer, int digit_1, int digit_2);
+}
+</code></pre><p>jni如下:</p>
+<pre><code>#include &quot;Adder.h&quot;
+#include &quot;com_xxx_xxx_NativeJniAdder.h&quot;
+
+JNIEXPORT jlong JNICALL Java_com_xxx_xxx_NativeJniAdder_newObject(JNIEnv *env, jclass c){
+    Adder* ar = (Adder*)AdderNew();//创建一个C对象
+    return (jlong)ar;
+}
+
+JNIEXPORT jlong JNICALL Java_com_xxx_xxx_NativeJniAdder_execute(JNIEnv *env, jclass c, jlong refer, jint digit_1, jint digit_2){
+    Adder* pa = (Adder*)refer;//转成对象的指针
+    long result = pa-&gt;exec(digit_1, digit_2);
+    return result;
+}
+</code></pre><p>定义Adder类(Adder.h)</p>
+<pre><code>typedef struct Adder Adder;
+struct Adder{
+    int (*exec)(int a, int b);
+};
+
+struct Adder *AdderNew(){
+    struct Adder *t = (Adder*)malloc(sizeof(***));
+    t-&gt;exec = my_exec;
+    return (void *)t;
+}
+static int my_exec(int a, int b){
+    return (a+b);
+}
+</code></pre><p>这个JNI接口定义类别含有2个函数: newObject()和execute()<br>其中, newObject()函数诞一个Adder对象,并且将该对象的指针传递回来给Java程序<br>而exectue()函数的refer参数,是用来让Java程序能将对象指针传进去给execute()函数,此时execute()就能借由该指针而调用到先前的newObject()函数所诞生的那个对象</p>
+<p>VM调用<code>&lt;Tn&gt;</code>本地函数时, 将Java层对象指针(pointer)传给<code>&lt;Tn&gt;</code><br>配上<code>&lt;Tn&gt;</code>后,<code>&lt;Tn&gt;</code>可以将C/C++对象指针会传到Java层</p>
+<blockquote>
+<p>由于这些Java和C代码都在同一进程里执行,所以指针都是可以互传</p>
+</blockquote>
+<h3 id="*-so_u7684_u5165_u53E3_u51FD_u6570_3A_JNI_OnLoad_28_29"><a href="#*-so_u7684_u5165_u53E3_u51FD_u6570_3A_JNI_OnLoad_28_29" class="headerlink" title="*.so的入口函数: JNI_OnLoad()"></a>*.so的入口函数: JNI_OnLoad()</h3><p>Java代码在VM上执行<br>在执行Java代码过程中,如果需要与本地代码(<code>*.so</code>)沟通, VM就会把*.so视为插件<code>&lt;Tn&gt;</code>而加载到VM里<br>然后让Java函数调用到这插件<tn>里的C函数</tn></p>
+<p>插件是由VM来管理的,实际上VM是<code>*.so</code>插件的管理器(Plug-in Manager)<br>Java与C函数的调用,也是通过VM来对接的</p>
+<p>在执行System.loadLibrary()函数时,VM会反向调用*.so里的JNI_Onlaod()函数.用途有二:</p>
+<ol>
+<li>VM询问此*.so使用JNI版本编号</li>
+<li>VM要求*.so做一些初期设定工作(Initialization),例如登记<code>&lt;函数名称表&gt;</code></li>
+</ol>
+<p>在Android的/system/lib/libmedia_jni.so里,就提供了JNI_Onload()函数,其程序代码为:</p>
+<pre><code>//define LOG_NDEBUG 0
+#definde LOG_TAG &quot;MediaPlayer_JNI&quot;
+//......
+jint JNI_Oload(JavaVM* vm, void* reserved){
+    JNIEnv* env =NULL;
+    jint result = -1;
+    if(vm -&gt; GetEnv((void**)&amp;env, JNI_VERSION_1_4) != JNI_OK){
+        LOGE(&quot;ERROR:GetEnv failed\n&quot;);    goto bail;     
+     }
+    assert(env != null);
+    if(register_android_media_MediaPlayer(env)&lt;0){
+        LOGE(&quot;ERROR:MediaPlayer native registration failed\n&quot;);    
+        goto bail;     
+    }
+    /* success -- return valid version number */
+    result = JNI_VERSION_1_4;
+
+bail: return result;
+}
+//KTHXBYE
+</code></pre><p>此函数回传JNI_VERSION_1_4值给VM, 于是VM知道了其所使用的JNI版本了<br>此外, JNI_OnLoad()函数也做了一些初期的动作,例如指令:</p>
+<pre><code>if(register_android_media_MediaPlayer(env)&lt;0){
+    LOGE(&quot;ERROR:MediaPlayer native registration failed\n&quot;);    
+    goto bail;     
+}
+</code></pre><p>就将此*.so的<code>&lt;函数名称表&gt;</code>登记到VM里,以便能加快后续调用本地函数的效率</p>
+<p>当VM释放该C模块时, 则会调用JNI_OnUnload()函数来进行善后清除动作</p>
+<h4 id="registerNativeMethods_28_29_u51FD_u6570_u7684_u7528_u9014"><a href="#registerNativeMethods_28_29_u51FD_u6570_u7684_u7528_u9014" class="headerlink" title="registerNativeMethods()函数的用途"></a>registerNativeMethods()函数的用途</h4><p>Java类通过VM调用到本地函数<br>一半是依赖VM去寻找<em>.so里的本地函数.如果需要连续调用很多次, 每次都需要寻找一遍,会花很多时间<br>此时,将此</em>.so的<code>&lt;函数名称表&gt;</code>登记到VM里, 例如在Android的/system/lib/libmedia_jni.so里的程序代码片段如下:</p>
+<pre><code>//define LOG_NDEBUG 0
+#definde LOG_TAG &quot;MediaPlayer_JNI&quot;
+//......
+static JNINativeMethod getMethods[]={
+{&quot;setDataSource&quot;,&quot;(Ljava/lang/String;)V&quot;,(void*)android_media_MediaPlayer_setDataSource},
+{&quot;setDataSource&quot;,&quot;(Ljava/io/FileDescriptor;JJ)V&quot;,(void*)android_media_MediaPlayer_setDataSourceFD},
+{&quot;prepare&quot;,&quot;()V&quot;,(void*)android_media_MediaPlayer_prepare},
+{&quot;prepareAsync&quot;,&quot;()V&quot;,(void*)android_media_MediaPlayer_prepareAsync},
+{&quot;_start&quot;,&quot;()V&quot;,(void*)android_media_MediaPlayer_start},
+{&quot;_stop&quot;,&quot;()V&quot;,(void*)android_media_MediaPlayer_stop},
+......
+};
+</code></pre><p>第一个表示函数的别名,在Java里面使用<br>中间代表函数的参数和回传值<br>第三个表示函数的本名</p>
+<pre><code>//......
+static int register_android_media_MediaPlayer(JNIEnv *env){
+    ......
+    return AndroidRuntime::registerNativeMethods(env, &quot;android/media/MediaPlayer&quot;, getMethods, NELEM(getMethods));
+}
+//......
+jint JNI_OnLoad(JavaVm* vm, void* reserved){
+    ......
+    if(register_android_media_MediaPlayer(env)&lt;0){
+        LOGE(&quot;ERROR: MediaPlayer native registration failed\n&quot;);
+        goto bail;
+    }
+    //......
+} 
+</code></pre><p>JNI_OnLoad()调用 register_android_media_MediaPlayer()函数,此时就调用到<br>AndroidRuntime::registerNativeMethods()函数,向VM登记gMethods[]表格</p>
+<p>登记gMethods[]表格的用途有二:</p>
+<ol>
+<li>更有效率的去找到C函数</li>
+<li>可在执行期间弹性进行抽换</li>
+</ol>
+<p>由于gMethods[]是一个<code>&lt;名称, 函数指针&gt;</code>对照表,在程序执行是,可多次调用registerNativeMedhods()来更换本地函数的指针,而达到弹性抽换本地函数的目的.</p>
+
+      
+    </div>
+    
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2015/12/08/Android嵌套滑动机制学习/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption"><</strong>
+      <div class="article-nav-title">
+        
+          Android嵌套滑动机制学习
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2015/10/25/linux网络编程/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">linux网络编程</div>
+      <strong class="article-nav-caption">></strong>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+<div class="share_jia">
+	<!-- JiaThis Button BEGIN -->
+	<div class="jiathis_style">
+		<span class="jiathis_txt">分享到: &nbsp; </span>
+		<a class="jiathis_button_facebook"></a> 
+    <a class="jiathis_button_twitter"></a>
+    <a class="jiathis_button_plus"></a> 
+    <a class="jiathis_button_tsina"></a>
+		<a class="jiathis_button_cqq"></a>
+		<a class="jiathis_button_douban"></a>
+		<a class="jiathis_button_weixin"></a>
+		<a class="jiathis_button_tumblr"></a>
+    <a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jtico jtico_jiathis" target="_blank"></a>
+	</div>
+	<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js?uid=1405949716054953" charset="utf-8"></script>
+	<!-- JiaThis Button END -->
+</div>
+
+
+
+
+
+
+<div class="duoshuo">
+	<!-- 多说评论框 start -->
+	<div class="ds-thread" data-thread-key="认识-JNI开发" data-title="认识 JNI开发" data-url="http://www.bigtiger079.com/2015/10/26/认识-JNI开发/"></div>
+	<!-- 多说评论框 end -->
+	<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+	<script type="text/javascript">
+	var duoshuoQuery = {short_name:"true"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0] 
+		 || document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+	</script>
+	<!-- 多说公共JS代码 end -->
+</div>
+
+
+
+
+</div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info">
+    	<div class="footer-left">
+    		&copy; 2016 Bigtiger
+    	</div>
+      	<div class="footer-right">
+      		<a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/litten/hexo-theme-yilia" target="_blank">Yilia</a> by Litten
+      	</div>
+    </div>
+  </div>
+</footer>
+    </div>
+    
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css" type="text/css">
+
+
+<script>
+	var yiliaConfig = {
+		fancybox: true,
+		mathjax: true,
+		animate: true,
+		isHome: false,
+		isPost: true,
+		isArchive: false,
+		isTag: false,
+		isCategory: false,
+		open_in_new: false
+	}
+</script>
+<script src="http://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js" type="text/javascript"></script>
+<script src="/js/main.js" type="text/javascript"></script>
+
+
+
+
+
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';                 
+    }       
+});
+</script>
+
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  </div>
+</body>
+</html>

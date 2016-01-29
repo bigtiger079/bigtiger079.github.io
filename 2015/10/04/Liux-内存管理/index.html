@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" >
+  <title>Liux 内存管理 | Bigtiger&#39;s blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="Linx的内存管理内存段: 一个进程被操作系统加载到内存后并不是加载到一段连续的内存空间, 而是至少分为三段或多段内存空间.
+栈
+是一种先进后出的结构
+就像往一个管子里放东西, 最后进去的先拿出来, 最先放进去的最后拿出来
+栈空间有系统自动维护, 不需要通过代码申请或者释放
+
+int abc()
+{
+    int a;    //在stack中放入一个int型变量a,abc函数退出的时候系统自动">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Liux 内存管理">
+<meta property="og:url" content="http://www.bigtiger079.com/2015/10/04/Liux-内存管理/index.html">
+<meta property="og:site_name" content="Bigtiger's blog">
+<meta property="og:description" content="Linx的内存管理内存段: 一个进程被操作系统加载到内存后并不是加载到一段连续的内存空间, 而是至少分为三段或多段内存空间.
+栈
+是一种先进后出的结构
+就像往一个管子里放东西, 最后进去的先拿出来, 最先放进去的最后拿出来
+栈空间有系统自动维护, 不需要通过代码申请或者释放
+
+int abc()
+{
+    int a;    //在stack中放入一个int型变量a,abc函数退出的时候系统自动">
+<meta property="og:image" content="http://7xlrdt.com1.z0.glb.clouddn.com/linux内存管理_1.jpg">
+<meta property="og:updated_time" content="2016-01-28T12:49:21.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Liux 内存管理">
+<meta name="twitter:description" content="Linx的内存管理内存段: 一个进程被操作系统加载到内存后并不是加载到一段连续的内存空间, 而是至少分为三段或多段内存空间.
+栈
+是一种先进后出的结构
+就像往一个管子里放东西, 最后进去的先拿出来, 最先放进去的最后拿出来
+栈空间有系统自动维护, 不需要通过代码申请或者释放
+
+int abc()
+{
+    int a;    //在stack中放入一个int型变量a,abc函数退出的时候系统自动">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  <link rel="stylesheet" href="/css/style.css" type="text/css">
+</head>
+
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+	<header id="header" class="inner">
+		<a href="/" class="profilepic">
+			
+			<img lazy-src="http://7xlrpi.com1.z0.glb.clouddn.com/avatar.png" class="js-avatar">
+			
+		</a>
+
+		<hgroup>
+		  <h1 class="header-author"><a href="/">Bigtiger</a></h1>
+		</hgroup>
+
+		
+
+		
+			<div class="switch-btn">
+				<div class="icon">
+					<div class="icon-ctn">
+						<div class="icon-wrap icon-house" data-idx="0">
+							<div class="birdhouse"></div>
+							<div class="birdhouse_holes"></div>
+						</div>
+						<div class="icon-wrap icon-ribbon hide" data-idx="1">
+							<div class="ribbon"></div>
+						</div>
+						
+						
+						<div class="icon-wrap icon-me hide" data-idx="3">
+							<div class="user"></div>
+							<div class="shoulder"></div>
+						</div>
+						
+					</div>
+					
+				</div>
+				<div class="tips-box hide">
+					<div class="tips-arrow"></div>
+					<ul class="tips-inner">
+						<li>菜单</li>
+						<li>标签</li>
+						
+						
+						<li>关于我</li>
+						
+					</ul>
+				</div>
+			</div>
+		
+
+		<div class="switch-area">
+			<div class="switch-wrap">
+				<section class="switch-part switch-part1">
+					<nav class="header-menu">
+						<ul>
+						
+							<li><a href="/">主页</a></li>
+				        
+							<li><a href="/archives">所有文章</a></li>
+				        
+							<li><a href="/categories">分类</a></li>
+				        
+							<li><a href="/tags">标签</a></li>
+				        
+						</ul>
+					</nav>
+					<nav class="header-nav">
+						<div class="social">
+							
+								<a class="mail" target="_blank" href="/bigtiger079@gmail.com" title="mail">mail</a>
+					        
+						</div>
+					</nav>
+				</section>
+				
+				
+				<section class="switch-part switch-part2">
+					<div class="widget tagcloud" id="js-tagcloud">
+						<a href="/tags/Android/" style="font-size: 10px;">Android</a> <a href="/tags/C/" style="font-size: 10px;">C++</a> <a href="/tags/Cpp基础/" style="font-size: 10px;">Cpp基础</a> <a href="/tags/Hexo/" style="font-size: 10px;">Hexo</a> <a href="/tags/JNI/" style="font-size: 10px;">JNI</a> <a href="/tags/RecyclerView/" style="font-size: 16.67px;">RecyclerView</a> <a href="/tags/android/" style="font-size: 10px;">android</a> <a href="/tags/linux/" style="font-size: 20px;">linux</a> <a href="/tags/线性表/" style="font-size: 13.33px;">线性表</a>
+					</div>
+				</section>
+				
+				
+				
+
+				
+				
+				<section class="switch-part switch-part3">
+				
+					<div id="js-aboutme">我是谁，我从哪里来，我到哪里去？我就是我，是颜色不一样的吃货…</div>
+				</section>
+				
+			</div>
+		</div>
+	</header>				
+</div>
+
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+  	<div class="overlay">
+  		<div class="slider-trigger"></div>
+  		<h1 class="header-author js-mobile-header hide">Bigtiger</h1>
+  	</div>
+	<div class="intrude-less">
+		<header id="header" class="inner">
+			<div class="profilepic">
+			
+				<img lazy-src="http://7xlrpi.com1.z0.glb.clouddn.com/avatar.png" class="js-avatar">
+			
+			</div>
+			<hgroup>
+			  <h1 class="header-author">Bigtiger</h1>
+			</hgroup>
+			
+			<nav class="header-menu">
+				<ul>
+				
+					<li><a href="/">主页</a></li>
+		        
+					<li><a href="/archives">所有文章</a></li>
+		        
+					<li><a href="/categories">分类</a></li>
+		        
+					<li><a href="/tags">标签</a></li>
+		        
+		        <div class="clearfix"></div>
+				</ul>
+			</nav>
+			<nav class="header-nav">
+				<div class="social">
+					
+						<a class="mail" target="_blank" href="/bigtiger079@gmail.com" title="mail">mail</a>
+			        
+				</div>
+			</nav>
+		</header>				
+	</div>
+</nav>
+
+      <div class="body-wrap"><article id="post-Liux-内存管理" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2015/10/04/Liux-内存管理/" class="article-date">
+  	<time datetime="2015-10-04T12:55:28.000Z" itemprop="datePublished">2015-10-04</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Liux 内存管理
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/">linux</a></li></ul>
+	</div>
+
+        
+	<div class="article-category tagcloud">
+	<a class="article-category-link" href="/categories/C/">C++</a>
+	</div>
+
+
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="Linx_u7684_u5185_u5B58_u7BA1_u7406"><a href="#Linx_u7684_u5185_u5B58_u7BA1_u7406" class="headerlink" title="Linx的内存管理"></a>Linx的内存管理</h2><p>内存段: 一个进程被操作系统加载到内存后并不是加载到一段连续的内存空间, 而是至少分为三段或多段内存空间.<br><img src="http://7xlrdt.com1.z0.glb.clouddn.com/linux内存管理_1.jpg" alt=""></p>
+<h3 id="u6808"><a href="#u6808" class="headerlink" title="栈"></a>栈</h3><ul>
+<li>是一种先进后出的结构</li>
+<li>就像往一个管子里放东西, 最后进去的先拿出来, 最先放进去的最后拿出来</li>
+<li>栈空间有系统自动维护, 不需要通过代码申请或者释放</li>
+</ul>
+<pre><code>int abc()
+{
+    int a;    //在stack中放入一个int型变量a,abc函数退出的时候系统自动从stack中将a删除.
+    return 0;
+}
+</code></pre><p>-</p>
+<pre><code>int abc(int a, int b)//调用abc函数的时候在stack中放入两个int型变量a,b. b先入栈,a随后入栈.
+{                    //abc函数退出的时候系统从stack中将a删除, 然后删除b
+    return a+b;
+}
+</code></pre><blockquote>
+<p>a和b是在函数调用前入栈还是在函数调用后入栈?? </p>
+</blockquote>
+<h4 id="stdcall_28standard_calling_29"><a href="#stdcall_28standard_calling_29" class="headerlink" title="_stdcall(standard calling)"></a>_stdcall(standard calling)</h4><ul>
+<li>是Pascal默认调用函数方式;</li>
+<li>参数从右向左压入栈</li>
+<li>函数参数由被调用者压入或弹出栈</li>
+</ul>
+<h4 id="cdecl_28C_default_calling_29"><a href="#cdecl_28C_default_calling_29" class="headerlink" title="_cdecl(C default calling)"></a>_cdecl(C default calling)</h4><ul>
+<li>是C/C++默认调用函数方式;</li>
+<li>参数从右向左压入栈;</li>
+<li>函数参数由被调用者压入或弹出栈</li>
+</ul>
+<pre><code>int _attribute_((stdcall) abc(int a, int b));
+int _attribute_((cdecl) abc(int a, int b));
+</code></pre><h3 id="u5806_28heap_29"><a href="#u5806_28heap_29" class="headerlink" title="堆(heap)"></a>堆(heap)</h3><ul>
+<li>是一种动态的结构</li>
+<li>堆在存取上没有栈那样严格的先进后出的顺序</li>
+<li>堆就像一个大容器, 随时拿进来, 随时拿出去</li>
+<li>堆空间需要malloc或者new申请或者释放</li>
+</ul>
+<pre><code>int abc()
+{
+    int *p = new int;    //堆中申请了一块int型内存
+    delete p;            //释放堆中内存
+    return a+b;
+}
+</code></pre><h3 id="u5185_u5B58_u7684_u5206_u914D_u548C_u91CA_u653E"><a href="#u5185_u5B58_u7684_u5206_u914D_u548C_u91CA_u653E" class="headerlink" title="内存的分配和释放"></a>内存的分配和释放</h3><ul>
+<li>C语言用malloc、calloc、realloc、和free函数实现动态内存管理</li>
+<li>C++语言用new、delete操作符实现动态内存管理</li>
+<li>这些函数以及操作符可以让用户根据需要从操作系统堆(heap)中获取、使用和释放内存。</li>
+<li>动态内存分配是编制高效率程序的基础</li>
+<li>动态内存管理还可以能够把程序员从在代码中添加任意的限制中解放出来</li>
+<li>用户不再人为的限制数组或者字符串的长度</li>
+</ul>
+<h4 id="malloc"><a href="#malloc" class="headerlink" title="malloc"></a>malloc</h4><p>malloc函数分配没有被初始化过的内存块</p>
+<pre><code>void* malloc(size_t size);
+</code></pre><ul>
+<li>参数size指定分配内存的字节数</li>
+<li>返回值为指向新分配内存的指针, 如果失败返回NULL</li>
+<li>一般需要检查malloc返回的值</li>
+<li>使用malloc得到的内存必须再调用free释放给操作系统</li>
+</ul>
+<h4 id="calloc"><a href="#calloc" class="headerlink" title="calloc"></a>calloc</h4><p>calloc 函数分配内存并初始化内存块</p>
+<pre><code>void* calloc(size_t nmemb, size_t size)
+</code></pre><ul>
+<li>功能与malloc非常相似, 函数返回一个指向半酣nmemb个元素的数组指针, 数组中每个元素的大小为size个字节</li>
+<li>和malloc不同的是calloc对分配到的内存进行初始化, 把每个比特位设置为0</li>
+<li>返回值为指向新分配内存的指针, 如果失败返回NULL</li>
+</ul>
+<h4 id="realloc"><a href="#realloc" class="headerlink" title="realloc"></a>realloc</h4><p>realloc函数改变以前分配的内存块的大小</p>
+<pre><code>void* realloc(void *prt, size_t size)
+</code></pre><ul>
+<li>realloc可以调整以前由malloc或者calloc调用获得内存的大小</li>
+<li>参数prt必须是由调用malloc或者calloc返回的内存指针</li>
+<li>参数size既可以大于原来指针指向内存块大小, 也可以小于</li>
+<li>增大或减小的操作是原地, 也就是相对于内存块当前地址地方进行的</li>
+<li>如果不能这样做, realloc就把原来的数据复制到新的位置</li>
+</ul>
+<p>以下几点也适用于realloc函数:</p>
+<blockquote>
+<ul>
+<li>realloc不对增加的内存块做初始化</li>
+<li>realloc如果不能扩大内存块, 就返回NULL, 而且保持原来的数据不动</li>
+<li>realloc的第一个参数如果为NULL, 则它的作用和malloc一样</li>
+<li>realloc第二个参数如果是0, 那么就释放原来的内存块</li>
+</ul>
+</blockquote>
+<h4 id="free"><a href="#free" class="headerlink" title="free"></a>free</h4><p>free函数就是释放一块内存</p>
+<pre><code>void free(void *prt)
+</code></pre><ul>
+<li>参数prt必须是调用malloc或者calloc返回的内存指针</li>
+<li>内存分配函数从系统堆(heap)中获得内存, 内存作为一种有限资源可能会被用尽, 所以用完的内存一定要释放</li>
+<li>悬空指针是在内存已经被释放后遗留下来未初始化的指针, 如果试图访问一个悬空指针, 系统会出现问题</li>
+</ul>
+<h4 id="new__u548C_delete_u64CD_u4F5C_u7B26"><a href="#new__u548C_delete_u64CD_u4F5C_u7B26" class="headerlink" title="new 和 delete操作符"></a>new 和 delete操作符</h4><ul>
+<li>new 和 delete    操作符不是函数, 是C++内建的, 所以不需要包含头文件</li>
+<li>new 返回为指向新分配内存的指针, 如果失败返回NULL</li>
+<li>使用new得到的内存必须再调用delete释放给操作系统</li>
+<li>malloc只可用于一般性质的内存申请和释放, 但new\delete不但可以为普通数据类型分配释放内存, 同时还可以为对象分配释放内存</li>
+<li>new 分配的内存不能使用free函数来释放, 同样, malloc分配的内存不能使用delete来释放</li>
+</ul>
+
+      
+    </div>
+    
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2015/10/07/Linux文件输入输出和目录操作/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption"><</strong>
+      <div class="article-nav-title">
+        
+          Linux文件输入输出和目录操作
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2015/10/02/循环链表/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">循环链表</div>
+      <strong class="article-nav-caption">></strong>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+<div class="share_jia">
+	<!-- JiaThis Button BEGIN -->
+	<div class="jiathis_style">
+		<span class="jiathis_txt">分享到: &nbsp; </span>
+		<a class="jiathis_button_facebook"></a> 
+    <a class="jiathis_button_twitter"></a>
+    <a class="jiathis_button_plus"></a> 
+    <a class="jiathis_button_tsina"></a>
+		<a class="jiathis_button_cqq"></a>
+		<a class="jiathis_button_douban"></a>
+		<a class="jiathis_button_weixin"></a>
+		<a class="jiathis_button_tumblr"></a>
+    <a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jtico jtico_jiathis" target="_blank"></a>
+	</div>
+	<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js?uid=1405949716054953" charset="utf-8"></script>
+	<!-- JiaThis Button END -->
+</div>
+
+
+
+
+
+
+<div class="duoshuo">
+	<!-- 多说评论框 start -->
+	<div class="ds-thread" data-thread-key="Liux-内存管理" data-title="Liux 内存管理" data-url="http://www.bigtiger079.com/2015/10/04/Liux-内存管理/"></div>
+	<!-- 多说评论框 end -->
+	<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+	<script type="text/javascript">
+	var duoshuoQuery = {short_name:"true"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0] 
+		 || document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+	</script>
+	<!-- 多说公共JS代码 end -->
+</div>
+
+
+
+
+</div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info">
+    	<div class="footer-left">
+    		&copy; 2016 Bigtiger
+    	</div>
+      	<div class="footer-right">
+      		<a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/litten/hexo-theme-yilia" target="_blank">Yilia</a> by Litten
+      	</div>
+    </div>
+  </div>
+</footer>
+    </div>
+    
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css" type="text/css">
+
+
+<script>
+	var yiliaConfig = {
+		fancybox: true,
+		mathjax: true,
+		animate: true,
+		isHome: false,
+		isPost: true,
+		isArchive: false,
+		isTag: false,
+		isCategory: false,
+		open_in_new: false
+	}
+</script>
+<script src="http://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js" type="text/javascript"></script>
+<script src="/js/main.js" type="text/javascript"></script>
+
+
+
+
+
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';                 
+    }       
+});
+</script>
+
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  </div>
+</body>
+</html>

@@ -1,0 +1,931 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" >
+  <title>STL入门 | Bigtiger&#39;s blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="STL入门
+导入
+STL的概念与组成
+Iterator（迭代器） 
+Container（容器）
+Algorithm（算法）
+Adaptors（配接器）
+
+导入抽象的重要性
+
+计算机科学的重要进步，许多是由于发掘了新的抽象性质而促成的
+
+面向过程 －＞基于对象 －＞面向对象　-&amp;gt;泛型
+
+
+面向过程(Procedure-Oriented)的抽象
+
+抽象出Procedure（Function）的概">
+<meta property="og:type" content="article">
+<meta property="og:title" content="STL入门">
+<meta property="og:url" content="http://www.bigtiger079.com/2015/09/22/STL入门/index.html">
+<meta property="og:site_name" content="Bigtiger's blog">
+<meta property="og:description" content="STL入门
+导入
+STL的概念与组成
+Iterator（迭代器） 
+Container（容器）
+Algorithm（算法）
+Adaptors（配接器）
+
+导入抽象的重要性
+
+计算机科学的重要进步，许多是由于发掘了新的抽象性质而促成的
+
+面向过程 －＞基于对象 －＞面向对象　-&amp;gt;泛型
+
+
+面向过程(Procedure-Oriented)的抽象
+
+抽象出Procedure（Function）的概">
+<meta property="og:updated_time" content="2016-01-28T12:49:21.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="STL入门">
+<meta name="twitter:description" content="STL入门
+导入
+STL的概念与组成
+Iterator（迭代器） 
+Container（容器）
+Algorithm（算法）
+Adaptors（配接器）
+
+导入抽象的重要性
+
+计算机科学的重要进步，许多是由于发掘了新的抽象性质而促成的
+
+面向过程 －＞基于对象 －＞面向对象　-&amp;gt;泛型
+
+
+面向过程(Procedure-Oriented)的抽象
+
+抽象出Procedure（Function）的概">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  <link rel="stylesheet" href="/css/style.css" type="text/css">
+</head>
+
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+	<header id="header" class="inner">
+		<a href="/" class="profilepic">
+			
+			<img lazy-src="http://7xlrpi.com1.z0.glb.clouddn.com/avatar.png" class="js-avatar">
+			
+		</a>
+
+		<hgroup>
+		  <h1 class="header-author"><a href="/">Bigtiger</a></h1>
+		</hgroup>
+
+		
+
+		
+			<div class="switch-btn">
+				<div class="icon">
+					<div class="icon-ctn">
+						<div class="icon-wrap icon-house" data-idx="0">
+							<div class="birdhouse"></div>
+							<div class="birdhouse_holes"></div>
+						</div>
+						<div class="icon-wrap icon-ribbon hide" data-idx="1">
+							<div class="ribbon"></div>
+						</div>
+						
+						
+						<div class="icon-wrap icon-me hide" data-idx="3">
+							<div class="user"></div>
+							<div class="shoulder"></div>
+						</div>
+						
+					</div>
+					
+				</div>
+				<div class="tips-box hide">
+					<div class="tips-arrow"></div>
+					<ul class="tips-inner">
+						<li>菜单</li>
+						<li>标签</li>
+						
+						
+						<li>关于我</li>
+						
+					</ul>
+				</div>
+			</div>
+		
+
+		<div class="switch-area">
+			<div class="switch-wrap">
+				<section class="switch-part switch-part1">
+					<nav class="header-menu">
+						<ul>
+						
+							<li><a href="/">主页</a></li>
+				        
+							<li><a href="/archives">所有文章</a></li>
+				        
+							<li><a href="/categories">分类</a></li>
+				        
+							<li><a href="/tags">标签</a></li>
+				        
+						</ul>
+					</nav>
+					<nav class="header-nav">
+						<div class="social">
+							
+								<a class="mail" target="_blank" href="/bigtiger079@gmail.com" title="mail">mail</a>
+					        
+						</div>
+					</nav>
+				</section>
+				
+				
+				<section class="switch-part switch-part2">
+					<div class="widget tagcloud" id="js-tagcloud">
+						<a href="/tags/Android/" style="font-size: 10px;">Android</a> <a href="/tags/C/" style="font-size: 10px;">C++</a> <a href="/tags/Cpp基础/" style="font-size: 10px;">Cpp基础</a> <a href="/tags/Hexo/" style="font-size: 10px;">Hexo</a> <a href="/tags/JNI/" style="font-size: 10px;">JNI</a> <a href="/tags/RecyclerView/" style="font-size: 16.67px;">RecyclerView</a> <a href="/tags/android/" style="font-size: 10px;">android</a> <a href="/tags/linux/" style="font-size: 20px;">linux</a> <a href="/tags/线性表/" style="font-size: 13.33px;">线性表</a>
+					</div>
+				</section>
+				
+				
+				
+
+				
+				
+				<section class="switch-part switch-part3">
+				
+					<div id="js-aboutme">我是谁，我从哪里来，我到哪里去？我就是我，是颜色不一样的吃货…</div>
+				</section>
+				
+			</div>
+		</div>
+	</header>				
+</div>
+
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+  	<div class="overlay">
+  		<div class="slider-trigger"></div>
+  		<h1 class="header-author js-mobile-header hide">Bigtiger</h1>
+  	</div>
+	<div class="intrude-less">
+		<header id="header" class="inner">
+			<div class="profilepic">
+			
+				<img lazy-src="http://7xlrpi.com1.z0.glb.clouddn.com/avatar.png" class="js-avatar">
+			
+			</div>
+			<hgroup>
+			  <h1 class="header-author">Bigtiger</h1>
+			</hgroup>
+			
+			<nav class="header-menu">
+				<ul>
+				
+					<li><a href="/">主页</a></li>
+		        
+					<li><a href="/archives">所有文章</a></li>
+		        
+					<li><a href="/categories">分类</a></li>
+		        
+					<li><a href="/tags">标签</a></li>
+		        
+		        <div class="clearfix"></div>
+				</ul>
+			</nav>
+			<nav class="header-nav">
+				<div class="social">
+					
+						<a class="mail" target="_blank" href="/bigtiger079@gmail.com" title="mail">mail</a>
+			        
+				</div>
+			</nav>
+		</header>				
+	</div>
+</nav>
+
+      <div class="body-wrap"><article id="post-STL入门" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2015/09/22/STL入门/" class="article-date">
+  	<time datetime="2015-09-22T04:00:32.000Z" itemprop="datePublished">2015-09-22</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      STL入门
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/C/">C++</a></li></ul>
+	</div>
+
+        
+	<div class="article-category tagcloud">
+	<a class="article-category-link" href="/categories/C/">C++</a>
+	</div>
+
+
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="STL_u5165_u95E8"><a href="#STL_u5165_u95E8" class="headerlink" title="STL入门"></a>STL入门</h1><ul>
+<li>导入</li>
+<li>STL的概念与组成</li>
+<li>Iterator（迭代器） </li>
+<li>Container（容器）</li>
+<li>Algorithm（算法）</li>
+<li>Adaptors（配接器）</li>
+</ul>
+<h2 id="u5BFC_u5165"><a href="#u5BFC_u5165" class="headerlink" title="导入"></a>导入</h2><p>抽象的重要性</p>
+<ul>
+<li><p>计算机科学的重要进步，许多是由于发掘了新的抽象性质而促成的</p>
+</li>
+<li><p>面向过程 －＞基于对象 －＞面向对象　-&gt;泛型</p>
+</li>
+</ul>
+<p>面向过程(Procedure-Oriented)的抽象</p>
+<ul>
+<li><p>抽象出Procedure（Function）的概念，把程序分成若干个子过程。将事物的方法隐藏于各个函数内－－C语言。</p>
+</li>
+<li><p>适用于处理小型的程序。对大型程序，   子程序之间关系复杂，不易处理变化的需求－－引发软件危机的原因－－需要新的抽象。</p>
+</li>
+</ul>
+<p>面向过程示例</p>
+<pre><code>#include &lt;iostream&gt;
+using namespace std
+void function()
+{
+    //function很好的隐藏了一系列方法
+    ...
+}
+
+int main()
+{
+    function(); //调用子过程时不用考虑其实现细节
+}
+</code></pre><ul>
+<li><p>基于对象(Object-Based)的抽象<br>引入抽象数据类型（ADT，Abstract Data Type）。C++的类，将事物的属性与方法紧密地结合在一起－－VB、带类的C。</p>
+</li>
+<li><p>与面向过程相比，可以更好地处理变化，一定程度上化解了软件危机。但各个类之间的关系不容易处理，而且程序代码数量比面向过程时更大－－需要新的抽象。</p>
+<pre><code>#include &lt;iostream&gt;
+using namespace std
+
+//方法(getName) 与属性(name)的紧密结合增加了抽象性
+class Person
+{
+    public: 
+        char *getName();
+    private:
+        char *name;
+}
+void main()
+{
+    Person p;
+    cout &lt;&lt; &quot;This person&apos;s name is:&quot; &lt;&lt; p.getNmae();
+}
+</code></pre></li>
+</ul>
+<p>面向对象(Object-Oriented)的抽象</p>
+<ul>
+<li><p>抽象出封装、继承、多态( polymorphic )的概念。</p>
+</li>
+<li><p>与基于对象相比，有更多的间接性。运用多态，我们可以调用某种方法，而不用指定此方法所属的类型。因而达到更进一步的抽象性。</p>
+</li>
+<li><p>它为我们带来了什么？－－MFC（用面向对象技术封装Windows　API，抽象出一个类体系）</p>
+<pre><code>class B                    //基类, 定义了虚函数打印类型信息
+{
+    public:
+        virtual void Print()
+        {
+            cout &lt;&lt; &quot;The type is B&quot; &lt;&lt; endl;
+        }
+};
+
+class D1 : public B        //派生类1, 重载了打印函数
+{
+    public:
+        void Print()
+        {
+            cout &lt;&lt; &quot;The type is D1&quot; &lt;&lt; endl;
+        }
+};
+
+class D2 : public B        //派生类2, 重载了打印函数
+{
+    public:
+        void Print()
+        {
+            cout &lt;&lt; &quot;The type is D2&quot; &lt;&lt; endl;
+        }
+};
+
+int main()
+{
+    B *pB;
+    B b;
+    D1 d1;
+    D2 d2;
+
+    //根据pB指向的类型, 自动调用相应的函数, 是为多态
+    pB = &amp;b;
+    pB -&gt;Print();        //输出: The type is B;
+
+    pB = &amp;d1;
+    pB -&gt;Print();        //输出: The type is D1;
+
+    pB = &amp;d2;
+    pB -&gt;Print();        //输出: The type is D2;
+}
+</code></pre></li>
+</ul>
+<p>泛型（Generic）的概念</p>
+<ul>
+<li><p>Generic是一种抽象 就如 OO是一种抽象。</p>
+</li>
+<li><p>还没有语法与之相对应－－正在开发中。　（Function、Class、D : public B）</p>
+</li>
+<li><p>它为我们带来了什么？－－STL。</p>
+</li>
+</ul>
+<h2 id="STL_u7684_u6982_u5FF5"><a href="#STL_u7684_u6982_u5FF5" class="headerlink" title="STL的概念"></a>STL的概念</h2><h3 id="u4F55_u4E3ASTL_uFF1F"><a href="#u4F55_u4E3ASTL_uFF1F" class="headerlink" title="何为STL？"></a>何为STL？</h3><ul>
+<li><p>STL(Standard Template Library)是C＋＋标准庫的一部分（80%），是用C＋＋ Template机制来表达泛型的庫。</p>
+</li>
+<li><p>STL(Standard Template Library)是用泛型技术来设计完成的实例 就如 MFC(Microsoft Foundational Classes)是用面向对象技术来设计完成的实例</p>
+</li>
+</ul>
+<h3 id="STL_u62BD_u8C61_u7684_u662F_u4EC0_u4E48_uFF1F"><a href="#STL_u62BD_u8C61_u7684_u662F_u4EC0_u4E48_uFF1F" class="headerlink" title="STL抽象的是什么？"></a>STL抽象的是什么？</h3><ul>
+<li><p>有些算法并不依赖于数据结构的特定实现，而只是依赖于该结构的几个基本的语义属性.</p>
+</li>
+<li><p>STL抽象出这些基本属性（Concept），成功的将算法与数据结构分离，在没有效率损失的前提下，得到了及大的弹性。</p>
+</li>
+</ul>
+<p><strong>示例:</strong></p>
+<pre><code>vector&lt;int&gt; ivec;        //定义一个动态数组
+deque&lt;int&gt; ideque;        //定义一个两端开口的数组
+.
+.
+.
+//一个泛型算法: 排序
+sort(ivec.begin(), ivec.end);
+sort(ideque.begin(), ideque.end());
+</code></pre><h2 id="STL_u7684_u7EC4_u6210"><a href="#STL_u7684_u7EC4_u6210" class="headerlink" title="STL的组成"></a>STL的组成</h2><p>###六大组件</p>
+<ul>
+<li>容器(Container)</li>
+<li>算法(Algorithm)</li>
+<li>迭代器(Iterator)</li>
+<li>仿函数(Function object)</li>
+<li>适配器(Adapter)</li>
+<li>空间配制器(allocator)</li>
+</ul>
+<p>STL 是通用类模板和算法的集合，它提供给程序员一些标准的数据结构的实现如 queues(队列), lists(链表), 和stacks(栈)等.</p>
+<p><strong>C++ STL 提供给程序员以下三类数据结构的实现：</strong></p>
+<ul>
+<li><p>标准容器类</p>
+</li>
+<li><p>顺序性容器</p>
+<ul>
+<li>vector 从后面快速的插入与删除，直接访问任何元素</li>
+<li>deque 从前面或后面快速的插入与删除，直接访问任何元素</li>
+<li>list 双链表，从任何地方快速插入与删除</li>
+</ul>
+</li>
+<li><p>关联容器</p>
+<ul>
+<li>set 快速查找，不允许重复值</li>
+<li>multiset 快速查找，允许重复值</li>
+<li>map 一对多映射，基于关键字快速查找，不允许重复值</li>
+<li>multimap 一对多映射，基于关键字快速查找，允许重复值</li>
+</ul>
+</li>
+<li><p>容器适配器</p>
+<ul>
+<li>stack 后进先出</li>
+<li>queue 先进先出</li>
+<li>priority_queue 最高优先级元素总是第一个出列</li>
+</ul>
+</li>
+</ul>
+<p>程序员使用复杂数据结构的最困难的部分已经由STL完成. 如果程序员想使用包<br>含int数据的stack, 他只要写出如下的代码:</p>
+<pre><code>stack&lt;int&gt; myStack;
+</code></pre><p>接下来, 他只要简单的调用 <code>push()</code> 和 <code>pop()</code> 函数来操作栈. 借助 C++ 模板的威力, 他可以指定任何的数据类型，不仅仅是int类型. STL stack实现了栈的功能，而不管容纳的是什么数据类型.</p>
+<h3 id="vector_u5165_u95E8"><a href="#vector_u5165_u95E8" class="headerlink" title="vector入门"></a>vector入门</h3><p>vector是一个线性顺序结构。相当于数组，但其大小可以不预先指定，并且自动扩展。它可以像数组一样被操作，由于它的特性我们完全可以将vector 看作动态数组。<br>在创建一个vector 后，它会自动在内存中分配一块连续的内存空间进行数据存储，初始的空间大小可以预先指定也可以由vector 默认指定，这个大小即capacity （）函数的返回值。当存储的数据超过分配的空间时vector 会重新分配一块内存块，但这样的分配是很耗时的，在重新分配空间时它会做这样的动作：</p>
+<p>首先， vector 会申请一块更大的内存块；</p>
+<p>然后，将原来的数据拷贝到新的内存块中；</p>
+<p>其次，销毁掉原内存块中的对象（调用对象的析构函数）；</p>
+<p>最后，将原来的内存空间释放掉。</p>
+<p>如果vector 保存的数据量很大时，这样的操作一定会导致糟糕的性能（ 这也是vector 被设计成比较容易拷贝的值类型的原因）。所以说vector 不是在什么情况下性能都好，只有在预先知道它大小的情况下vector 的性能才是最优的。</p>
+<p><strong>vector 的特点：</strong></p>
+<p>(1) 指定一块如同数组一样的连续存储，但空间可以动态扩展。即它可以像数组一样操作，并且可以进行动态操作。通常体现在push_back() pop_back() 。</p>
+<p>(2) 随机访问方便，它像数组一样被访问，即支持[ ] 操作符和vector.at()</p>
+<p>(3) 节省空间，因为它是连续存储，在存储数据的区域都是没有被浪费的，但是要明确一点vector 大多情况下并不是满存的，在未存储的区域实际是浪费的。</p>
+<p>(4) 在内部进行插入、删除操作效率非常低，这样的操作基本上是被禁止的。Vector 被设计成只能在后端进行追加和删除操作，其原因是vector 内部的实现是按照顺序表的原理。</p>
+<p>(5) 只能在vector 的最后进行push 和pop ，不能在vector 的头进行push 和pop 。</p>
+<p>(6) 当动态添加的数据超过vector 默认分配的大小时要进行内存的重新分配、拷贝与释放，这个操作非常消耗性能。 所以要vector 达到最优的性能，最好在创建vector 时就指定其空间大小。Vectors 包含着一系列连续存储的元素,其行为和数组类似。访问Vector中的任意元素或从末尾添加元素都可以在常量级时间复杂度内完成，而查找特定值的<br>元素所处的位置或是在Vector中插入元素则是线性时间复杂度。</p>
+<ol>
+<li><p>Constructors 构造函数</p>
+<p> vector<int> v1; //构造一个空的vector<br> vector<int> v1( 5, 42 ); //构造了一个包含5个值为42的元素的Vector</int></int></p>
+</li>
+<li><p>Operators 对vector进行赋值或比较</p>
+</li>
+</ol>
+<p>C++ Vectors能够使用标准运算符: ==, !=, &lt;=, &gt;=, &lt;, 和 &gt;.</p>
+<p>要访问vector中的某特定位置的元素可以使用 [] 操作符.</p>
+<p>两个vectors被认为是相等的,如果:</p>
+<ul>
+<li>它们具有相同的容量</li>
+<li>所有相同位置的元素相等.</li>
+</ul>
+<p>vectors之间大小的比较是按照词典规则.</p>
+<p>3.assign() 对Vector中的元素赋值<br><br><strong>语法:</strong></p>
+<pre><code>void assign( input_iterator start, input_iterator end );
+// 将区间[start, end)的元素赋到当前vector
+void assign( size_type num, const TYPE &amp;val );
+// 赋num个值为val的元素到vector中,这个函数将会清除掉为vector赋值以前的内容.
+</code></pre><p>4.at() 返回指定位置的元素<br><br><strong>语法:</strong></p>
+<pre><code>TYPE at( size_type loc );//差不多等同v[i];但比v[i]安全;
+</code></pre><p>5.back() 返回最末一个元素</p>
+<p>6.begin() 返回第一个元素的迭代器</p>
+<p>7.capacity() 返回vector所能容纳的元素数量(在不重新分配内存的情况下）</p>
+<p>8.clear() 清空所有元素</p>
+<p>9.empty() 判断Vector是否为空（返回true时为空）</p>
+<p>10.end() 返回最末元素的迭代器(译注:实指向最末元素的下一个位置)</p>
+<p>11.erase() 删除指定元素<br><br><strong>语法:</strong></p>
+<pre><code>iterator erase( iterator loc );//删除loc处的元素
+iterator erase( iterator start, iterator end );//删除start和end之间的元素
+</code></pre><p>12.front() 返回第一个元素的引用</p>
+<p>13.get_allocator() 返回vector的内存分配器</p>
+<p>14.insert() 插入元素到Vector中<br><br><strong>语法:</strong></p>
+<pre><code>iterator insert( iterator loc, const TYPE &amp;val );
+//在指定位置loc前插入值为val的元素,返回指向这个元素的迭代器,
+void insert( iterator loc, size_type num, const TYPE &amp;val );
+//在指定位置loc前插入num个值为val的元素
+void insert( iterator loc, input_iterator start, input_iterator end );
+//在指定位置loc前插入区间[start, end)的所有元素
+</code></pre><p>15.max_size() 返回Vector所能容纳元素的最大数量（上限）</p>
+<p>16.pop_back() 移除最后一个元素</p>
+<p>17.push_back() 在Vector最后添加一个元素</p>
+<p>18.rbegin() 返回Vector尾部的逆迭代器</p>
+<p>19.rend() 返回Vector起始的逆迭代器</p>
+<p>20.reserve() 设置Vector最小的元素容纳数量</p>
+<pre><code>//为当前vector预留至少共容纳size个元素的空间
+</code></pre><p>21.resize() 改变Vector元素数量的大小<br><br><strong>语法:</strong></p>
+<pre><code>void resize( size_type size, TYPE val );
+//改变当前vector的大小为size,且对新创建的元素赋值val
+</code></pre><p>22.size() 返回Vector元素数量的大小</p>
+<p>23.swap() 交换两个Vector<br><br><strong>语法:</strong></p>
+<pre><code>void swap( vector &amp;from );
+</code></pre><h3 id="C++_List_28_u53CC_u5411_u94FE_u8868_29"><a href="#C++_List_28_u53CC_u5411_u94FE_u8868_29" class="headerlink" title="C++ List(双向链表)"></a>C++ List(双向链表)</h3><p>是一个线性链表结构，它的数据由若干个节点构成，每一个节点都包括一个信息块（即实际存储的数据）、一个前驱指针和一个后驱指针。它无需分配指定的内存大小且可以任意伸缩，这是因为它存储在非连续的内存空间中，并且由指针将有序的元素链接起来。</p>
+<p>由于其结构的原因， list 随机检索的性能非常的不好，因为它不像vector 那样直接找到元素的地址，而是要从头一个一个的顺序查找，这样目标元素越靠后，它的检索时间就越长。检索时间与目标元素的位置成正比。</p>
+<p>虽然随机检索的速度不够快，但是它可以迅速地在任何节点进行插入和删除操作。因为list 的每个节点保存着它在链表中的位置，插入或删除一个元素仅对最多三个元素有所影响，不像vector 会对操作点之后的所有元素的存储地址都有所影响，这一点是vector 不可比拟的。<br>list 的特点：</p>
+<p>(1) 不使用连续的内存空间这样可以随意地进行动态操作；</p>
+<p>(2) 可以在内部任何位置快速地插入或删除，当然也可以在两端进行push和pop 。</p>
+<p>(3) 不能进行内部的随机访问，即不支持[ ] 操作符和vector.at() ；</p>
+<p>Lists将元素按顺序储存在链表中， 与向量(vectors)相比， 它允许快速的插入和删除，但是随机访问却比较慢.</p>
+<p>1.assign() 给list赋值<br><br><strong>语法:</strong></p>
+<pre><code>void assign( input_iterator start, input_iterator end );
+//以迭代器start和end指示的范围为list赋值
+void assign( size_type num, const TYPE &amp;val );
+//赋值num个以val为值的元素。
+</code></pre><p>2.back() 返回最后一个元素的引用</p>
+<p>3.begin() 返回指向第一个元素的迭代器</p>
+<p>4.clear() 删除所有元素</p>
+<p>5.empty() 如果list是空的则返回true</p>
+<p>6.end() 返回末尾的迭代器</p>
+<p>7.erase() 删除一个元素<br><br><strong>语法:</strong></p>
+<pre><code>iterator erase( iterator loc );//删除loc处的元素
+iterator erase( iterator start, iterator end ); //删除start和end之间的元素
+</code></pre><p>8.front() 返回第一个元素的引用</p>
+<p>9.get_allocator() 返回list的配置器</p>
+<p>10.insert() 插入一个元素到list中<br><br><strong>语法:</strong></p>
+<pre><code>iterator insert( iterator loc, const TYPE &amp;val );
+//在指定位置loc前插入值为val的元素,返回指向这个元素的迭代器,
+void insert( iterator loc, size_type num, const TYPE &amp;val );
+//定位置loc前插入num个值为val的元素
+void insert( iterator loc, input_iterator start, input_iterator end );
+//在指定位置loc前插入区间[start, end)的所有元素
+</code></pre><p>11.max_size() 返回list能容纳的最大元素数量</p>
+<p>12.merge() 合并两个list<br><br><strong>语法:</strong></p>
+<pre><code>void merge( list &amp;lst );//把自己和lst链表连接在一起
+void merge( list &amp;lst, Comp compfunction );
+//指定compfunction，则将指定函数作为比较的依据。
+</code></pre><p>13.pop_back() 删除最后一个元素</p>
+<p>14.pop_front() 删除第一个元素</p>
+<p>15.push_back() 在list的末尾添加一个元素</p>
+<p>16.push_front() 在list的头部添加一个元素</p>
+<p>17.rbegin() 返回指向第一个元素的逆向迭代器</p>
+<p>18.remove() 从list删除元素<br><br><strong>语法:</strong></p>
+<pre><code>void remove( const TYPE &amp;val );
+//删除链表中所有值为val的元素
+</code></pre><p>19.remove_if() 按指定条件删除元素</p>
+<p>20.rend() 指向list末尾的逆向迭代器</p>
+<p>21.resize() 改变list的大小<br><br><strong>语法:</strong></p>
+<pre><code>void resize( size_type num, TYPE val );
+//把list的大小改变到num。被加入的多余的元素都被赋值为val22.
+</code></pre><p>22.reverse() 把list的元素倒转</p>
+<p>23.size() 返回list中的元素个数</p>
+<p>24.sort() 给list排序<br><br><strong>语法:</strong></p>
+<pre><code>void sort();//为链表排序，默认是升序
+void sort( Comp compfunction );//采用指定函数compfunction来判定两个元素的大小。
+</code></pre><p>25.splice() 合并两个list<br><br><strong>语法:</strong></p>
+<pre><code>void splice( iterator pos, list &amp;lst );//把lst连接到pos的位置
+void splice( iterator pos, list &amp;lst, iterator del );//插入lst中del所指元素到现链表的pos上
+void splice( iterator pos, list &amp;lst, iterator start, iterator end );//用start和end指定范围。
+</code></pre><p>26.swap() 交换两个list<br><br><strong>语法:</strong></p>
+<pre><code>void swap( list &amp;lst );// 交换lst和现链表中的元素
+</code></pre><p>27.unique() 删除list中重复的元素<br><br><strong>语法:</strong></p>
+<pre><code>void unique();//删除链表中所有重复的元素
+void unique( BinPred pr );// 指定pr，则使用pr来判定是否删除。
+</code></pre><h3 id="C++_Deque_28_u53CC_u5411_u961F_u5217_29"><a href="#C++_Deque_28_u53CC_u5411_u961F_u5217_29" class="headerlink" title="C++ Deque(双向队列)"></a>C++ Deque(双向队列)</h3><p>是一种优化了的、对序列两端元素进行添加和删除操作的基本序列容器。它允许较为快速地随机访问，但它不像vector 把所有的对象保存在一块连续的内存块，而是采用多个连续的存储块，并且在一个映射结构中保存对这些块及其顺序的跟踪。向deque 两端添加或删除元素的开销很小。它不需要重新分配空间，所以向末端增加元素比vector 更有效。</p>
+<p>实际上， deque 是对vector 和list 优缺点的结合，它是处于两者之间的一种容器。</p>
+<p>deque 的特点：</p>
+<p>(1) 随机访问方便，即支持[ ] 操作符和vector.at() ，但性能没有vector 好；</p>
+<p>(2) 可以在内部进行插入和删除操作，但性能不及list ；</p>
+<p>(3) 可以在两端进行push 、 pop ；</p>
+<p>(4) 相对于verctor 占用更多的内存。</p>
+<p>双向队列和向量很相似，但是它允许在容器头部快速插入和删除（就像在尾部一样）。</p>
+<p>1.Constructors 创建一个新双向队列<br><br><strong>语法:</strong></p>
+<pre><code>deque();//创建一个空双向队列
+deque( size_type size );// 创建一个大小为size的双向队列
+deque( size_type num, const TYPE &amp;val ); //放置num个val的拷贝到队列中
+deque( const deque &amp;from );// 从from创建一个内容一样的双向队列
+deque( input_iterator start, input_iterator end );
+// start 和 end - 创建一个队列， 保存从start到end的元素。
+</code></pre><p>2.Operators 比较和赋值双向队列</p>
+<p>//可以使用[]操作符访问双向队列中单个的元素</p>
+<p>3.assign() 设置双向队列的值<br><br><strong>语法:</strong></p>
+<pre><code>void assign( input_iterator start, input_iterator end);
+//start和end指示的范围为双向队列赋值
+void assign( Size num, const TYPE &amp;val );//设置成num个val。
+</code></pre><p>4.at() 返回指定的元素<br><br><strong>语法:</strong></p>
+<pre><code>reference at( size_type pos ); 返回一个引用，指向双向队列中位置pos上的元素
+</code></pre><p>5.back() 返回最后一个元素<br><br><strong>语法:</strong></p>
+<pre><code>reference back();//返回一个引用，指向双向队列中最后一个元素
+</code></pre><p>6.begin() 返回指向第一个元素的迭代器<br><br><strong>语法:</strong></p>
+<pre><code>iterator begin();//返回一个迭代器，指向双向队列的第一个元素
+</code></pre><p>7.clear() 删除所有元素</p>
+<p>8.empty() 返回真如果双向队列为空</p>
+<p>9.end() 返回指向尾部的迭代器</p>
+<p>10.erase() 删除一个元素<br><br><strong>语法:</strong></p>
+<pre><code>iterator erase( iterator pos ); //删除pos位置上的元素
+iterator erase( iterator start, iterator end ); //删除start和end之间的所有元素
+//返回指向被删除元素的后一个元素
+</code></pre><p>11.front() 返回第一个元素的引用</p>
+<p>12.get_allocator() 返回双向队列的配置器</p>
+<p>13.insert() 插入一个元素到双向队列中<br><br><strong>语法:</strong></p>
+<pre><code>iterator insert( iterator pos, size_type num, const TYPE &amp;val ); //pos前插入num个val值
+void insert( iterator pos, input_iterator start, input_iterator end );
+//插入从start到end范围内的元素到pos前面
+</code></pre><p>14.max_size() 返回双向队列能容纳的最大元素个数</p>
+<p>15.pop_back() 删除尾部的元素</p>
+<p>16.pop_front() 删除头部的元素</p>
+<p>17.push_back() 在尾部加入一个元素</p>
+<p>18.push_front() 在头部加入一个元素</p>
+<p>19.rbegin() 返回指向尾部的逆向迭代器</p>
+<p>20.rend() 返回指向头部的逆向迭代器</p>
+<p>21.resize() 改变双向队列的大小</p>
+<p>22.size() 返回双向队列中元素的个数</p>
+<p>23.swap() 和另一个双向队列交换元素<br><br><strong>语法:</strong></p>
+<pre><code>void swap( deque &amp;target );// 交换target和现双向队列中元素
+</code></pre><h3 id="u4E09_u8005_u6BD4_u8F83"><a href="#u4E09_u8005_u6BD4_u8F83" class="headerlink" title="三者比较"></a>三者比较</h3><p>vector 是一段连续的内存块，而deque 是多个连续的内存块， list 是所有数据元素分开保存，可以是任何两个元素没有连续。</p>
+<p>vector 的查询性能最好，并且在末端增加数据也很好，除非它重新申请内存段；适合高效地随机存储。</p>
+<p>list 是一个链表，任何一个元素都可以是不连续的，但它都有两个指向上一元素和下一元素的指针。所以它对插入、删除元素性能是最好的，而查询性能非常差；适合大量地插入和删除操作而不关心随机存取的需求。</p>
+<p>deque 是介于两者之间，它兼顾了数组和链表的优点，它是分块的链表和多个数组的联合。所以它有被list好的查询性能，有被vector好的插入、删除性能。</p>
+<p>如果你需要随即存取又关心两端数据的插入和删除，那么deque是最佳之选。</p>
+<h2 id="u5173_u8054_u5BB9_u5668"><a href="#u5173_u8054_u5BB9_u5668" class="headerlink" title="关联容器"></a>关联容器</h2><p><strong>特点</strong></p>
+<p>set, multiset, map, multimap 是一种非线性的树结构，具体的说采用的是一种比较高效的特殊的平衡检索二叉树—— 红黑树结构。（至于什么是红黑树，我也不太理解，只能理解到它是一种二叉树结构）因为关联容器的这四种容器类都使用同一原理，所以他们核心的算法是一致的，但是它们在应用上又有一些差别，先描述一下它们之间的差别。</p>
+<p>set 又称集合，实际上就是一组元素的集合，但其中所包含的元素的值是唯一的，且是按一定顺序排列的，集合中的每个元素被称作集合中的实例。因为其内部是通过链表的方式来组织，所以在插入的时候比vector 快，但在查找和末尾<br>添加上比vector 慢。</p>
+<p>multiset 是多重集合，其实现方式和set 是相似的，只是它不要求集合中的元素是唯一的，也就是说集合中的同一个元素可以出现多次。</p>
+<p>map 提供一种“键- 值”关系的一对一的数据存储能力。其“键”在容器中不可重复，且按一定顺序排列（其实我们可以将set 也看成是一种键- 值关系的存储，只是它只有键没有值。它是map 的一种特殊形式）。由于其是按链表的方式存储，它也继承了链表的优缺点。</p>
+<p>multimap 和map 的原理基本相似，它允许“键”在容器中可以不唯一。</p>
+<p>关联容器的特点是明显的，相对于顺序容器，有以下几个主要特点：</p>
+<ol>
+<li>其内部实现是采用非线性的二叉树结构，具体的说是红黑树的结构原理实现的；</li>
+<li>set 和map 保证了元素的唯一性， mulset 和mulmap 扩展了这一属性，可以允许元素不唯一；</li>
+<li>元素是有序的集合，默认在插入的时候按升序排列。</li>
+</ol>
+<p>基于以上特点，</p>
+<ol>
+<li><p>关联容器对元素的插入和删除操作比vector 要快，因为vector 是顺序存储，而关联容器是链式存储；比list 要慢，是因为即使它们同是链式结构，但list是线性的，而关联容器是二叉树结构，其改变一个元素涉及到其它元素的变动比list 要多，并且它是排序的，每次插入和删除都需要对元素重新排序；</p>
+</li>
+<li><p>关联容器对元素的检索操作比vector 慢，但是比list 要快很多。 vector 是顺序的连续存储，当然是比不上的，但相对链式的list 要快很多是因为list 是逐个搜索，它搜索的时间是跟容器的大小成正比，而关联容器 查找的复杂度基本是Log(N) ，比如如果有1000 个记录，最多查找10 次， 1,000,000 个记录，最多查找20 次。容器越大，关联容器相对list 的优越性就越能体现；</p>
+</li>
+<li><p>在使用上set 区别于vector,deque,list 的最大特点就是set 是内部排序的，这在查询上虽然逊色于vector ，但是却大大的强于list 。</p>
+</li>
+<li><p>在使用上map 的功能是不可取代的，它保存了“键- 值”关系的数据，而这种键值关系采用了类数组的方式。数组是用数字类型的下标来索引元素的位置，而map 是用字符型关键字来索引元素的位置。在使用上map 也提供了一种类数组操作的方式，即它可以通过下标来检索数据，这是其他容器做不到的，当然也包括set 。（ STL 中只有vector 和map 可以通过类数组的方式操作元素，即如同ele[1] 方式）</p>
+</li>
+</ol>
+<h3 id="C++_Sets__26amp_3B_MultiSets"><a href="#C++_Sets__26amp_3B_MultiSets" class="headerlink" title="C++ Sets &amp; MultiSets"></a>C++ Sets &amp; MultiSets</h3><p>集合(Set)是一种包含已排序对象的关联容器。 多元集合(MultiSets)和集合(Sets)相像，只不过支持重复对象,其用法与set基本相同。</p>
+<p>1.begin() 返回指向第一个元素的迭代器</p>
+<p>2.clear() 清除所有元素</p>
+<p>3.count() 返回某个值元素的个数</p>
+<p>4.empty() 如果集合为空，返回true</p>
+<p>5.end() 返回指向最后一个元素的迭代器</p>
+<p>6.equal_range() 返回第一个&gt;=关键字的迭代器和&gt;关键字的迭代器<br><br><strong>语法:</strong></p>
+<pre><code>pair &lt;iterator,iterator&gt;equal_range( const key_type &amp;key );
+//key是用于排序的关键字
+Set&lt;int&gt; ctr;
+</code></pre><p><strong>例如：</strong></p>
+<pre><code>Pair&lt;set&lt;int&gt;::iterator,set&lt;int&gt;::iterarot&gt;p;
+For(i=0;i&lt;=5;i++) ctr.insert(i);
+P=ctr.equal_range(2);
+那么*p.first==2;*p.second==3;
+</code></pre><p>7.erase() 删除集合中的元素<br><br><strong>语法:</strong></p>
+<pre><code>iterator erase( iterator i ); //删除i位置元素
+iterator erase( iterator start, iterator end );
+//删除从start开始到end(end为第一个不被删除的值)结束的元素
+size_type erase( const key_type &amp;key );
+//删除等于key值的所有元素（返回被删除的元素的个数）
+//前两个返回第一个不被删除的双向定位器,不存在返回末尾
+//第三个返回删除个数
+</code></pre><p>8.find() 返回一个指向被查找到元素的迭代器<br><br><strong>语法:</strong></p>
+<pre><code>iterator find( const key_type &amp;key );
+//查找等于key值的元素，并返回指向该元素的迭代器;
+//如果没有找到,返回指向集合最后一个元素的迭代器
+</code></pre><p>9.get_allocator() 返回集合的分配器</p>
+<p>10.insert() 在集合中插入元素<br><br><strong>语法:</strong></p>
+<pre><code>iterator insert( iterator i, const TYPE &amp;val ); //在迭代器i前插入val
+void insert( input_iterator start, input_iterator end );
+//将迭代器start开始到end（ end不被插入） 结束返回内的元素插入到集合中
+pair insert( const TYPE &amp;val );
+//插入val元素， 返回指向该元素的迭代器和一个布尔值来说明val是否成功被插入
+//应该注意的是在集合(Sets中不能插入两个相同的元素)
+</code></pre><p>11.lower_bound() 返回指向大于（或等于）某值的第一个元素的迭代器<br><br><strong>语法:</strong></p>
+<pre><code>iterator lower_bound( const key_type &amp;key );
+//返回一个指向大于或者等于key值的第一个元素的迭代器
+</code></pre><p>12.key_comp() 返回一个用于元素间值比较的函数<br><br><strong>语法:</strong></p>
+<pre><code>key_compare key_comp();
+//返回一个用于元素间值比较的函数对象
+</code></pre><p>13.max_size() 返回集合能容纳的元素的最大限值</p>
+<p>14.rbegin() 返回指向集合中最后一个元素的反向迭代器</p>
+<p><strong>示例：</strong></p>
+<pre><code>Set&lt;int&gt; ctr;
+Set&lt;int&gt;::reverse_iterator rcp;
+For(rcp=ctr.rbegin();rcp!=ctr.rend();rcp++)
+Cout&lt;&lt;*rcp&lt;&lt;” ”;
+</code></pre><p>15.rend() 返回指向集合中第一个元素的反向迭代器</p>
+<p>16.size() 集合中元素的数目</p>
+<p>17.swap() 交换两个集合变量<br><br><strong>语法:</strong></p>
+<pre><code>void swap( set &amp;object ); //交换当前集合和object集合中的元素
+</code></pre><p>18.upper_bound() 返回大于某个值元素的迭代器<br><br><strong>语法:</strong></p>
+<pre><code>iterator upwer_bound( const key_type &amp;key );
+//返回一个指向大于key值的第一个元素的迭代器
+</code></pre><p>19.value_comp() 返回一个用于比较元素间的值的函数<br><br><strong>语法:</strong></p>
+<pre><code>iterator upper_bound( const key_type &amp;key );//返回一个用于比较元素间的值的函数对象
+</code></pre><h3 id="C++_Maps__26amp_3B_MultiMaps"><a href="#C++_Maps__26amp_3B_MultiMaps" class="headerlink" title="C++ Maps &amp; MultiMaps"></a>C++ Maps &amp; MultiMaps</h3><p>C++ Maps是一种关联式容器，包含“关键字/值”对。</p>
+<p>C++ Multimaps和maps很相似，但是MultiMaps允许重复的元素。</p>
+<p>1.begin() 返回指向map头部的迭代器</p>
+<p>2.clear() 删除所有元素</p>
+<p>3.count() 返回指定元素出现的次数<br><br><strong>语法:</strong></p>
+<pre><code>size_type count( const KEY_TYPE &amp;key );
+//返回map中键值等于key的元素的个数
+</code></pre><p>4.empty() 如果map为空则返回true</p>
+<p>5.end() 返回指向map末尾的迭代器</p>
+<p>6.equal_range() 返回特殊条目的迭代器对<br><br><strong>语法:</strong></p>
+<pre><code>pair equal_range( const KEY_TYPE &amp;key );
+返回两个迭代器,指向第一个键值为key的元素和指向最后一个键值为key的元素
+</code></pre><p>7.erase() 删除一个元素<br><br><strong>语法:</strong></p>
+<pre><code>void erase( iterator i ); //删除i元素
+void erase( iterator start, iterator end ); //删除从start开始到end（不包括end） 结束的元素
+size_type erase( const key_type &amp;key );
+//删除等于key值的所有元素（返回被删除的元素的个数）
+</code></pre><p>8.find() 查找一个元素<br><br><strong>语法:</strong></p>
+<pre><code>iterator find( const key_type &amp;key );
+//查找等于key值的元素，并返回指向该元素的迭代器;
+//如果没有找到,返回指向集合最后一个元素的迭代器.
+</code></pre><p>9.get_allocator() 返回map的配置器</p>
+<p>10.insert() 插入元素<br><br><strong>语法:</strong></p>
+<pre><code>iterator insert( iterator pos, const pair&lt;KEY_TYPE,VALUE_TYPE&gt; &amp;val );
+//插入val到pos的后面，然后返回一个指向这个元素的迭代器
+void insert( input_iterator start, input_iterator end );
+//插入start到end的元素到map中
+pair&lt;iterator, bool&gt; insert( const pair&lt;KEY_TYPE,VALUE_TYPE&gt; &amp;val );
+//只有在val不存在时插入val。返回指向被插入元素的迭代器和描述是否插入的bool值
+</code></pre><p>11.key_comp() 返回比较元素key的函数<br><br><strong>语法:</strong></p>
+<pre><code>key_compare key_comp();
+//返回一个用于元素间值比较的函数对象
+</code></pre><p>12.lower_bound() 返回键值&gt;=给定元素的第一个位置<br><br><strong>语法:</strong></p>
+<pre><code>iterator lower_bound( const key_type &amp;key );
+//返回一个指向大于或者等于key值的第一个元素的迭代器
+</code></pre><p>13.max_size() 返回可以容纳的最大元素个数</p>
+<p>14.rbegin() 返回一个指向map尾部的逆向迭代器</p>
+<p>15.rend() 返回一个指向map头部的逆向迭代器</p>
+<p>16.size() 返回map中元素的个数</p>
+<p>17.swap() 交换两个map<br><br><strong>语法:</strong></p>
+<pre><code>void swap( map &amp;obj );
+//swap()交换obj和现map中的元素
+</code></pre><p>18.upper_bound() 返回键值&gt;给定元素的第一个位置<br><br><strong>语法:</strong></p>
+<pre><code>iterator upwer_bound( const key_type &amp;key );
+//返回一个指向大于key值的第一个元素的迭代器
+</code></pre><p>19.value_comp() 返回比较元素value的函数<br><br><strong>语法:</strong></p>
+<pre><code>value_compare value_comp();
+//返回一个用于比较元素value的函数
+</code></pre><h2 id="u5BB9_u5668_u9002_u914D_u5668"><a href="#u5BB9_u5668_u9002_u914D_u5668" class="headerlink" title="容器适配器"></a>容器适配器</h2><p>特点</p>
+<p>STL 中包含三种适配器：栈stack 、队列queue 和优先级priority_queue 。适配器是容器的接口，它本身不能直接保存元素，它保存元素的机制是调用另一种顺序容器去实现，即可以把适配器看作“它保存一个容器，这个容器再保<br>存所有元素”。</p>
+<p>STL 中提供的三种适配器可以由某一种顺序容器去实现。默认下stack 和queue 基于deque 容器实现， priority_queue 则基于vector 容器实现。当然在创建一个适配器时也可以指定具体的实现容器，创建适配器时在第二个参数上指定具体的顺序容器可以覆盖适配器的默认实现。<br>由于适配器的特点，一个适配器不是可以由任一个顺序容器都可以实现的。</p>
+<p>栈stack 的特点是后进先出，所以它关联的基本容器可以是任意一种顺序容器，因为这些容器类型结构都可以提供栈的操作有求，它们都提供了push_back 、pop_back 和back 操作。</p>
+<p>队列queue 的特点是先进先出，适配器要求其关联的基础容器必须提供pop_front 操作，因此其不能建立在vector 容器上。</p>
+<h3 id="C++_Stacks_uFF08_u5806_u6808_uFF09"><a href="#C++_Stacks_uFF08_u5806_u6808_uFF09" class="headerlink" title="C++ Stacks（堆栈）"></a>C++ Stacks（堆栈）</h3><p>C++ Stack（堆栈） 是一个容器类的改编，为程序员提供了堆栈的全部功能， ——也就是说实现了一个先进后出（ FILO）的数据结构。</p>
+<p>1.empty() 堆栈为空则返回真</p>
+<p>2.pop() 移除栈顶元素</p>
+<p>3.push() 在栈顶增加元素</p>
+<p>4.size() 返回栈中元素数目</p>
+<p>5.top() 返回栈顶元素</p>
+<h3 id="C++_Queues_28_u961F_u5217_29"><a href="#C++_Queues_28_u961F_u5217_29" class="headerlink" title="C++ Queues(队列)"></a>C++ Queues(队列)</h3><p>C++队列是一种容器适配器，它给予程序员一种先进先出(FIFO)的数据结构。</p>
+<p>1.back() 返回一个引用，指向最后一个元素</p>
+<p>2.empty() 如果队列空则返回真</p>
+<p>3.front() 返回第一个元素</p>
+<p>4.pop() 删除第一个元素</p>
+<p>5.push() 在末尾加入一个元素</p>
+<p>6.size() 返回队列中元素的个数</p>
+<h3 id="C++_Priority_Queues_28_u4F18_u5148_u961F_u5217_29"><a href="#C++_Priority_Queues_28_u4F18_u5148_u961F_u5217_29" class="headerlink" title="C++ Priority Queues(优先队列)"></a>C++ Priority Queues(优先队列)</h3><p>C++优先队列类似队列，但是在这个数据结构中的元素按照一定的断言排列有序。</p>
+<p>1.empty() 如果优先队列为空，则返回真</p>
+<p>2.pop() 删除第一个元素</p>
+<p>3.push() 加入一个元素</p>
+<p>4.size() 返回优先队列中拥有的元素的个数</p>
+<p>5.top() 返回优先队列中有最高优先级的元素</p>
+<h2 id="u8FED_u4EE3_u5668"><a href="#u8FED_u4EE3_u5668" class="headerlink" title="迭代器"></a>迭代器</h2><p><strong>解释</strong></p>
+<p>迭代器是一种对象，它能够用来遍历STL容器中的部分或全部元素，每个迭代器对象代表容器中的确定的地址。迭代器修改了常规指针的接口，所谓迭代器是一种概念上的抽象：那些行为上象迭代器的东西都可以叫做迭代器。然而迭代器有很多不同的能力，它可以把抽象容器和通用算法有机的统一起来。</p>
+<p>迭代器提供一些基本操作符： *、 ++、 ==、！ =、 =。这些操作和C/C++“操作array元素”时的指针接口一致。不同之处在于，迭代器是个所谓的smart pointers，具有遍历复杂数据结构的能力。其下层运行机制取决于其所遍历的数据结构。因此，每一种容器型别都必须提供自己的迭代器。</p>
+<p>事实上每一种容器都将其迭代器以嵌套的方式定义于内部。因此各种迭代器的接口相同，型别却不同。这直接导出了泛型程序设计的概念：所有操作行为都使用相同接口，虽然它们的型别不同。</p>
+<p><strong>功能特点</strong></p>
+<p>迭代器使开发人员不必整个实现类接口。只需提供一个迭代器，即可遍历类中的数据结构， 可被用来访问一个容器类的所包函的全部元素，其行为像一个指针，但是只可被进行增加(++)或减少(–)操作。举一个例子，你可用一个迭代器来实现对vector容器中所含元素的遍历。</p>
+<p>如下代码对vector容器对象生成和使用了迭代器：</p>
+<pre><code>vector&lt;int&gt; the_vector;
+vector&lt;int&gt;::iterator the_iterator;
+for( int i=0; i &lt; 10; i++ )
+the_vector.push_back(i);
+int total = 0;
+the_iterator = the_vector.begin();
+while( the_iterator != the_vector.end() ) {
+total += *the_iterator;
+the_iterator++;
+}cout &lt;&lt; &quot;Total=&quot; &lt;&lt; total &lt;&lt; endl;
+提示：通过对一个迭代器的解引用操作（ *），可以访问到容器所包含的元素。
+</code></pre>
+      
+    </div>
+    
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2015/09/30/线性表-顺序存储的开发和设计/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption"><</strong>
+      <div class="article-nav-title">
+        
+          线性表-顺序存储的开发和设计
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2015/09/22/C-中的模板/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">C++中的模板</div>
+      <strong class="article-nav-caption">></strong>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+<div class="share_jia">
+	<!-- JiaThis Button BEGIN -->
+	<div class="jiathis_style">
+		<span class="jiathis_txt">分享到: &nbsp; </span>
+		<a class="jiathis_button_facebook"></a> 
+    <a class="jiathis_button_twitter"></a>
+    <a class="jiathis_button_plus"></a> 
+    <a class="jiathis_button_tsina"></a>
+		<a class="jiathis_button_cqq"></a>
+		<a class="jiathis_button_douban"></a>
+		<a class="jiathis_button_weixin"></a>
+		<a class="jiathis_button_tumblr"></a>
+    <a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jtico jtico_jiathis" target="_blank"></a>
+	</div>
+	<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js?uid=1405949716054953" charset="utf-8"></script>
+	<!-- JiaThis Button END -->
+</div>
+
+
+
+
+
+
+<div class="duoshuo">
+	<!-- 多说评论框 start -->
+	<div class="ds-thread" data-thread-key="STL入门" data-title="STL入门" data-url="http://www.bigtiger079.com/2015/09/22/STL入门/"></div>
+	<!-- 多说评论框 end -->
+	<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+	<script type="text/javascript">
+	var duoshuoQuery = {short_name:"true"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0] 
+		 || document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+	</script>
+	<!-- 多说公共JS代码 end -->
+</div>
+
+
+
+
+</div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info">
+    	<div class="footer-left">
+    		&copy; 2016 Bigtiger
+    	</div>
+      	<div class="footer-right">
+      		<a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/litten/hexo-theme-yilia" target="_blank">Yilia</a> by Litten
+      	</div>
+    </div>
+  </div>
+</footer>
+    </div>
+    
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css" type="text/css">
+
+
+<script>
+	var yiliaConfig = {
+		fancybox: true,
+		mathjax: true,
+		animate: true,
+		isHome: false,
+		isPost: true,
+		isArchive: false,
+		isTag: false,
+		isCategory: false,
+		open_in_new: false
+	}
+</script>
+<script src="http://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js" type="text/javascript"></script>
+<script src="/js/main.js" type="text/javascript"></script>
+
+
+
+
+
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';                 
+    }       
+});
+</script>
+
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  </div>
+</body>
+</html>
